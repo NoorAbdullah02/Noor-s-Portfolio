@@ -1,0 +1,13 @@
+.facebook {
+    position: relative;
+    padding-left: 24px;
+}
+.facebook:before {
+    content: "\f082";
+    font-family: "Font Awesome 5 Brands";
+    font-size: 20px;
+    font-weight: normal;
+    position: absolute;
+    left: 0;
+    top: 0;
+}

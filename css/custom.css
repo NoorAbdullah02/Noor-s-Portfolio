@@ -806,7 +806,7 @@ object-fit: cover;
 @media only screen and (max-width: 767px){
     .blog .item .photo img{
         height: auto;
-        object-fit: none;
+        object-fit: cover;
     }
 }
 

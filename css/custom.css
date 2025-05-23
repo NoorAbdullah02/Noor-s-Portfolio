@@ -642,7 +642,7 @@ position: relative;
 @media only screen and (max-width: 575px){
  .portfolio .filter-item .photo img{
      height: auto;
-     object-fit: none;
+     object-fit: cover;
  }
 }
 

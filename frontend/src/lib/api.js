@@ -31,4 +31,9 @@ export const fetchVisits = async (token) => {
   return data;
 };
 
+export const sendChatMessage = async (messages) => {
+  const { data } = await api.post("/chat", { messages });
+  return data;
+};
+
 export default api;

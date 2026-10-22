@@ -11,6 +11,7 @@ import GithubProjects from "../components/GithubProjects";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import useVisitNotifier from "../hooks/useVisitNotifier";
+import ChatWidget from "../components/ChatWidget";
 
 export default function Home() {
   useVisitNotifier();
@@ -31,6 +32,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }

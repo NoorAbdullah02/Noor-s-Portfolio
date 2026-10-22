@@ -11,6 +11,7 @@ import githubRoutes from "./routes/github.js";
 import contactRoutes from "./routes/contact.js";
 import visitRoutes from "./routes/visit.js";
 import adminRoutes from "./routes/admin.js";
+import chatRoutes from "./routes/chat.js";
 
 dotenv.config();
 
@@ -59,11 +60,20 @@ const adminLimiter = rateLimit({
   message: { message: "Too many attempts. Please try again later." },
 });
 
+const chatLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many chat requests. Please wait a moment." },
+});
+
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/github", githubRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes);
 app.use("/api/visit", visitLimiter, visitRoutes);
 app.use("/api/admin", adminLimiter, adminRoutes);
+app.use("/api/chat", chatLimiter, chatRoutes);
 
 if (hasClientBuild) {
   app.use(express.static(clientDist));

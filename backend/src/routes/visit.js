@@ -6,10 +6,6 @@ const router = Router();
 
 const BOT_PATTERN = /bot|crawler|spider|slurp|bingpreview|facebookexternalhit|discordbot|uptime|curl|wget|python-requests|monitor/i;
 
-// Per-IP cooldown so a refresh-happy visitor (or a bot) doesn't flood the inbox.
-const lastNotified = new Map();
-const NOTIFY_COOLDOWN_MS = Number(process.env.VISIT_NOTIFY_COOLDOWN_MINUTES || 60) * 60 * 1000;
-
 router.post("/", async (req, res) => {
   const ip = (req.headers["x-forwarded-for"]?.split(",")[0] || req.ip || "unknown").trim();
   const userAgent = String(req.get("user-agent") || "unknown").slice(0, 300);
@@ -20,11 +16,8 @@ router.post("/", async (req, res) => {
   const record = addVisit({ ip, userAgent, referrer, path, isBot });
 
   const notificationsEnabled = process.env.ENABLE_VISIT_NOTIFICATIONS !== "false";
-  const now = Date.now();
-  const last = lastNotified.get(ip) || 0;
 
-  if (notificationsEnabled && !isBot && now - last > NOTIFY_COOLDOWN_MS) {
-    lastNotified.set(ip, now);
+  if (notificationsEnabled && !isBot) {
     try {
       const result = await sendMail({
         subject: "New visitor on your portfolio",

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Section, { SectionHeading } from "./Section";
+import TiltCard from "./TiltCard";
 import { skills, services } from "../data/portfolioData";
 import { FiCode, FiSmartphone, FiShield, FiCpu } from "react-icons/fi";
 
@@ -57,13 +58,14 @@ export default function Skills() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="glass group rounded-2xl p-6 transition hover:-translate-y-1 hover:border-primary/60"
               >
-                <div className="mb-4 inline-flex rounded-xl bg-gradient-to-br from-primary/20 to-primary-2/20 p-3 text-primary">
-                  <Icon size={22} />
-                </div>
-                <h3 className="mb-2 font-semibold text-text">{service.title}</h3>
-                <p className="text-sm text-muted">{service.description}</p>
+                <TiltCard className="glass group rounded-2xl p-6 transition-shadow hover:shadow-xl hover:shadow-primary/10">
+                  <div className="mb-4 inline-flex rounded-xl bg-gradient-to-br from-primary/20 to-primary-2/20 p-3 text-primary">
+                    <Icon size={22} />
+                  </div>
+                  <h3 className="mb-2 font-semibold text-text">{service.title}</h3>
+                  <p className="text-sm text-muted">{service.description}</p>
+                </TiltCard>
               </motion.div>
             );
           })}

@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { FiArrowDown, FiGithub, FiLinkedin } from "react-icons/fi";
 import { profile } from "../data/portfolioData";
@@ -7,11 +7,31 @@ import { profile } from "../data/portfolioData";
 const HeroScene = lazy(() => import("./three/HeroScene"));
 
 export default function Hero() {
+  const mouseX = useMotionValue(50);
+  const mouseY = useMotionValue(50);
+  const spotlight = useTransform(
+    [mouseX, mouseY],
+    ([mx, my]) =>
+      `radial-gradient(600px circle at ${mx}% ${my}%, color-mix(in srgb, var(--color-primary) 10%, transparent), transparent 70%)`
+  );
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(((e.clientX - rect.left) / rect.width) * 100);
+    mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
+  };
+
   return (
     <section
       id="home"
+      onMouseMove={handleMouseMove}
       className="relative flex min-h-screen items-center overflow-hidden bg-bg bg-grid pt-32 pb-20"
     >
+      <motion.div
+        className="pointer-events-none absolute inset-0 hidden md:block"
+        style={{ background: spotlight }}
+      />
+
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-20 -left-20 h-96 w-96 animate-blob rounded-full bg-primary/15 blur-3xl" />
         <div className="absolute top-40 -right-20 h-96 w-96 animate-blob rounded-full bg-primary-2/15 blur-3xl [animation-delay:4s]" />
@@ -51,7 +71,7 @@ export default function Hero() {
                 e.preventDefault();
                 document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="rounded-full bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-on-accent shadow-lg shadow-primary/20 transition hover:scale-[1.03]"
+              className="btn-shine rounded-full bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-on-accent shadow-lg shadow-primary/20 transition hover:scale-[1.03]"
             >
               Let's Talk
             </a>

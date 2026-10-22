@@ -1,5 +1,8 @@
 import Navbar from "../components/Navbar";
+import Preloader from "../components/Preloader";
+import ScrollProgress from "../components/ScrollProgress";
 import Hero from "../components/Hero";
+import TechMarquee from "../components/TechMarquee";
 import About from "../components/About";
 import Skills from "../components/Skills";
 import Timeline from "../components/Timeline";
@@ -14,9 +17,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-bg text-text">
+      <Preloader />
+      <ScrollProgress />
       <Navbar />
       <main>
         <Hero />
+        <TechMarquee />
         <About />
         <Skills />
         <Timeline />

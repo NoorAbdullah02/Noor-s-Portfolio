@@ -116,7 +116,7 @@ export default function Contact() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-on-accent transition hover:opacity-90 disabled:opacity-60 sm:w-auto"
+            className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-on-accent transition hover:opacity-90 disabled:opacity-60 sm:w-auto"
           >
             <FiSend />
             {status === "sending" ? "Sending..." : "Send Message"}

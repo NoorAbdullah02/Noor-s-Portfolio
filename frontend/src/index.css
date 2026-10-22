@@ -1,15 +1,16 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 @theme {
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-bg: #ffffff;
-  --color-surface: #f6f7fb;
-  --color-surface-2: #ffffffb3;
-  --color-border: #e5e7ef;
-  --color-text: #12131a;
-  --color-muted: #6b7084;
+  --color-bg: #fafafa;
+  --color-surface: #f0f2f8;
+  --color-surface-2: #ffffffcc;
+  --color-border: #e2e4ef;
+  --color-text: #0d0e18;
+  --color-muted: #64687f;
   --color-primary: #4f46e5;
   --color-primary-2: #9333ea;
   --color-accent: #0ea5e9;
@@ -18,19 +19,41 @@
   --animate-blob: blob 14s infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-marquee: marquee 28s linear infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-spin-slow: spin-slow 12s linear infinite;
+  --animate-glow-pulse: glow-pulse 2.5s ease-in-out infinite;
 
   @keyframes blob {
-    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(30px, -40px) scale(1.1); }
     66% { transform: translate(-20px, 20px) scale(0.95); }
   }
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
+    0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-14px); }
   }
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% center; }
+    to { background-position: 200% center; }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-primary) 40%, transparent); }
+    50% { box-shadow: 0 0 40px -4px color-mix(in srgb, var(--color-primary) 60%, transparent); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ping-dot {
+    75%, 100% { transform: scale(2); opacity: 0; }
   }
 }
 
@@ -49,17 +72,15 @@ body {
   color: #ffffff;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(var(--color-primary), var(--color-primary-2));
   border-radius: 999px;
+  border: 2px solid var(--color-bg);
 }
 
+/* ── Gradient text ── */
 .text-gradient {
   background-image: linear-gradient(90deg, var(--color-primary), var(--color-primary-2), var(--color-accent));
   -webkit-background-clip: text;
@@ -67,32 +88,68 @@ body {
   color: transparent;
 }
 
+/* Animated shimmer gradient text */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-primary-2) 30%,
+    var(--color-accent) 60%,
+    var(--color-primary) 100%
+  );
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Grid patterns ── */
 .bg-grid {
   background-image:
-    linear-gradient(to right, #12131a0a 1px, transparent 1px),
-    linear-gradient(to bottom, #12131a0a 1px, transparent 1px);
-  background-size: 44px 44px;
+    linear-gradient(to right, #12131a08 1px, transparent 1px),
+    linear-gradient(to bottom, #12131a08 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
+.bg-dots {
+  background-image: radial-gradient(circle, #4f46e514 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+
+/* ── Premium glass ── */
 .glass {
   background: var(--color-surface-2);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 1px 2px #12131a08, 0 12px 32px -16px #12131a1f;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 4px 24px -8px rgba(79, 70, 229, 0.10),
+    0 1px 3px rgba(18, 19, 26, 0.06);
 }
 
-/* Subtle film-grain texture for a more premium, tactile feel. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+/* ── Gradient border (works with border-radius) ── */
+.card-gradient-border {
+  background:
+    linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+    linear-gradient(135deg, var(--color-primary), var(--color-primary-2)) border-box;
+  border: 1.5px solid transparent;
 }
 
+/* ── Glow utilities ── */
+.glow-sm {
+  box-shadow: 0 0 20px -6px color-mix(in srgb, var(--color-primary) 40%, transparent);
+}
+.glow-md {
+  box-shadow: 0 0 40px -8px color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+.glow-lg {
+  box-shadow: 0 0 60px -10px color-mix(in srgb, var(--color-primary) 60%, transparent);
+}
+
+/* ── Shine sweep on buttons ── */
 .btn-shine {
   position: relative;
   overflow: hidden;
@@ -101,10 +158,32 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 20%, #ffffff66 40%, transparent 60%);
+  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.45) 40%, transparent 60%);
   transform: translateX(-120%);
-  transition: transform 0.7s ease;
+  transition: transform 0.65s ease;
 }
 .btn-shine:hover::after {
   transform: translateX(120%);
+}
+
+/* ── Film grain overlay ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ── Ping dot animation ── */
+.ping-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: ping-dot 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
 }

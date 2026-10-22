@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
 import useScrollSpy from "../hooks/useScrollSpy";
@@ -14,7 +14,14 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const activeId = useScrollSpy(links.map((l) => l.id));
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
 
   const handleClick = (id) => {
     setOpen(false);
@@ -24,31 +31,41 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="mx-auto mt-4 max-w-6xl px-6">
-        <nav className="glass flex items-center justify-between rounded-2xl px-5 py-3 shadow-lg shadow-black/20">
+        <motion.nav
+          className="flex items-center justify-between rounded-2xl px-5 py-3 transition-all duration-300"
+          style={{
+            background: scrolled ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.65)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.7)",
+            boxShadow: scrolled
+              ? "0 4px 24px -8px rgba(79,70,229,0.15), 0 1px 0 rgba(255,255,255,0.9) inset"
+              : "0 1px 0 rgba(255,255,255,0.9) inset",
+          }}
+        >
           <button
             onClick={() => handleClick("home")}
-            className="font-mono text-lg font-semibold tracking-tight text-text"
+            className="font-mono text-lg font-bold tracking-tight"
           >
             <span className="text-gradient">&lt;Noor</span>
             <span className="text-text">.dev/&gt;</span>
           </button>
 
-          <ul className="hidden items-center gap-1 md:flex">
+          <ul className="hidden items-center gap-0.5 md:flex">
             {links.map((link) => (
               <li key={link.id}>
                 <button
                   onClick={() => handleClick(link.id)}
                   className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    activeId === link.id
-                      ? "text-on-accent"
-                      : "text-muted hover:text-text"
+                    activeId === link.id ? "text-on-accent" : "text-muted hover:text-text"
                   }`}
                 >
                   {activeId === link.id && (
                     <motion.span
                       layoutId="nav-pill"
                       className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary to-primary-2"
-                      transition={{ type: "spring", duration: 0.5 }}
+                      transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                      style={{ boxShadow: "0 2px 12px -4px color-mix(in srgb, var(--color-primary) 60%, transparent)" }}
                     />
                   )}
                   {link.label}
@@ -59,37 +76,48 @@ export default function Navbar() {
 
           <button
             onClick={() => handleClick("contact")}
-            className="btn-shine hidden rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-on-accent transition hover:opacity-90 md:inline-flex"
+            className="btn-shine hidden rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-on-accent shadow-md shadow-primary/20 transition-all hover:shadow-primary/35 hover:shadow-lg hover:scale-[1.03] md:inline-flex"
           >
             Hire Me
           </button>
 
           <button
-            className="text-text md:hidden"
+            className="rounded-lg p-1.5 text-text md:hidden hover:bg-surface transition-colors"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
-            {open ? <FiX size={24} /> : <FiMenu size={24} />}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={open ? "x" : "menu"}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                {open ? <FiX size={22} /> : <FiMenu size={22} />}
+              </motion.span>
+            </AnimatePresence>
           </button>
-        </nav>
+        </motion.nav>
 
         <AnimatePresence>
           {open && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="glass mt-2 rounded-2xl p-4 md:hidden"
+              initial={{ opacity: 0, y: -8, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.97 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-2 rounded-2xl border border-border bg-bg/90 p-3 backdrop-blur-xl shadow-xl shadow-black/10 md:hidden"
             >
               <ul className="flex flex-col gap-1">
                 {links.map((link) => (
                   <li key={link.id}>
                     <button
                       onClick={() => handleClick(link.id)}
-                      className={`w-full rounded-xl px-4 py-3 text-left text-sm font-medium ${
+                      className={`w-full rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-all ${
                         activeId === link.id
-                          ? "bg-gradient-to-r from-primary to-primary-2 text-on-accent"
-                          : "text-muted"
+                          ? "bg-gradient-to-r from-primary to-primary-2 text-on-accent shadow-md shadow-primary/20"
+                          : "text-muted hover:text-text hover:bg-surface"
                       }`}
                     >
                       {link.label}

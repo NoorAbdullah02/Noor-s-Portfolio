@@ -1,5 +1,5 @@
-import { lazy } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { lazy, useRef } from "react";
+import { motion, useInView, useMotionValue, useTransform } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { FiArrowDown, FiGithub, FiLinkedin, FiDownload } from "react-icons/fi";
 import { profile } from "../data/portfolioData";
@@ -9,6 +9,8 @@ import Magnetic from "./Magnetic";
 const HeroScene = lazy(() => import("./three/HeroScene"));
 
 export default function Hero() {
+  const sectionRef = useRef(null);
+  const heroVisible = useInView(sectionRef, { margin: "0px 0px -15% 0px" });
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
   const spotlight = useTransform(
@@ -25,6 +27,7 @@ export default function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       id="home"
       onMouseMove={handleMouseMove}
       className="relative flex min-h-screen items-center overflow-hidden bg-bg bg-dots pt-32 pb-20"
@@ -47,7 +50,7 @@ export default function Hero() {
           transition={{ duration: 1.2, delay: 0.3 }}
           className="pointer-events-none absolute inset-y-0 right-0 w-[55%]"
         >
-          <HeroScene />
+          <HeroScene active={heroVisible} />
         </motion.div>
       </Safe3D>
 
@@ -151,7 +154,7 @@ export default function Hero() {
             }}
           />
           <div className="absolute inset-0 animate-float rounded-[2.5rem] bg-gradient-to-br from-primary to-primary-2 opacity-20 blur-3xl" />
-          <div className="glass relative h-full w-full overflow-hidden rounded-[2.5rem] border-2 border-white/60 p-2 glow-sm">
+          <div className="glass-solid relative h-full w-full overflow-hidden rounded-[2.5rem] border-2 border-white/60 p-2 glow-sm">
             <img
               src={profile.avatar}
               alt={profile.name}
@@ -162,7 +165,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="glass absolute -bottom-4 -left-3 rounded-xl px-3 py-2 font-mono text-[11px] text-primary shadow-lg shadow-primary/10 border-l-2 sm:-left-8 sm:px-4 sm:py-2.5 sm:text-xs"
+            className="glass-solid absolute -bottom-4 -left-3 rounded-xl px-3 py-2 font-mono text-[11px] text-primary shadow-lg shadow-primary/10 border-l-2 sm:-left-8 sm:px-4 sm:py-2.5 sm:text-xs"
             style={{ borderColor: "var(--color-primary)" }}
           >
             console.log("Hello World");
@@ -171,7 +174,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="glass absolute -top-4 -right-3 rounded-xl px-3 py-2 text-xs shadow-lg shadow-primary/10 sm:-right-6 sm:px-4 sm:py-2.5"
+            className="glass-solid absolute -top-4 -right-3 rounded-xl px-3 py-2 text-xs shadow-lg shadow-primary/10 sm:-right-6 sm:px-4 sm:py-2.5"
           >
             <span className="font-bold text-gradient">ICPC</span>
             <span className="ml-1 text-muted">Contestant</span>
@@ -180,7 +183,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.2, duration: 0.5 }}
-            className="glass absolute -right-3 bottom-10 hidden rounded-xl px-3 py-2 text-xs shadow-lg shadow-primary/10 sm:-right-10 sm:block sm:px-4 sm:py-2.5"
+            className="glass-solid absolute -right-3 bottom-10 hidden rounded-xl px-3 py-2 text-xs shadow-lg shadow-primary/10 sm:-right-10 sm:block sm:px-4 sm:py-2.5"
           >
             <span className="font-bold text-gradient">4×</span>
             <span className="ml-1 text-muted">Papers Accepted</span>

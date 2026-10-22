@@ -1,32 +1,68 @@
-import { lazy, useRef, useState } from "react";
+import { lazy, useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle, FiAlertCircle, FiClock } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import Safe3D from "./three/Safe3D";
 import { profile } from "../data/portfolioData";
 import { sendContactMessage } from "../lib/api";
+import { trackSpotlight } from "../lib/spotlight";
 
 const ContactGlobe = lazy(() => import("./three/ContactGlobe"));
 
+const natoreTime = () =>
+  new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Dhaka", hour: "numeric", minute: "2-digit" });
+
+function LocalClock() {
+  const [time, setTime] = useState(natoreTime);
+  useEffect(() => {
+    const id = setInterval(() => setTime(natoreTime()), 20000);
+    return () => clearInterval(id);
+  }, []);
+  return <span className="tabular-nums">{time}</span>;
+}
+
+function StaticGlobe() {
+  return (
+    <div className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-[55%] sm:h-64 sm:w-64">
+      <div className="absolute -inset-6 rounded-full bg-primary-2/20 blur-2xl" />
+      <div className="relative h-full w-full overflow-hidden rounded-full border border-white/70 shadow-[inset_-20px_-30px_60px_rgba(79,70,229,0.25)]"
+        style={{ background: "radial-gradient(circle at 35% 30%, #ffffff, #e0e7ff 45%, #c4b5fd 100%)" }}>
+        <div className="absolute inset-0 animate-[marquee_40s_linear_infinite] opacity-70"
+          style={{ backgroundImage: "radial-gradient(circle, #6366f1 1.2px, transparent 1.4px)", backgroundSize: "10px 10px", width: "200%" }} />
+      </div>
+    </div>
+  );
+}
+
 function GlobeCard() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "200px" });
+  const nearView = useInView(ref, { once: true, margin: "300px" });
+  const inView = useInView(ref, { margin: "100px" });
   return (
-    <div ref={ref} className="relative mb-2 hidden h-64 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.04] to-primary-2/[0.06] md:block">
-      <div className="absolute inset-0 bg-dots opacity-60" />
-      {inView && (
-        <Safe3D>
-          <div className="absolute inset-0">
-            <ContactGlobe />
-          </div>
+    <div ref={ref} className="relative mb-2 h-80 overflow-hidden rounded-3xl border border-border bg-[radial-gradient(ellipse_at_center,_#eef0ff_0%,_#fafafa_70%)]">
+      <div className="absolute inset-0 bg-dots opacity-50" />
+      {nearView && (
+        <Safe3D fallback={<StaticGlobe />}>
+          <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 -top-4">
+            <ContactGlobe active={inView} />
+          </motion.div>
         </Safe3D>
       )}
-      <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/80 px-3 py-1.5 text-xs font-medium text-text shadow-sm backdrop-blur">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-        </span>
-        Based in {profile.location} · Working worldwide
+      {!nearView && <StaticGlobe />}
+
+      <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/85 px-3 py-1 text-[11px] font-semibold text-text shadow-sm">
+        <FiClock size={11} className="text-primary" /> <LocalClock /> in Natore
+      </div>
+      <div className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/85 px-4 py-2.5 shadow-sm">
+        <div className="flex min-w-0 items-center gap-2 text-xs font-medium text-text">
+          <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+          </span>
+          <span className="truncate"><span className="hidden sm:inline">Based in </span>{profile.location}</span>
+        </div>
+        <span className="flex-shrink-0 rounded-full bg-gradient-to-r from-primary to-primary-2 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">Remote · Worldwide</span>
       </div>
     </div>
   );
@@ -100,7 +136,8 @@ export default function Contact() {
             return (
               <div
                 key={item.label}
-                className="group flex items-center gap-4 rounded-2xl border border-border bg-bg p-5 transition-all hover:border-primary/25 hover:shadow-lg hover:shadow-primary/8"
+                onPointerMove={trackSpotlight}
+                className="spotlight group flex items-center gap-4 rounded-2xl border border-border bg-bg p-5 transition-[box-shadow,border-color] duration-300 hover:border-primary/25 hover:shadow-lg hover:shadow-primary/8"
               >
                 <span className={`rounded-2xl bg-gradient-to-br ${style.bg} p-3.5 ${style.text} transition-transform group-hover:scale-110`}>
                   {item.icon}

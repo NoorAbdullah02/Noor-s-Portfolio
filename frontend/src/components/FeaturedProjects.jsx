@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { FiGithub, FiExternalLink, FiArrowUpRight } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { featuredProjects } from "../data/portfolioData";
+import { trackSpotlight } from "../lib/spotlight";
 
 export default function FeaturedProjects() {
   return (
@@ -20,36 +21,33 @@ export default function FeaturedProjects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-            className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg transition-all duration-300 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1"
+            onPointerMove={trackSpotlight}
+            className="spotlight group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg transition-[box-shadow,transform,border-color] duration-300 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1"
           >
-            {/* Top gradient line that appears on hover */}
             <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-primary to-primary-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-            {/* Large background number */}
             <div className="absolute top-3 right-4 font-mono text-7xl font-black select-none leading-none text-text/[0.04] group-hover:text-text/[0.07] transition-all duration-300 pointer-events-none">
               {String(i + 1).padStart(2, "0")}
             </div>
 
-            {/* Image */}
             <div className="relative h-48 overflow-hidden">
               <img
                 src={project.image}
                 alt={project.title}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
-              {/* Hover overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary-2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
-            {/* Content */}
             <div className="flex flex-1 flex-col p-6">
               <h3 className="font-bold text-text text-base group-hover:text-primary transition-colors duration-200">
                 {project.title}
               </h3>
               <p className="mt-2 flex-1 text-sm text-muted leading-relaxed">{project.description}</p>
 
-              {/* Tags */}
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <span
@@ -61,7 +59,6 @@ export default function FeaturedProjects() {
                 ))}
               </div>
 
-              {/* Links */}
               <div className="mt-5 flex items-center gap-4 pt-4 border-t border-border/50">
                 {project.github && (
                   <a

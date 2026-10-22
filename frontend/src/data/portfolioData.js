@@ -134,6 +134,37 @@ export const achievements = [
   },
 ];
 
+export const research = [
+  {
+    title: "Ensemble Deep Learning with Test-Time Augmentation for Breast Ultrasound Classification on BreastMNIST",
+    venue: "IEEE CSDE 2026",
+    type: "Full Research Paper",
+    status: "Accepted (September 3, 2026)",
+    authors: "Sheikh Noor Abdullah, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain, Md. Rashed Nizam",
+  },
+  {
+    title: "An Explainable Ensemble Machine-Learning Framework for Predicting ICU Mortality in Critically Ill Patients",
+    venue: "IEEE CSDE 2026",
+    type: "Full Research Paper",
+    status: "Accepted (September 1, 2026)",
+    authors: "Arnika Tabassum, Sheikh Noor Abdullah, Mst Rabeya Khatun Rikta, Md. Arafat Hossain, A.B.M. Kabir Hossain, Mursheda Nusrat Della",
+  },
+  {
+    title: "Multi-Backbone Ensemble Learning for Robust Breast Cancer Classification on the Mini-DDSM Mammography Dataset",
+    venue: "IEEE CSDE 2026",
+    type: "Full Research Paper",
+    status: "Accepted (August 15, 2026)",
+    authors: "Sheikh Noor Abdullah, Nafis Shahriar, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain",
+  },
+  {
+    title: "Predicting Gallstone Disease from Clinical and Laboratory Data: A Leakage-Aware Machine Learning Evaluation",
+    venue: "2nd International Student Research Conference (ISRC 2026), Dhaka University Research Society",
+    type: "Poster Presentation — Track 1: Computer Science, AI & Data Science",
+    status: "Accepted",
+    authors: "Sheikh Noor Abdullah et al.",
+  },
+];
+
 export const featuredProjects = [
   {
     title: "Elegant Calculator (Python + Tkinter)",

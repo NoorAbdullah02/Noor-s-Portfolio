@@ -1,3 +1,5 @@
+import { formatGeo, flagEmoji } from "./geo.js";
+
 const BRAND = {
   primary: "#4f46e5",
   secondary: "#9333ea",
@@ -144,29 +146,151 @@ function describeAgent(ua = "") {
   return `${browser} · ${os} · ${device}`;
 }
 
-export function visitNotificationEmail(record) {
+export function visitNotificationEmail(record, { known = null, visitCount = 0 } = {}) {
   const site = siteUrl();
-  const subject = "New visitor on your portfolio";
+  const returning = visitCount > 1;
+  const subject = known
+    ? `${known.name} is back on your portfolio`
+    : returning ? "A returning visitor is on your portfolio" : "New visitor on your portfolio";
+  const intro = known
+    ? `<strong>${esc(known.name)}</strong> (who messaged you before) just opened your portfolio again.`
+    : returning ? `Someone who has visited before is back — visit #${visitCount}.` : "Someone just opened your portfolio.";
   const body = `
-    <p style="margin:0 0 20px;font-size:15px;color:${BRAND.muted};">Someone just opened your portfolio.</p>
+    <p style="margin:0 0 20px;font-size:15px;color:${BRAND.muted};">${intro}</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+      ${known ? infoRow("Visitor", `${esc(known.name)} · <a href="mailto:${esc(known.email)}" style="color:${BRAND.primary};text-decoration:none;">${esc(known.email)}</a>`) : ""}
+      ${visitCount > 0 ? infoRow("Visit", `#${visitCount}${returning ? " (returning)" : " (first time)"}`) : ""}
+      ${record.geo ? infoRow("Location", `${flagEmoji(record.geo.countryCode)} ${esc(formatGeo(record.geo))}${record.geo.isp ? `<br><span style="color:${BRAND.muted};font-size:12px;">${esc(record.geo.isp)}</span>` : ""}`) : ""}
       ${infoRow("Page", esc(record.path))}
-      ${infoRow("Device", esc(describeAgent(record.userAgent)))}
+      ${infoRow("Device", esc(describeAgent(record.userAgent)) + (record.device?.screen ? ` · ${esc(record.device.screen)}` : ""))}
+      ${record.device?.language || record.device?.timezone ? infoRow("Locale", esc([record.device.language, record.device.timezone].filter(Boolean).join(" · "))) : ""}
       ${infoRow("Referrer", esc(record.referrer || "direct"))}
       ${infoRow("IP", `<span style="font-family:${BRAND.mono};font-size:13px;">${esc(record.ip)}</span>`)}
       ${infoRow("Time", esc(formatDate(record.timestamp)))}
     </table>
     ${site ? button(`${site}/admin`, "Open Visitor Log") : ""}
   `;
-  const text = `Someone just opened your portfolio.\n\nPage: ${record.path}\nDevice: ${describeAgent(record.userAgent)}\nReferrer: ${record.referrer}\nIP: ${record.ip}\nTime: ${formatDate(record.timestamp)}`;
+  const text = `${known ? `${known.name} (${known.email}) is back on your portfolio.` : returning ? `A returning visitor is back (visit #${visitCount}).` : "Someone just opened your portfolio."}\n\n${record.geo ? `Location: ${formatGeo(record.geo)}${record.geo.isp ? ` (${record.geo.isp})` : ""}\n` : ""}Page: ${record.path}\nDevice: ${describeAgent(record.userAgent)}\nReferrer: ${record.referrer}\nIP: ${record.ip}\nTime: ${formatDate(record.timestamp)}`;
   return {
     subject,
     text,
     html: layout({
-      preheader: `${describeAgent(record.userAgent)} · ${record.referrer || "direct"}`,
+      preheader: `${record.geo ? `${formatGeo(record.geo)} · ` : ""}${describeAgent(record.userAgent)} · ${record.referrer || "direct"}`,
       eyebrow: "Visitor alert",
-      title: "You have a new visitor",
+      title: known ? `${known.name} is back` : returning ? "A returning visitor" : "You have a new visitor",
       body,
+    }),
+  };
+}
+
+const SECTION_LABELS = {
+  home: "Home", about: "About", skills: "Skills", qualification: "Education & Achievements",
+  projects: "Projects", github: "GitHub", contact: "Contact",
+};
+
+export function formatDuration(seconds = 0) {
+  const s = Math.round(seconds);
+  if (s < 60) return `${s}s`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ${s % 60}s`;
+  return `${Math.floor(m / 60)}h ${m % 60}m`;
+}
+
+export function visitSummaryEmail(visit, { known = null, visitCount = 0 } = {}) {
+  const site = siteUrl();
+  const where = formatGeo(visit.geo);
+  const who = known ? known.name : "A visitor";
+  const subject = `${who} spent ${formatDuration(visit.duration)} on your portfolio${where ? ` · ${where}` : ""}`;
+  const sections = (visit.sections || []).map((s) => SECTION_LABELS[s] || s);
+  const chips = sections.length
+    ? sections.map((s) => `<span style="display:inline-block;margin:0 6px 6px 0;padding:4px 10px;border-radius:999px;background:#eef0ff;color:${BRAND.primary};font-size:12px;font-weight:600;">${esc(s)}</span>`).join("")
+    : `<span style="color:${BRAND.muted};">Only the top of the page</span>`;
+
+  const body = `
+    <div style="text-align:center;margin:0 0 24px;">
+      <div style="font-size:40px;font-weight:800;line-height:1;color:${BRAND.primary};">${esc(formatDuration(visit.duration))}</div>
+      <div style="margin-top:6px;font-size:13px;color:${BRAND.muted};">active time on your portfolio</div>
+    </div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+      ${known ? infoRow("Visitor", `${esc(known.name)} · <a href="mailto:${esc(known.email)}" style="color:${BRAND.primary};text-decoration:none;">${esc(known.email)}</a>`) : ""}
+      ${infoRow("Sections read", chips)}
+      ${visit.geo ? infoRow("Location", `${flagEmoji(visit.geo.countryCode)} ${esc(where)}${visit.geo.isp ? `<br><span style="color:${BRAND.muted};font-size:12px;">${esc(visit.geo.isp)}</span>` : ""}`) : ""}
+      ${infoRow("Device", esc(describeAgent(visit.userAgent)) + (visit.device?.screen ? ` · ${esc(visit.device.screen)}` : ""))}
+      ${infoRow("Source", esc(visit.referrer || "direct"))}
+      ${visitCount > 0 ? infoRow("Visit", `#${visitCount}${visitCount > 1 ? " (returning)" : " (first time)"}`) : ""}
+      ${infoRow("Arrived", esc(formatDate(visit.timestamp)))}
+    </table>
+    ${site ? button(`${site}/admin`, "Open Visitor Log") : ""}
+  `;
+
+  const text = `${who} spent ${formatDuration(visit.duration)} on your portfolio.\n\nSections read: ${sections.join(", ") || "top of page only"}\n${where ? `Location: ${where}${visit.geo?.isp ? ` (${visit.geo.isp})` : ""}\n` : ""}Device: ${describeAgent(visit.userAgent)}\nSource: ${visit.referrer || "direct"}\nArrived: ${formatDate(visit.timestamp)}`;
+
+  return {
+    subject,
+    text,
+    html: layout({
+      preheader: `Read: ${sections.join(", ") || "top of page"}`,
+      eyebrow: "Visit summary",
+      title: known ? `${known.name}'s visit` : "Visit summary",
+      body,
+    }),
+  };
+}
+
+function miniMarkdown(text) {
+  const lines = esc(text).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").split(/\r?\n/);
+  let html = "";
+  let inList = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+    const bullet = line.match(/^[-*•]\s+(.*)/);
+    if (bullet) {
+      if (!inList) { html += `<ul style="margin:0 0 12px;padding-left:20px;">`; inList = true; }
+      html += `<li style="margin:0 0 8px;line-height:1.6;">${bullet[1]}</li>`;
+      continue;
+    }
+    if (inList) { html += "</ul>"; inList = false; }
+    if (line) html += `<p style="margin:0 0 12px;line-height:1.6;">${line.replace(/^#+\s*/, "")}</p>`;
+  }
+  return inList ? `${html}</ul>` : html;
+}
+
+function statTile(value, label, color) {
+  return `<td width="33%" style="padding:6px;">
+    <div style="border:1px solid ${BRAND.border};border-radius:14px;padding:16px 8px;text-align:center;">
+      <div style="font-size:26px;font-weight:800;color:${color};line-height:1;">${value}</div>
+      <div style="margin-top:6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:${BRAND.muted};">${label}</div>
+    </div>
+  </td>`;
+}
+
+export function dailyBriefingEmail({ date, summary, counts }) {
+  const site = siteUrl();
+  const pretty = new Date(`${date}T12:00:00`).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+  const subject = `Your portfolio today: ${counts.visits} visit${counts.visits === 1 ? "" : "s"}, ${counts.messages} message${counts.messages === 1 ? "" : "s"}`;
+  const body = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 -6px 20px;">
+      <tr>
+        ${statTile(counts.visits, "Visits", BRAND.primary)}
+        ${statTile(counts.messages, "Messages", BRAND.secondary)}
+        ${statTile(counts.chats, "AI chats", "#0ea5e9")}
+      </tr>
+    </table>
+    <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:${BRAND.muted};margin-bottom:10px;">✨ AI briefing</div>
+    <div style="font-size:15px;color:${BRAND.text};">
+      ${summary ? miniMarkdown(summary) : `<p style="margin:0;color:${BRAND.muted};">The AI summary couldn't be generated this time — the numbers above are from your database.</p>`}
+    </div>
+    ${site ? `<div style="margin-top:24px;">${button(`${site}/admin`, "Open Admin Panel")}</div>` : ""}
+  `;
+  return {
+    subject,
+    text: `Portfolio briefing — ${pretty}\n\nVisits: ${counts.visits} · Messages: ${counts.messages} · AI chats: ${counts.chats}\n\n${summary || "AI summary unavailable."}`,
+    html: layout({
+      preheader: `${counts.visits} visits · ${counts.messages} messages · ${counts.chats} AI chats in the last 24 hours`,
+      eyebrow: "Daily briefing",
+      title: pretty,
+      body,
+      footerNote: "Sent every evening with the last 24 hours of real activity.",
     }),
   };
 }

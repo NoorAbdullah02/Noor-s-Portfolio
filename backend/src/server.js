@@ -1,10 +1,10 @@
+import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import { existsSync } from "fs";
 import express from "express";
 import cors from "cors";
 import compression from "compression";
-import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 
 import githubRoutes from "./routes/github.js";
@@ -12,8 +12,8 @@ import contactRoutes from "./routes/contact.js";
 import visitRoutes from "./routes/visit.js";
 import adminRoutes from "./routes/admin.js";
 import chatRoutes from "./routes/chat.js";
-
-dotenv.config();
+import { initDatabase, hasDatabase } from "./lib/db.js";
+import { startBriefingScheduler } from "./lib/insights.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -47,7 +47,7 @@ const contactLimiter = rateLimit({
 
 const visitLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30,
+  max: 120,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -84,6 +84,14 @@ app.use("/api/admin/login", adminLoginLimiter);
 app.use("/api/admin", adminLimiter, adminRoutes);
 app.use("/api/chat", chatLimiter, chatRoutes);
 
+app.use("/api", (req, res) => res.status(404).json({ message: "Not found" }));
+
+app.use("/api", (err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  console.error(`API error on ${req.method} ${req.originalUrl}:`, err.message);
+  res.status(err.status === 400 ? 400 : 500).json({ message: "Something went wrong on the server. Please try again." });
+});
+
 if (hasClientBuild) {
   app.use(express.static(clientDist));
   app.get(/^(?!\/api).*/, (req, res) => {
@@ -93,4 +101,10 @@ if (hasClientBuild) {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT} (${hasClientBuild ? "serving built frontend" : "API only — run the Vite dev server separately"})`);
+  if (hasDatabase()) {
+    initDatabase().catch((err) => console.error("Postgres connection failed:", err.message));
+  } else {
+    console.warn("DATABASE_URL not set — using local JSON files for storage.");
+  }
+  startBriefingScheduler();
 });

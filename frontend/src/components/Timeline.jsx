@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { FiBookOpen, FiBriefcase, FiCalendar } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { education, experience, achievements } from "../data/portfolioData";
+import { trackSpotlight } from "../lib/spotlight";
 
 function TimelineItem({ item, index }) {
   return (
@@ -86,12 +87,13 @@ export default function Timeline() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
+                  onPointerMove={trackSpotlight}
+                  className="spotlight group overflow-hidden rounded-2xl border border-border bg-bg transition-[box-shadow,transform,border-color] duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
                 >
                   <div className="relative overflow-hidden h-40">
                     {a.image ? (
                       <>
-                        <img src={a.image} alt={a.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        <img src={a.image} alt={a.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-bg/80 to-transparent" />
                       </>
                     ) : (

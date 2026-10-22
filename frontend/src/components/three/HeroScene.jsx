@@ -144,11 +144,11 @@ function Rig({ children }) {
   return <group ref={group}>{children}</group>;
 }
 
-export default function HeroScene() {
+export default function HeroScene({ active = true }) {
   usePointer();
 
   return (
-    <Canvas dpr={[1, 1.6]} camera={{ position: [0, 0, 6.2], fov: 45 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
+    <Canvas frameloop={active ? "always" : "never"} dpr={[1, 1.5]} camera={{ position: [0, 0, 6.2], fov: 45 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
       <Suspense fallback={null}>
         <ambientLight intensity={0.55} />
         <directionalLight position={[4, 4, 5]} intensity={1.4} color="#ffffff" />

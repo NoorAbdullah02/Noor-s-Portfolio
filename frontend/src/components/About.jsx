@@ -4,6 +4,7 @@ import { FiUser, FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { profile, stats } from "../data/portfolioData";
 import useCountUp from "../hooks/useCountUp";
+import { trackSpotlight } from "../lib/spotlight";
 
 const STAT_COLORS = [
   { from: "#4f46e5", to: "#9333ea" },
@@ -23,7 +24,8 @@ function Stat({ value, label, index }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative overflow-hidden rounded-2xl border border-border bg-bg p-6 text-center transition-all hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5"
+      onPointerMove={trackSpotlight}
+      className="spotlight group relative overflow-hidden rounded-2xl border border-border bg-bg p-6 text-center transition-[box-shadow,transform] duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5"
     >
       {/* Gradient top border */}
       <div
@@ -82,6 +84,8 @@ export default function About() {
               <img
                 src={profile.aboutImage}
                 alt="Profile"
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full rounded-[1.4rem] object-cover"
               />
             </div>

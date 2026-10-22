@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { sendMail } from "../lib/mailer.js";
 import { addMessage } from "../lib/messageStore.js";
+import { cleanVisitorId } from "../lib/visitStore.js";
 import { contactNotificationEmail } from "../lib/emailTemplates.js";
 
 const router = Router();
@@ -24,13 +25,20 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Message is too long." });
   }
 
-  const record = addMessage({
-    name: String(name).trim().slice(0, 200),
-    email: String(email).trim().slice(0, 200),
-    phone: phone ? String(phone).trim().slice(0, 50) : "",
-    message: String(message).trim().slice(0, 5000),
-    ip: (req.headers["x-forwarded-for"]?.split(",")[0] || req.ip || "unknown").trim(),
-  });
+  let record;
+  try {
+    record = await addMessage({
+      name: String(name).trim().slice(0, 200),
+      email: String(email).trim().slice(0, 200),
+      phone: phone ? String(phone).trim().slice(0, 50) : "",
+      message: String(message).trim().slice(0, 5000),
+      ip: (req.headers["x-forwarded-for"]?.split(",")[0] || req.ip || "unknown").trim(),
+      visitorId: cleanVisitorId(req.body?.visitorId),
+    });
+  } catch (err) {
+    console.error("Failed to save contact message:", err.message);
+    return res.status(500).json({ message: "Couldn't save your message. Please email me directly." });
+  }
 
   try {
     const result = await sendMail({ ...contactNotificationEmail(record), replyTo: record.email });

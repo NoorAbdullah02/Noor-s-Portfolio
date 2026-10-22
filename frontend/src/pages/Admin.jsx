@@ -4,11 +4,17 @@ import { Link } from "react-router-dom";
 import {
   FiLock, FiLogOut, FiRefreshCw, FiUsers, FiEye, FiClock, FiInbox, FiMail, FiPhone,
   FiSend, FiTrash2, FiArrowLeft, FiSearch, FiCheck, FiCheckCircle, FiAlertCircle,
-  FiExternalLink, FiCornerUpLeft, FiEyeOff, FiMessageSquare,
+  FiExternalLink, FiCornerUpLeft, FiEyeOff, FiMessageSquare, FiX, FiZap,
 } from "react-icons/fi";
 import {
-  adminLogin, fetchVisits, fetchMessages, markMessageRead, replyToMessage, deleteMessage,
+  adminLogin, fetchVisits, fetchMessages, fetchChats, markMessageRead, replyToMessage, deleteMessage, suggestReplies,
 } from "../lib/api";
+import { Avatar } from "./admin/shared";
+import { timeAgo, fullDate } from "./admin/format";
+import VisitorTable from "./admin/VisitorTable";
+import VisitorDrawer from "./admin/VisitorDrawer";
+import ChatLog from "./admin/ChatLog";
+import AdminAi from "./admin/AdminAi";
 
 const TOKEN_KEY = "portfolio-admin-token";
 const POLL_MS = 30000;
@@ -19,63 +25,24 @@ const QUICK_REPLIES = [
   "Thanks for your interest! I'm currently available — let's set up a quick call. ",
 ];
 
-const AVATAR_GRADIENTS = [
-  ["#4f46e5", "#9333ea"], ["#0ea5e9", "#4f46e5"], ["#10b981", "#0ea5e9"],
-  ["#f59e0b", "#ef4444"], ["#ec4899", "#9333ea"], ["#14b8a6", "#22c55e"],
-];
-
-function gradientFor(name = "") {
-  let hash = 0;
-  for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
-  return AVATAR_GRADIENTS[hash % AVATAR_GRADIENTS.length];
-}
-
-function timeAgo(iso) {
-  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-  if (diff < 60) return "just now";
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-}
-
-const fullDate = (iso) =>
-  new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
-
-function Avatar({ name, size = 40 }) {
-  const [c1, c2] = gradientFor(name);
-  return (
-    <div
-      className="flex flex-shrink-0 items-center justify-center rounded-full font-bold text-white"
-      style={{
-        width: size, height: size, fontSize: size * 0.4,
-        background: `linear-gradient(135deg, ${c1}, ${c2})`,
-        boxShadow: `0 6px 16px -6px ${c1}99`,
-      }}
-    >
-      {(name || "?").trim().charAt(0).toUpperCase()}
-    </div>
-  );
-}
-
 function StatCard({ icon, label, value, accent, index }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
-      className="group relative overflow-hidden rounded-2xl border border-border bg-white/80 p-5 backdrop-blur last:col-span-2 lg:last:col-span-1"
+      className="group relative overflow-hidden rounded-2xl border border-border bg-white/80 p-3.5 backdrop-blur last:col-span-2 sm:p-5 lg:last:col-span-1"
     >
       <div className="absolute inset-x-0 top-0 h-0.5" style={{ background: `linear-gradient(90deg, ${accent[0]}, ${accent[1]})` }} />
       <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-10 blur-2xl transition-opacity group-hover:opacity-25"
         style={{ background: accent[0] }} />
-      <div className="relative flex items-center gap-4">
-        <span className="rounded-xl p-3 text-white" style={{ background: `linear-gradient(135deg, ${accent[0]}, ${accent[1]})` }}>
+      <div className="relative flex items-center gap-3 sm:gap-4">
+        <span className="flex-shrink-0 rounded-xl p-2.5 text-white sm:p-3" style={{ background: `linear-gradient(135deg, ${accent[0]}, ${accent[1]})` }}>
           {icon}
         </span>
-        <div>
-          <div className="text-2xl font-bold tabular-nums text-text">{value}</div>
-          <div className="text-xs text-muted">{label}</div>
+        <div className="min-w-0">
+          <div className="text-xl font-bold tabular-nums text-text sm:text-2xl">{value}</div>
+          <div className="text-[11px] leading-tight text-muted sm:text-xs">{label}</div>
         </div>
       </div>
     </motion.div>
@@ -250,12 +217,101 @@ function MessageList({ messages, selectedId, onSelect, query, setQuery, filter, 
   );
 }
 
-function MessageDetail({ message, onBack, onReply, onToggleRead, onDelete }) {
+const TONE_COLORS = {
+  Friendly: ["#10b981", "#0ea5e9"],
+  Professional: ["#4f46e5", "#9333ea"],
+  Short: ["#f59e0b", "#ef4444"],
+  Polished: ["#4f46e5", "#9333ea"],
+  Warmer: ["#ec4899", "#f59e0b"],
+  Concise: ["#0ea5e9", "#14b8a6"],
+};
+
+function AiSuggestions({ state, onUse, onRegenerate, onClose }) {
+  if (state.status === "idle") return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      className="overflow-hidden"
+    >
+      <div className="mb-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.05] to-primary-2/[0.06] p-3">
+        <div className="mb-2.5 flex items-center gap-2">
+          <span className="text-sm">✨</span>
+          <span className="text-xs font-semibold text-text">
+            {state.status === "loading" ? "Writing suggestions…" : state.forDraft ? "Improved versions of your draft" : "AI-suggested replies"}
+          </span>
+          <div className="ml-auto flex items-center gap-1">
+            {state.status === "ready" && (
+              <button onClick={onRegenerate} className="rounded-lg p-1.5 text-muted transition hover:bg-white hover:text-primary" title="Regenerate">
+                <FiRefreshCw size={12} />
+              </button>
+            )}
+            <button onClick={onClose} className="rounded-lg p-1.5 text-muted transition hover:bg-white hover:text-text" title="Close">
+              <FiX size={13} />
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+          {state.status === "loading" && Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="space-y-2 rounded-xl border border-border bg-white p-3">
+              <div className="h-4 w-16 animate-pulse rounded-full bg-primary/15" />
+              <div className="h-2.5 w-full animate-pulse rounded bg-surface" />
+              <div className="h-2.5 w-11/12 animate-pulse rounded bg-surface" />
+              <div className="h-2.5 w-3/4 animate-pulse rounded bg-surface" />
+            </div>
+          ))}
+          {state.status === "ready" && state.items.map((s, i) => {
+            const [c1, c2] = TONE_COLORS[s.tone] || ["#4f46e5", "#9333ea"];
+            return (
+              <motion.button
+                key={`${s.tone}-${i}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06 }}
+                onClick={() => onUse(s.body)}
+                className="group flex flex-col rounded-xl border border-border bg-white p-3 text-left transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+              >
+                <span className="mb-1.5 inline-flex self-start rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+                  style={{ background: `linear-gradient(135deg, ${c1}, ${c2})` }}>
+                  {s.tone}
+                </span>
+                <span className="line-clamp-5 whitespace-pre-line text-xs leading-relaxed text-text/80">{s.body}</span>
+                <span className="mt-2 text-[11px] font-semibold text-primary opacity-70 transition group-hover:opacity-100">Use this reply →</span>
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function MessageDetail({ message, onBack, onReply, onToggleRead, onDelete, onSuggest }) {
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [ai, setAi] = useState({ status: "idle", items: [], forDraft: false });
   const textareaRef = useRef(null);
   const threadEndRef = useRef(null);
+
+  const askAi = async (forDraft = !!draft.trim()) => {
+    setAi({ status: "loading", items: [], forDraft });
+    const items = await onSuggest(message.id, forDraft ? draft.trim() : "");
+    setAi(items ? { status: "ready", items, forDraft } : { status: "idle", items: [], forDraft });
+  };
+
+  const useSuggestion = (body) => {
+    setDraft(body);
+    setAi({ status: "idle", items: [], forDraft: false });
+    requestAnimationFrame(() => {
+      const el = textareaRef.current;
+      if (!el) return;
+      el.focus();
+      el.setSelectionRange(body.length, body.length);
+    });
+  };
 
   useEffect(() => {
     threadEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -337,8 +393,22 @@ function MessageDetail({ message, onBack, onReply, onToggleRead, onDelete }) {
         <div ref={threadEndRef} />
       </div>
 
-      <div className="border-t border-border bg-white/60 p-4 sm:p-5">
-        <div className="mb-3 flex flex-wrap gap-1.5">
+      <div className="max-h-[75%] overflow-y-auto border-t border-border bg-white/60 p-4 sm:p-5">
+        <AnimatePresence>
+          {ai.status !== "idle" && (
+            <AiSuggestions key="ai" state={ai} onUse={useSuggestion} onRegenerate={() => askAi(ai.forDraft)}
+              onClose={() => setAi({ status: "idle", items: [], forDraft: false })} />
+          )}
+        </AnimatePresence>
+        <div className="mb-3 flex flex-wrap items-center gap-1.5">
+          <button
+            onClick={() => askAi()}
+            disabled={ai.status === "loading"}
+            className="btn-shine inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-primary-2 px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-md shadow-primary/25 transition hover:shadow-primary/40 disabled:opacity-60"
+          >
+            {ai.status === "loading" ? <FiRefreshCw size={11} className="animate-spin" /> : <span>✨</span>}
+            {draft.trim() ? "Polish my draft with AI" : "Suggest replies with AI"}
+          </button>
           {QUICK_REPLIES.map((q) => (
             <button key={q} onClick={() => { setDraft((d) => d + q); textareaRef.current?.focus(); }}
               className="max-w-full truncate rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-[11px] font-medium text-primary transition hover:bg-primary/10">
@@ -372,42 +442,6 @@ function MessageDetail({ message, onBack, onReply, onToggleRead, onDelete }) {
   );
 }
 
-function VisitorTable({ visits }) {
-  return (
-    <div className="overflow-hidden rounded-3xl border border-border bg-white/80 backdrop-blur">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-b border-border bg-surface/50 text-[11px] uppercase tracking-wider text-muted">
-            <tr>
-              <th className="px-5 py-3.5 font-semibold">Time</th>
-              <th className="px-5 py-3.5 font-semibold">IP Address</th>
-              <th className="px-5 py-3.5 font-semibold">Page</th>
-              <th className="px-5 py-3.5 font-semibold">Referrer</th>
-              <th className="px-5 py-3.5 font-semibold">Browser / Device</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visits.map((v) => (
-              <tr key={v.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-primary/[0.03]">
-                <td className="whitespace-nowrap px-5 py-3 text-muted" title={fullDate(v.timestamp)}>{timeAgo(v.timestamp)}</td>
-                <td className="px-5 py-3 font-mono text-xs">{v.ip}</td>
-                <td className="px-5 py-3"><span className="rounded-md bg-primary/10 px-2 py-0.5 font-mono text-xs text-primary">{v.path}</span></td>
-                <td className="max-w-[180px] truncate px-5 py-3 text-muted" title={v.referrer}>{v.referrer || "direct"}</td>
-                <td className="max-w-[260px] truncate px-5 py-3 text-muted" title={v.userAgent}>
-                  {v.isBot ? "🤖 " : ""}{v.userAgent}
-                </td>
-              </tr>
-            ))}
-            {visits.length === 0 && (
-              <tr><td colSpan={5} className="px-5 py-12 text-center text-muted">No visits recorded yet.</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
 export default function Admin() {
   const [token, setToken] = useState(() => {
     try { return sessionStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; }
@@ -421,6 +455,10 @@ export default function Admin() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [toast, setToast] = useState(null);
+  const [chats, setChats] = useState([]);
+  const [aiMessages, setAiMessages] = useState([]);
+  const [drawer, setDrawer] = useState(null);
+  const closeDrawer = useCallback(() => setDrawer(null), []);
 
   const showToast = useCallback((text, type = "success") => {
     const id = Date.now();
@@ -441,13 +479,16 @@ export default function Admin() {
     else showToast(err?.response?.data?.message || fallback, "error");
   }, [signOut, showToast]);
 
+  const drawerError = useCallback((err) => handleError(err, "Couldn't load this visitor."), [handleError]);
+
   const load = useCallback(async (silent = false) => {
     if (!token) return;
     if (!silent) setLoading(true);
     try {
-      const [v, m] = await Promise.all([fetchVisits(token), fetchMessages(token)]);
+      const [v, m, c] = await Promise.all([fetchVisits(token), fetchMessages(token), fetchChats(token)]);
       setVisitData(v);
       setInbox(m);
+      setChats(c);
     } catch (err) {
       if (!silent) handleError(err, "Couldn't load dashboard data.");
     } finally {
@@ -514,6 +555,15 @@ export default function Admin() {
     } catch (err) {
       handleError(err, "Couldn't send reply.");
       return false;
+    }
+  };
+
+  const handleSuggest = async (id, draft) => {
+    try {
+      return await suggestReplies(token, id, draft);
+    } catch (err) {
+      handleError(err, "Couldn't get AI suggestions.");
+      return null;
     }
   };
 
@@ -605,13 +655,15 @@ export default function Admin() {
               {stats.map((s, i) => <StatCard key={s.label} {...s} index={i} />)}
             </div>
 
-            <div className="mb-5 inline-flex rounded-2xl border border-border bg-white/80 p-1 backdrop-blur">
+            <div className="mb-5 flex max-w-full overflow-x-auto rounded-2xl border border-border bg-white/80 p-1 backdrop-blur sm:inline-flex" style={{ scrollbarWidth: "none" }}>
               {[
                 { id: "inbox", label: "Inbox", icon: <FiInbox size={15} />, badge: inbox.stats.unread },
                 { id: "visitors", label: "Visitors", icon: <FiUsers size={15} />, badge: visitData.stats.visitsLast24h },
+                { id: "chats", label: "AI Chats", icon: <FiMessageSquare size={15} />, badge: chats.length },
+                { id: "ai", label: "Ask AI", icon: <FiZap size={15} />, badge: 0 },
               ].map((t) => (
                 <button key={t.id} onClick={() => setTab(t.id)}
-                  className={`relative inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "text-white" : "text-muted hover:text-text"}`}>
+                  className={`relative inline-flex flex-shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "text-white" : "text-muted hover:text-text"}`}>
                   {tab === t.id && (
                     <motion.span layoutId="admin-tab" className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-r from-primary to-primary-2 shadow-md shadow-primary/25"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.45 }} />
@@ -635,7 +687,7 @@ export default function Admin() {
                   <div className={`min-h-0 lg:block ${selected ? "block" : "hidden"}`}>
                     {selected ? (
                       <MessageDetail key={selected.id} message={selected} onBack={() => setSelectedId(null)} onReply={handleReply}
-                        onToggleRead={handleToggleRead} onDelete={handleDelete} />
+                        onToggleRead={handleToggleRead} onDelete={handleDelete} onSuggest={handleSuggest} />
                     ) : (
                       <div className="flex h-full flex-col items-center justify-center p-10 text-center">
                         <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -648,15 +700,30 @@ export default function Admin() {
                     )}
                   </div>
                 </motion.div>
-              ) : (
+              ) : tab === "visitors" ? (
                 <motion.div key="visitors" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                  <VisitorTable visits={visitData.visits} />
+                  <VisitorTable visits={visitData.visits} stats={visitData.stats}
+                    onOpen={(v) => setDrawer(v.visitorId ? { visitorId: v.visitorId } : { ip: v.ip })} />
+                </motion.div>
+              ) : tab === "chats" ? (
+                <motion.div key="chats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                  <ChatLog chats={chats} onOpenVisitor={(t) => setDrawer(t.visitorId ? { visitorId: t.visitorId } : { ip: t.ip })} />
+                </motion.div>
+              ) : (
+                <motion.div key="ai" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                  <AdminAi token={token} messages={aiMessages} setMessages={setAiMessages} onError={handleError} showToast={showToast} />
                 </motion.div>
               )}
             </AnimatePresence>
           </>
         )}
       </main>
+
+      <AnimatePresence>
+        {drawer && (
+          <VisitorDrawer key={drawer.visitorId || drawer.ip} token={token} target={drawer} onClose={closeDrawer} onError={drawerError} />
+        )}
+      </AnimatePresence>
 
       <Toast toast={toast} />
     </div>

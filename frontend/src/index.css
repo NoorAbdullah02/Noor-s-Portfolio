@@ -170,6 +170,23 @@ textarea:focus-visible {
     0 1px 3px rgba(18, 19, 26, 0.06);
 }
 
+/* Same look as .glass without backdrop-filter — for cards over animated/3D content */
+.glass-solid {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 1);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 4px 24px -8px rgba(79, 70, 229, 0.12),
+    0 1px 3px rgba(18, 19, 26, 0.06);
+}
+
+.animate-blob,
+.animate-float,
+.animate-spin-slow {
+  will-change: transform;
+}
+
 /* ── Gradient border (works with border-radius) ── */
 .card-gradient-border {
   background:
@@ -206,15 +223,67 @@ textarea:focus-visible {
   transform: translateX(120%);
 }
 
-/* ── Film grain overlay ── */
+@keyframes shine-x {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+
+.shine-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: shine-x 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── Spotlight hover (cursor-following glow on cards) ── */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--color-primary) 10%, transparent), transparent 45%);
+}
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--color-primary-2) 75%, transparent), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+@media (hover: hover) {
+  .spotlight:hover::before,
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ── Film grain overlay (static, no blend mode — cheap to composite) ── */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.028;
-  mix-blend-mode: overlay;
+  opacity: 0.018;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 

@@ -37,23 +37,11 @@ function SkillBar({ name, level, category, index }) {
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: index * 0.06 }}
-          className="h-full rounded-full bg-gradient-to-r from-primary to-primary-2 relative"
+          className="shine-bar relative h-full overflow-hidden rounded-full bg-gradient-to-r from-primary to-primary-2"
           style={{
             boxShadow: "0 0 10px -2px color-mix(in srgb, var(--color-primary) 70%, transparent)",
           }}
-        >
-          {/* Shimmer on bar */}
-          <div className="absolute inset-0 rounded-full overflow-hidden">
-            <div
-              className="absolute inset-0"
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)",
-                backgroundSize: "200%",
-                animation: "shimmer 2.5s linear infinite",
-              }}
-            />
-          </div>
-        </motion.div>
+        />
       </div>
     </motion.div>
   );

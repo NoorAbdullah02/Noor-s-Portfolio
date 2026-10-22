@@ -2,40 +2,31 @@ import { Router } from "express";
 
 const router = Router();
 
-// Simple in-memory cache to stay well under GitHub's unauthenticated rate limit.
+// In-memory cache to stay well under GitHub's unauthenticated rate limit.
 const cache = new Map();
-const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const CACHE_TTL_MS = 10 * 60 * 1000;
 
-router.get("/:username/repos", async (req, res) => {
-  const { username } = req.params;
+export async function getRepos(username) {
   const cacheKey = username.toLowerCase();
   const cached = cache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) return cached.data;
 
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-    return res.json(cached.data);
-  }
+  const headers = { Accept: "application/vnd.github+json", "User-Agent": "portfolio-app" };
+  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 
   try {
-    const headers = {
-      Accept: "application/vnd.github+json",
-      "User-Agent": "portfolio-app",
-    };
-    if (process.env.GITHUB_TOKEN) {
-      headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
-    }
-
     const response = await fetch(
       `https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&sort=updated`,
-      { headers }
+      { headers, signal: AbortSignal.timeout(8000) }
     );
-
     if (!response.ok) {
-      if (cached) return res.json(cached.data);
-      return res.status(response.status).json({ message: "Unable to reach GitHub right now." });
+      if (cached) return cached.data;
+      const err = new Error("GitHub request failed");
+      err.status = response.status;
+      throw err;
     }
 
     const repos = await response.json();
-
     const data = repos
       .filter((r) => !r.fork && !r.private)
       .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at))
@@ -54,10 +45,18 @@ router.get("/:username/repos", async (req, res) => {
       }));
 
     cache.set(cacheKey, { data, timestamp: Date.now() });
-    res.json(data);
+    return data;
   } catch (err) {
-    if (cached) return res.json(cached.data);
-    res.status(502).json({ message: "Unable to reach GitHub right now." });
+    if (cached) return cached.data;
+    throw err;
+  }
+}
+
+router.get("/:username/repos", async (req, res) => {
+  try {
+    res.json(await getRepos(req.params.username));
+  } catch (err) {
+    res.status(err.status || 502).json({ message: "Unable to reach GitHub right now." });
   }
 });
 

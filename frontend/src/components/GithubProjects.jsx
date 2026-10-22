@@ -107,7 +107,7 @@ export default function GithubProjects() {
               href={profile.social.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-bg hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-on-accent hover:opacity-90"
             >
               <FiGithub /> See full GitHub profile
             </a>

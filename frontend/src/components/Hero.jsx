@@ -1,7 +1,10 @@
+import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { FiArrowDown, FiGithub, FiLinkedin } from "react-icons/fi";
 import { profile } from "../data/portfolioData";
+
+const HeroScene = lazy(() => import("./three/HeroScene"));
 
 export default function Hero() {
   return (
@@ -10,9 +13,15 @@ export default function Hero() {
       className="relative flex min-h-screen items-center overflow-hidden bg-bg bg-grid pt-32 pb-20"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -left-20 h-96 w-96 animate-blob rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute top-40 -right-20 h-96 w-96 animate-blob rounded-full bg-primary-2/20 blur-3xl [animation-delay:4s]" />
-        <div className="absolute bottom-0 left-1/3 h-72 w-72 animate-blob rounded-full bg-accent/20 blur-3xl [animation-delay:8s]" />
+        <div className="absolute -top-20 -left-20 h-96 w-96 animate-blob rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute top-40 -right-20 h-96 w-96 animate-blob rounded-full bg-primary-2/15 blur-3xl [animation-delay:4s]" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 animate-blob rounded-full bg-accent/15 blur-3xl [animation-delay:8s]" />
+      </div>
+
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 md:block">
+        <Suspense fallback={null}>
+          <HeroScene />
+        </Suspense>
       </div>
 
       <div className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2">
@@ -42,7 +51,7 @@ export default function Hero() {
                 e.preventDefault();
                 document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="rounded-full bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-bg shadow-lg shadow-primary/20 transition hover:scale-[1.03]"
+              className="rounded-full bg-gradient-to-r from-primary to-primary-2 px-6 py-3 text-sm font-semibold text-on-accent shadow-lg shadow-primary/20 transition hover:scale-[1.03]"
             >
               Let's Talk
             </a>

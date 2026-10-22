@@ -40,7 +40,7 @@ export default function Navbar() {
                   onClick={() => handleClick(link.id)}
                   className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     activeId === link.id
-                      ? "text-bg"
+                      ? "text-on-accent"
                       : "text-muted hover:text-text"
                   }`}
                 >
@@ -59,7 +59,7 @@ export default function Navbar() {
 
           <button
             onClick={() => handleClick("contact")}
-            className="hidden rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-bg transition hover:opacity-90 md:inline-flex"
+            className="hidden rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-on-accent transition hover:opacity-90 md:inline-flex"
           >
             Hire Me
           </button>
@@ -88,7 +88,7 @@ export default function Navbar() {
                       onClick={() => handleClick(link.id)}
                       className={`w-full rounded-xl px-4 py-3 text-left text-sm font-medium ${
                         activeId === link.id
-                          ? "bg-gradient-to-r from-primary to-primary-2 text-bg"
+                          ? "bg-gradient-to-r from-primary to-primary-2 text-on-accent"
                           : "text-muted"
                       }`}
                     >

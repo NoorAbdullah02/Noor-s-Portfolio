@@ -9,12 +9,18 @@ import rateLimit from "express-rate-limit";
 
 import githubRoutes from "./routes/github.js";
 import contactRoutes from "./routes/contact.js";
+import visitRoutes from "./routes/visit.js";
+import adminRoutes from "./routes/admin.js";
 
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Trust exactly one hop (the hosting platform's own load balancer/proxy) so
+// req.ip reflects the real client IP without letting clients spoof X-Forwarded-For.
+app.set("trust proxy", 1);
 
 const clientDist = path.join(__dirname, "../../frontend/dist");
 // Serve the built frontend whenever it's present (production builds, or a
@@ -38,9 +44,26 @@ const contactLimiter = rateLimit({
   message: { message: "Too many messages sent. Please try again later." },
 });
 
+const visitLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many attempts. Please try again later." },
+});
+
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/github", githubRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes);
+app.use("/api/visit", visitLimiter, visitRoutes);
+app.use("/api/admin", adminLimiter, adminRoutes);
 
 if (hasClientBuild) {
   app.use(express.static(clientDist));

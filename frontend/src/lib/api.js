@@ -15,4 +15,20 @@ export const sendContactMessage = async (payload) => {
   return data;
 };
 
+export const pingVisit = async (payload) => {
+  await api.post("/visit", payload);
+};
+
+export const adminLogin = async (password) => {
+  const { data } = await api.post("/admin/login", { password });
+  return data;
+};
+
+export const fetchVisits = async (token) => {
+  const { data } = await api.get("/admin/visits", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data;
+};
+
 export default api;

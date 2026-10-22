@@ -2,10 +2,12 @@
 
 A modern, full‑stack developer portfolio.
 
-- **Frontend:** React + Vite + Tailwind CSS v4 + Framer Motion
+- **Frontend:** React + Vite + Tailwind CSS v4 + Framer Motion + a Three.js hero scene
 - **Backend:** Node.js + Express — serves the API **and** the built frontend, so deploying the backend deploys the whole site
 - **Live GitHub integration:** repositories are pulled live from the GitHub REST API through a small backend proxy (with caching, so the site never gets rate‑limited)
 - **Working contact form:** posts to the backend, which emails you via SMTP (or just logs it locally if you haven't configured SMTP yet)
+- **Visitor email notifications:** get an email whenever someone opens the site (rate‑limited per visitor, bots filtered out)
+- **Admin panel** at `/admin`: a password‑protected page listing every visit (time, IP, page, referrer, browser) with quick stats
 
 The old static HTML/Bootstrap site has been kept for reference in [`legacy-static-site/`](legacy-static-site).
 
@@ -45,6 +47,9 @@ Open **http://localhost:5173** — the Vite dev server proxies `/api/*` requests
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | SMTP credentials used to email you contact-form submissions | no — without it, submissions are just logged to the server console |
 | `CONTACT_TO_EMAIL` | Where contact form emails should be delivered | no (defaults to `SMTP_USER`) |
 | `CLIENT_ORIGIN` | Allowed CORS origin during local development | no (defaults to `http://localhost:5173`) |
+| `ENABLE_VISIT_NOTIFICATIONS` | Email you when someone visits the site | no (defaults to `true`; set to `false` to disable) |
+| `VISIT_NOTIFY_COOLDOWN_MINUTES` | Minimum minutes between two visit emails for the same visitor, so refreshes don't spam your inbox | no (defaults to `60`) |
+| `ADMIN_PASSWORD` | Password for the `/admin` visitor-log page | no — leave empty to disable the admin panel entirely |
 
 To send real emails from the contact form with Gmail, create an [App Password](https://myaccount.google.com/apppasswords) and set:
 
@@ -63,6 +68,19 @@ Almost everything on the page (name, bio, skills, education, experience, feature
 **[`frontend/src/data/portfolioData.js`](frontend/src/data/portfolioData.js)**
 
 Edit that file and the whole site updates — no need to touch the components.
+
+The Three.js hero visual lives in [`frontend/src/components/three/HeroScene.jsx`](frontend/src/components/three/HeroScene.jsx) — it's lazy‑loaded and only rendered on desktop widths, so it never slows down first paint or mobile.
+
+## Visitor notifications & the admin panel
+
+Every time someone opens the site, the frontend pings `POST /api/visit` once per browser tab (see `frontend/src/hooks/useVisitNotifier.js`). The backend:
+
+1. Records the visit (time, IP, page, referrer, browser) to `backend/data/visits.json`.
+2. Emails you about it via the same SMTP settings as the contact form — skipping known bots/crawlers and limiting to one email per visitor IP every `VISIT_NOTIFY_COOLDOWN_MINUTES` (default: 1 hour), so it won't flood your inbox.
+
+To see the full visitor log instead of (or alongside) email notifications, set `ADMIN_PASSWORD` in `backend/.env` and open **`/admin`** on your site — it's a simple password gate (no separate user accounts) showing total visits, unique visitors, and a table of every visit. Leave `ADMIN_PASSWORD` empty to disable the panel entirely.
+
+This only ever collects IP address + user agent + the page/referrer — no cookies, no third‑party analytics, no tracking across sites.
 
 ## Building for production
 
@@ -85,6 +103,8 @@ This is set up so that **deploying the backend deploys the frontend too.** Any N
 6. Deploy — the Express server detects `frontend/dist` and serves it automatically, alongside the `/api` routes.
 
 No separate frontend hosting, no extra CORS configuration, no second deploy step.
+
+> **Note:** `backend/data/visits.json` (the visitor log) lives on the server's local disk. On hosts with an ephemeral filesystem (e.g. Render's free tier), it resets on every redeploy — the email notifications still work regardless, only the `/admin` history is affected. For a persistent log across redeploys, point `backend/src/lib/visitStore.js` at a database or a volume instead.
 
 ## Scripts (root `package.json`)
 

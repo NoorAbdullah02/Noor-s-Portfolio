@@ -1,27 +1,24 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Timeline from "./components/Timeline";
-import FeaturedProjects from "./components/FeaturedProjects";
-import GithubProjects from "./components/GithubProjects";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+
+const Admin = lazy(() => import("./pages/Admin"));
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-bg text-text">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Timeline />
-        <FeaturedProjects />
-        <GithubProjects />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/admin"
+          element={
+            <Suspense fallback={null}>
+              <Admin />
+            </Suspense>
+          }
+        />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

@@ -39,7 +39,7 @@ export default function Footer() {
 
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="absolute right-6 -top-6 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-2 text-bg shadow-lg transition hover:scale-110"
+        className="absolute right-6 -top-6 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-2 text-on-accent shadow-lg transition hover:scale-110"
         aria-label="Back to top"
       >
         <FiArrowUp />

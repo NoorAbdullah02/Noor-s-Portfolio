@@ -1,0 +1,153 @@
+export const profile = {
+  name: "Sheikh Noor Abdullah",
+  roles: [
+    "Competitive Programmer",
+    "ICPC Participant",
+    "Software Engineer",
+    "IoT & Embedded Systems Tinkerer",
+  ],
+  tagline: "Bringing Ideas to Life with Code",
+  summary:
+    "I am a competitive programmer with a knack for problem-solving and coding. I have experience with multiple programming languages, including C, C++, Java, Python, and others. Currently, I am a BSc student at the Bangladesh Army University of Engineering and Technology. Last year, I had the opportunity to participate in the ICPC Dhaka Regional Contest, which was an incredible experience that allowed me to gain a wealth of knowledge and sharpen my skills.",
+  about: [
+    "I am Sheikh Noor Abdullah, a passionate BSc Engineering student with a keen interest in innovation and technology. My journey is marked by dedication to my studies and a relentless pursuit of excellence. I thrive on challenges and am always looking for ways to apply my knowledge to real-world problems, constantly aiming to make a positive impact in my field and beyond.",
+    "My academic journey is driven by a passion for innovation and a dedication to excellence. I have consistently sought to expand my knowledge and skills, tackling challenges with determination and creativity, applying my engineering expertise to make a meaningful impact in my field and contribute positively to society.",
+  ],
+  location: "Natore, Bangladesh",
+  email: "sheikhnoorabdullah02@gmail.com",
+  altEmail: "noor50abdullah@gmail.com",
+  phones: ["01748269350", "01518750221"],
+  avatar: "/images/MainPhoto.jpg",
+  aboutImage: "/images/main.jpg",
+  resumeUrl: "/images/MainPhoto.jpg",
+  social: {
+    github: "https://github.com/NoorAbdullah02",
+    linkedin: "https://www.linkedin.com/in/sheikhnoorabdullah/",
+    facebook: "https://www.facebook.com/profile.php?id=100013021931812",
+    twitter: "https://x.com/NoorAbdullah101",
+  },
+  githubUsername: "NoorAbdullah02",
+};
+
+export const stats = [
+  { label: "Programming Languages", value: 4 },
+  { label: "Projects Built", value: 4 },
+  { label: "ICPC Contests", value: 1 },
+  { label: "Years of Learning", value: 3 },
+];
+
+export const skills = [
+  { name: "C++", level: 98, category: "language" },
+  { name: "C", level: 90, category: "language" },
+  { name: "Python", level: 55, category: "language" },
+  { name: "Java", level: 20, category: "language" },
+  { name: "Linux", level: 60, category: "tool" },
+  { name: "Cyber Security", level: 45, category: "field" },
+  { name: "Networking", level: 40, category: "field" },
+  { name: "Embedded Systems (IoT)", level: 65, category: "field" },
+  { name: "Git & GitHub", level: 80, category: "tool" },
+  { name: "React", level: 60, category: "language" },
+];
+
+export const education = [
+  {
+    title: "B.Sc. in Information and Communication Engineering",
+    place: "Bangladesh Army University of Engineering and Technology",
+    time: "2022 — 2026",
+  },
+  {
+    title: "H.S.C. in Science Group",
+    place: "M.K College, Natore",
+    time: "2020 — 2022",
+  },
+  {
+    title: "S.S.C. in Science Group",
+    place: "High School, Natore",
+    time: "2018 — 2020",
+  },
+];
+
+export const experience = [
+  {
+    title: "IT Support & Development",
+    place: "Imran IT, Kanaikhali, Natore",
+    time: "2026 — Present",
+  },
+  {
+    title: "IT Intern",
+    place: "ABC IT, Mirpur, Natore",
+    time: "2 Months Experience",
+  },
+  {
+    title: "Technical Assistant",
+    place: "Cantonment, Bonpara",
+    time: "1 Month Experience",
+  },
+];
+
+export const achievements = [
+  {
+    title: "ICPC Dhaka Regional Contest",
+    description:
+      "Participated in the International Collegiate Programming Contest (ICPC) Dhaka Regional, competing against top university teams in algorithmic problem solving.",
+    image: "/images/ICPC1.jpg",
+    gallery: ["/images/ICPC1.jpg", "/images/ICPC2.jpg", "/images/ICPC3.jpg"],
+  },
+];
+
+export const featuredProjects = [
+  {
+    title: "Elegant Calculator (Python + Tkinter)",
+    description:
+      "My first Python application, built with the Tkinter GUI library. Supports arithmetic operations, squares, percentages, constants like π, plus Clear-All and Undo utilities — wrapped in a sleek, modern interface.",
+    tags: ["Python", "Tkinter", "GUI"],
+    image: "/images/CalaulatorProject/cal.jpg",
+    github: "https://github.com/NoorAbdullah02/1st-project/tree/main/Calculato_Project",
+    demo: null,
+  },
+  {
+    title: "City Traffic Management System 🚦",
+    description:
+      "Simulates city traffic incidents using graph-based data structures for intersections and roads. Implements Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.",
+    tags: ["Python", "Dijkstra", "BFS", "Graphs"],
+    image: "/images/traffic3.png",
+    github: "https://github.com/NoorAbdullah02/TrafficRoutingSystem",
+    demo: null,
+  },
+  {
+    title: "DIY Handheld Gaming Console",
+    description:
+      "A DIY handheld console built around an ATmega328P microcontroller, an I2C OLED display and tactile push buttons, all assembled on a perfboard. Game logic written in C via the Arduino IDE, mimicking retro side-scrollers like Flappy Bird.",
+    tags: ["C", "Arduino", "Embedded", "OLED"],
+    image: "/images/DLD1.jpg",
+    github: "https://github.com/NoorAbdullah02/DLDProject",
+    demo: null,
+  },
+];
+
+export const services = [
+  {
+    icon: "code",
+    title: "Competitive Programming",
+    description:
+      "Algorithmic problem solving in C/C++/Python — data structures, graph algorithms, dynamic programming and contest-style optimization.",
+  },
+  {
+    icon: "app",
+    title: "Software & App Development",
+    description:
+      "Building dynamic, efficient desktop and GUI applications with C++, Java and Python — from concept to a polished, working tool.",
+  },
+  {
+    icon: "shield",
+    title: "Cyber Security & Networking",
+    description:
+      "Exploring network fundamentals, Linux systems and security practices to build safer, more resilient software.",
+  },
+  {
+    icon: "cpu",
+    title: "IoT & Embedded Systems",
+    description:
+      "Designing microcontroller-based hardware projects — sensors, displays and interactive devices built from the ground up.",
+  },
+];

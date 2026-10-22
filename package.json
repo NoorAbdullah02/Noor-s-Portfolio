@@ -1,0 +1,16 @@
+{
+  "name": "noor-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sheikh Noor Abdullah's portfolio — React + Vite frontend with an Express backend that serves it in production.",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+    "dev": "concurrently -n backend,frontend -c blue,magenta \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "build": "npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run build && npm run start --prefix backend",
+    "serve": "npm run start --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

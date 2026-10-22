@@ -1,0 +1,30 @@
+{
+  "name": "noor-portfolio-backend",
+  "version": "1.0.0",
+  "description": "Express API + static host for Sheikh Noor Abdullah's portfolio",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoorAbdullah02/Noor-s-Portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/NoorAbdullah02/Noor-s-Portfolio/issues"
+  },
+  "homepage": "https://github.com/NoorAbdullah02/Noor-s-Portfolio#readme",
+  "dependencies": {
+    "compression": "^1.8.2",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "nodemailer": "^10.2.1"
+  }
+}

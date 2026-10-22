@@ -44,14 +44,24 @@ Open **http://localhost:5173** — the Vite dev server proxies `/api/*` requests
 | --- | --- | --- |
 | `PORT` | Port the Express server listens on | no (defaults to 5000) |
 | `GITHUB_TOKEN` | A GitHub personal access token (no scopes needed) to raise the GitHub API rate limit | no, but recommended for production |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | SMTP credentials used to email you contact-form submissions | no — without it, submissions are just logged to the server console |
-| `CONTACT_TO_EMAIL` | Where contact form emails should be delivered | no (defaults to `SMTP_USER`) |
+| `BREVO_API_KEY`, `BREVO_SENDER_EMAIL`, `BREVO_SENDER_NAME` | Send email via the [Brevo](https://www.brevo.com) transactional email API (recommended — no SMTP setup) | no, but used first if set |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | Fallback plain SMTP credentials, used only if `BREVO_API_KEY` isn't set | no — without either, submissions are just logged to the server console |
+| `CONTACT_TO_EMAIL` | Where contact form + visit notification emails should be delivered | no (defaults to `SMTP_USER`) |
 | `CLIENT_ORIGIN` | Allowed CORS origin during local development | no (defaults to `http://localhost:5173`) |
 | `ENABLE_VISIT_NOTIFICATIONS` | Email you when someone visits the site | no (defaults to `true`; set to `false` to disable) |
 | `VISIT_NOTIFY_COOLDOWN_MINUTES` | Minimum minutes between two visit emails for the same visitor, so refreshes don't spam your inbox | no (defaults to `60`) |
 | `ADMIN_PASSWORD` | Password for the `/admin` visitor-log page | no — leave empty to disable the admin panel entirely |
 
-To send real emails from the contact form with Gmail, create an [App Password](https://myaccount.google.com/apppasswords) and set:
+**Recommended: Brevo.** Grab a free API key from [app.brevo.com/settings/keys/api](https://app.brevo.com/settings/keys/api), then set:
+
+```
+BREVO_API_KEY=xkeysib-your-key-here
+BREVO_SENDER_EMAIL=your-brevo-account-email@example.com   # must be a verified sender in your Brevo account
+BREVO_SENDER_NAME=Portfolio
+CONTACT_TO_EMAIL=where-you-want-notifications@example.com  # can be any address
+```
+
+**Alternative: plain SMTP with Gmail.** Create an [App Password](https://myaccount.google.com/apppasswords) and set:
 
 ```
 SMTP_HOST=smtp.gmail.com

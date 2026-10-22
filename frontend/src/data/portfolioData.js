@@ -9,6 +9,9 @@ export const profile = {
   tagline: "Bringing Ideas to Life with Code",
   headline:
     "ICE undergraduate at BAUET, ICPC Dhaka Regional contestant and machine-learning researcher — I build fast, reliable software and the hardware it runs on.",
+  aboutLead: "I turn hard problems into working software — from contest algorithms to machine-learning research and embedded hardware.",
+  aboutHighlight: "working software",
+  focus: ["Competitive programming", "Machine-learning research", "Embedded systems & IoT", "Software development"],
   highlights: [
     { value: "4", label: "Research papers accepted" },
     { value: "ICPC", label: "Dhaka Regional contestant" },

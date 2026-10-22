@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FiGithub, FiExternalLink, FiArrowUpRight } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
-import { featuredProjects } from "../data/portfolioData";
+import { featuredProjects, profile } from "../data/portfolioData";
 import { trackSpotlight } from "../lib/spotlight";
 
 export default function FeaturedProjects() {
@@ -88,6 +88,25 @@ export default function FeaturedProjects() {
           </motion.article>
         ))}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-12 flex justify-center"
+      >
+        <a
+          href={profile.social.github}
+          target="_blank"
+          rel="noreferrer"
+          className="group inline-flex items-center gap-2.5 rounded-full border border-border bg-white/80 px-6 py-3 text-sm font-semibold text-text shadow-sm transition-colors hover:border-text/30"
+        >
+          <FiGithub size={16} />
+          Explore all projects on GitHub
+          <FiArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </a>
+      </motion.div>
     </Section>
   );
 }

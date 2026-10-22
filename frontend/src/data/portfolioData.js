@@ -93,9 +93,17 @@ export const achievements = [
     image: "/images/ICPC1.jpg",
   },
   {
-    title: "3 Conference Papers Accepted",
+    title: "3 Papers — IEEE CSDE 2026",
     description:
-      "Three research papers accepted at academic conferences, contributing original findings in computer science and engineering to the academic community.",
+      "Three full research papers accepted at IEEE CSDE 2026: Breast Ultrasound Classification (BreastMNIST), ICU Mortality Prediction with Explainable ML, and Multi-Backbone Breast Cancer Classification on Mini-DDSM. All accepted as Full Research Papers.",
+    image: null,
+    icon: "paper",
+    color: ["#0ea5e9", "#2563eb"],
+  },
+  {
+    title: "Research Paper — ISRC 2026",
+    description:
+      "Paper accepted at the 2nd International Student Research Conference (ISRC 2026) by Dhaka University Research Society. Title: Predicting Gallstone Disease from Clinical and Laboratory Data — A Leakage-Aware ML Evaluation. Track: CS, AI & Data Science. Poster Presentation.",
     image: null,
     icon: "paper",
     color: ["#4f46e5", "#9333ea"],
@@ -109,9 +117,9 @@ export const achievements = [
     color: ["#f59e0b", "#ef4444"],
   },
   {
-    title: "Hackathon — Selected Participant",
+    title: "Robot Making Hackathon 2025",
     description:
-      "Selected among top participants in a competitive hackathon, recognized for innovative problem-solving and rapid full-stack prototyping skills.",
+      "Team Glitch Weavers selected for the Robot Making Hackathon 2025, organized by Robo Tech Valley at BAUET — Dept. of ICE. Recognized for innovative robotics design and engineering skills.",
     image: null,
     icon: "code",
     color: ["#10b981", "#0ea5e9"],

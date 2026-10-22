@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { FiArrowUp, FiRotateCcw, FiSend, FiRefreshCw } from "react-icons/fi";
+import { FiArrowUp, FiRotateCcw, FiSend, FiRefreshCw, FiBarChart2 } from "react-icons/fi";
 import RichText from "../../components/RichText";
 import { askAdminAi, sendBriefingNow } from "../../lib/api";
 
@@ -57,9 +57,9 @@ export default function AdminAi({ token, messages, setMessages, onError, showToa
   return (
     <div className="flex h-[calc(100dvh-300px)] min-h-[560px] flex-col overflow-hidden rounded-3xl border border-border bg-white/80 shadow-xl shadow-primary/5 backdrop-blur">
       <div className="flex flex-wrap items-center gap-3 border-b border-border px-5 py-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-2 text-lg text-white shadow-md shadow-primary/30">✨</div>
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-2 text-white shadow-md shadow-primary/30"><FiBarChart2 size={18} /></div>
         <div className="min-w-0 flex-1">
-          <div className="font-bold text-text">Ask AI about your website</div>
+          <div className="font-bold text-text">Insights</div>
           <div className="text-xs text-muted">Answers from your real database — visitors, IPs, messages and chats</div>
         </div>
         <div className="flex gap-2">
@@ -93,7 +93,7 @@ export default function AdminAi({ token, messages, setMessages, onError, showToa
           <div className="mx-auto flex max-w-3xl flex-col gap-4">
             {messages.map((m, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={m.role === "user" ? "flex justify-end" : "flex gap-3"}>
-                {m.role !== "user" && <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2 text-sm text-white">✨</div>}
+                {m.role !== "user" && <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2 text-white"><FiBarChart2 size={14} /></div>}
                 <div className={m.role === "user"
                   ? "max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-gradient-to-br from-primary to-primary-2 px-4 py-2.5 text-sm text-white shadow-lg shadow-primary/20"
                   : `min-w-0 max-w-[90%] rounded-2xl rounded-tl-md border px-4 py-3 text-sm leading-relaxed ${m.error ? "border-red-200 bg-red-50 text-red-600" : "border-border bg-white text-text/85"}`}>
@@ -103,7 +103,7 @@ export default function AdminAi({ token, messages, setMessages, onError, showToa
             ))}
             {loading && (
               <div className="flex gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2 text-sm text-white">✨</div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2 text-white"><FiBarChart2 size={14} /></div>
                 <div className="flex items-center gap-1.5 rounded-2xl border border-border bg-white px-4 py-3">
                   {[0, 1, 2].map((d) => (
                     <motion.span key={d} className="h-2 w-2 rounded-full bg-primary" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.15 }} />

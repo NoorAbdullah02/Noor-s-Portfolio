@@ -276,7 +276,7 @@ export function dailyBriefingEmail({ date, summary, counts }) {
         ${statTile(counts.chats, "AI chats", "#0ea5e9")}
       </tr>
     </table>
-    <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:${BRAND.muted};margin-bottom:10px;">✨ AI briefing</div>
+    <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:${BRAND.muted};margin-bottom:10px;">Summary</div>
     <div style="font-size:15px;color:${BRAND.text};">
       ${summary ? miniMarkdown(summary) : `<p style="margin:0;color:${BRAND.muted};">The AI summary couldn't be generated this time — the numbers above are from your database.</p>`}
     </div>

@@ -7,6 +7,13 @@ export const profile = {
     "IoT & Embedded Systems Tinkerer",
   ],
   tagline: "Bringing Ideas to Life with Code",
+  headline:
+    "ICE undergraduate at BAUET, ICPC Dhaka Regional contestant and machine-learning researcher — I build fast, reliable software and the hardware it runs on.",
+  highlights: [
+    { value: "4", label: "Research papers accepted" },
+    { value: "ICPC", label: "Dhaka Regional contestant" },
+    { value: "#1", label: "RoboSpark champion" },
+  ],
   summary:
     "I am a competitive programmer with a knack for problem-solving and coding. I have experience with multiple programming languages, including C, C++, Java, Python, and others. Currently, I am a BSc student at the Bangladesh Army University of Engineering and Technology. Last year, I had the opportunity to participate in the ICPC Dhaka Regional Contest, which was an incredible experience that allowed me to gain a wealth of knowledge and sharpen my skills.",
   about: [

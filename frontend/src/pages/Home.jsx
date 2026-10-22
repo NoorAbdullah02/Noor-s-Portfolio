@@ -18,7 +18,7 @@ export default function Home() {
   useVisitNotifier();
 
   return (
-    <div className="min-h-screen bg-bg text-text">
+    <div className="prose-justify min-h-screen bg-bg text-text">
       <Preloader />
       <ScrollProgress />
       <Navbar />

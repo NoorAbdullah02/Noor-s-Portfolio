@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   FiLock, FiLogOut, FiRefreshCw, FiUsers, FiEye, FiClock, FiInbox, FiMail, FiPhone,
   FiSend, FiTrash2, FiArrowLeft, FiSearch, FiCheck, FiCheckCircle, FiAlertCircle,
-  FiExternalLink, FiCornerUpLeft, FiEyeOff, FiMessageSquare, FiX, FiZap,
+  FiExternalLink, FiCornerUpLeft, FiEyeOff, FiMessageSquare, FiX, FiBarChart2, FiEdit3,
 } from "react-icons/fi";
 import {
   adminLogin, fetchVisits, fetchMessages, fetchChats, markMessageRead, replyToMessage, deleteMessage, suggestReplies,
@@ -237,9 +237,8 @@ function AiSuggestions({ state, onUse, onRegenerate, onClose }) {
     >
       <div className="mb-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.05] to-primary-2/[0.06] p-3">
         <div className="mb-2.5 flex items-center gap-2">
-          <span className="text-sm">✨</span>
           <span className="text-xs font-semibold text-text">
-            {state.status === "loading" ? "Writing suggestions…" : state.forDraft ? "Improved versions of your draft" : "AI-suggested replies"}
+            {state.status === "loading" ? "Writing suggestions…" : state.forDraft ? "Improved versions of your draft" : "Suggested replies"}
           </span>
           <div className="ml-auto flex items-center gap-1">
             {state.status === "ready" && (
@@ -406,8 +405,8 @@ function MessageDetail({ message, onBack, onReply, onToggleRead, onDelete, onSug
             disabled={ai.status === "loading"}
             className="btn-shine inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-primary-2 px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-md shadow-primary/25 transition hover:shadow-primary/40 disabled:opacity-60"
           >
-            {ai.status === "loading" ? <FiRefreshCw size={11} className="animate-spin" /> : <span>✨</span>}
-            {draft.trim() ? "Polish my draft with AI" : "Suggest replies with AI"}
+            {ai.status === "loading" ? <FiRefreshCw size={11} className="animate-spin" /> : <FiEdit3 size={11} />}
+            {draft.trim() ? "Polish my draft" : "Suggest replies"}
           </button>
           {QUICK_REPLIES.map((q) => (
             <button key={q} onClick={() => { setDraft((d) => d + q); textareaRef.current?.focus(); }}
@@ -659,8 +658,8 @@ export default function Admin() {
               {[
                 { id: "inbox", label: "Inbox", icon: <FiInbox size={15} />, badge: inbox.stats.unread },
                 { id: "visitors", label: "Visitors", icon: <FiUsers size={15} />, badge: visitData.stats.visitsLast24h },
-                { id: "chats", label: "AI Chats", icon: <FiMessageSquare size={15} />, badge: chats.length },
-                { id: "ai", label: "Ask AI", icon: <FiZap size={15} />, badge: 0 },
+                { id: "chats", label: "Chat Log", icon: <FiMessageSquare size={15} />, badge: chats.length },
+                { id: "ai", label: "Insights", icon: <FiBarChart2 size={15} />, badge: 0 },
               ].map((t) => (
                 <button key={t.id} onClick={() => setTab(t.id)}
                   className={`relative inline-flex flex-shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "text-white" : "text-muted hover:text-text"}`}>

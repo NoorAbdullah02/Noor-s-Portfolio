@@ -57,6 +57,22 @@
   }
 }
 
+@layer base {
+  .prose-justify :is(main, footer) p {
+    text-align: justify;
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    hyphenate-limit-chars: 7 3 3;
+    text-wrap: pretty;
+  }
+  .prose-justify :is(main, footer) .text-center p,
+  .prose-justify :is(main, footer) p.text-center {
+    text-align: center;
+    hyphens: manual;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -150,6 +166,15 @@ textarea:focus-visible {
     linear-gradient(to right, #12131a08 1px, transparent 1px),
     linear-gradient(to bottom, #12131a08 1px, transparent 1px);
   background-size: 48px 48px;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(79, 70, 229, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(79, 70, 229, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 40% 35%, #000 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse 75% 65% at 40% 35%, #000 25%, transparent 75%);
 }
 
 .bg-dots {

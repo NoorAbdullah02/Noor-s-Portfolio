@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FiCopy, FiCheck, FiRotateCcw, FiX, FiArrowUp, FiZap, FiCode, FiBriefcase, FiBookOpen, FiAward } from "react-icons/fi";
+import { FiCopy, FiCheck, FiRotateCcw, FiX, FiArrowUp, FiCpu, FiCode, FiBriefcase, FiBookOpen, FiMessageCircle } from "react-icons/fi";
 import { sendChatMessage } from "../lib/api";
 import useMediaQuery from "../hooks/useMediaQuery";
 import RichText from "./RichText";
@@ -9,7 +9,7 @@ const TIP_KEY = "chat-tip-seen";
 const MAX_LEN = 1000;
 
 const SUGGESTIONS = [
-  { icon: FiZap, title: "Top skills", prompt: "What are Noor's strongest skills?", color: ["#4f46e5", "#9333ea"] },
+  { icon: FiCpu, title: "Top skills", prompt: "What are Noor's strongest skills?", color: ["#4f46e5", "#9333ea"] },
   { icon: FiBookOpen, title: "Research", prompt: "Tell me about Noor's research papers.", color: ["#0ea5e9", "#4f46e5"] },
   { icon: FiCode, title: "Projects", prompt: "What projects has Noor built?", color: ["#10b981", "#0ea5e9"] },
   { icon: FiBriefcase, title: "Hire Noor", prompt: "How can I hire or collaborate with Noor?", color: ["#f59e0b", "#ef4444"] },
@@ -45,18 +45,13 @@ function Typewriter({ text, onDone, onTick }) {
   return <RichText text={text.slice(0, count)} />;
 }
 
-function BotAvatar({ size = 32, pulse = false }) {
+function BotAvatar({ size = 32 }) {
   return (
-    <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
-      {pulse && <span className="absolute inset-0 animate-ping rounded-full bg-primary/30" />}
-      <div className="absolute inset-0 animate-spin-slow rounded-full"
-        style={{ background: "conic-gradient(from 0deg, #4f46e5, #9333ea, #0ea5e9, #4f46e5)" }} />
-      <div className="absolute inset-[2px] flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2">
-        <svg width={size * 0.5} height={size * 0.5} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z" fill="white" fillOpacity="0.25" />
-          <path d="M19 15l.8 1.9 1.9.8-1.9.8L19 20.4l-.8-1.9-1.9-.8 1.9-.8z" />
-        </svg>
-      </div>
+    <div
+      className="flex flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2 font-mono font-bold text-white ring-2 ring-white"
+      style={{ width: size, height: size, fontSize: size * 0.42 }}
+    >
+      N
     </div>
   );
 }
@@ -130,7 +125,7 @@ const greeting = () => ({
   id: newId(),
   role: "assistant",
   ts: Date.now(),
-  content: "Hi! I'm Noor's AI assistant 👋 Ask me about his skills, research, projects — or how to work with him.",
+  content: "Hi! I'm Noor's assistant. Ask me about his skills, research, projects — or how to work with him.",
 });
 
 export default function ChatWidget() {
@@ -247,7 +242,7 @@ export default function ChatWidget() {
             exit={{ opacity: 0, x: 12, scale: 0.9 }}
             className="fixed bottom-7 right-[5.5rem] z-50 hidden items-center gap-2 rounded-2xl rounded-br-sm border border-border bg-white px-4 py-2.5 text-sm font-medium text-text shadow-xl shadow-primary/10 sm:bottom-9 sm:right-[6.5rem] sm:flex"
           >
-            <span className="text-base">✨</span> Ask my AI anything
+            Questions? Ask me about Noor
           </motion.button>
         )}
       </AnimatePresence>
@@ -266,23 +261,15 @@ export default function ChatWidget() {
               background: "linear-gradient(135deg, #4f46e5, #9333ea)",
               boxShadow: "0 10px 30px -8px rgba(79,70,229,0.6), inset 0 1px 0 rgba(255,255,255,0.3)",
             }}
-            aria-label={open ? "Close AI assistant" : "Open AI assistant"}
+            aria-label={open ? "Close assistant" : "Open assistant"}
           >
-            <span className="pointer-events-none absolute inset-0 animate-spin-slow rounded-full opacity-70"
-              style={{ background: "conic-gradient(from 0deg, transparent 0 70%, rgba(255,255,255,0.55) 85%, transparent 100%)" }} />
-            <span className="pointer-events-none absolute inset-[3px] rounded-full bg-gradient-to-br from-primary to-primary-2" />
             <AnimatePresence mode="wait" initial={false}>
-              <motion.span key={open ? "x" : "spark"} className="relative"
+              <motion.span key={open ? "x" : "chat"} className="relative"
                 initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
                 animate={{ rotate: 0, opacity: 1, scale: 1 }}
                 exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
                 transition={{ duration: 0.2 }}>
-                {open ? <FiX size={22} color="white" /> : (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 2.5l2.2 5.3 5.3 2.2-5.3 2.2L12 17.5l-2.2-5.3L4.5 10l5.3-2.2z" />
-                    <path d="M19 15l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z" opacity=".8" />
-                  </svg>
-                )}
+                {open ? <FiX size={22} color="white" /> : <FiMessageCircle size={23} color="white" strokeWidth={2.2} />}
               </motion.span>
             </AnimatePresence>
             {!open && (
@@ -299,7 +286,7 @@ export default function ChatWidget() {
           <motion.div
             {...panelMotion}
             role="dialog"
-            aria-label="Noor's AI assistant"
+            aria-label="Ask about Noor"
             className={`fixed z-[60] flex flex-col overflow-hidden bg-[#fbfbfe] ${
               isMobile ? "inset-0" : "bottom-24 right-6 w-[400px] rounded-[28px]"
             }`}
@@ -320,7 +307,7 @@ export default function ChatWidget() {
               <div className="relative flex items-center gap-3">
                 <BotAvatar size={42} />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[15px] font-bold leading-tight text-white">Noor's AI Assistant</p>
+                  <p className="truncate text-[15px] font-bold leading-tight text-white">Ask about Noor</p>
                   <p className="mt-0.5 flex items-center gap-1.5 text-xs text-white/75">
                     <span className="relative flex h-2 w-2">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
@@ -349,8 +336,8 @@ export default function ChatWidget() {
                   className="flex min-h-full flex-col">
                   <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
                     className="mb-5 flex flex-col items-center pt-2 text-center">
-                    <BotAvatar size={60} pulse />
-                    <h3 className="mt-4 text-lg font-bold text-text">Hi there! 👋</h3>
+                    <BotAvatar size={56} />
+                    <h3 className="mt-4 text-lg font-bold text-text">Hi there</h3>
                     <p className="mt-1 max-w-[270px] text-sm leading-relaxed text-muted">{messages[0].content.replace(/^Hi! /, "")}</p>
                   </motion.div>
                   <div className="mt-auto grid grid-cols-2 gap-2.5">
@@ -403,9 +390,7 @@ export default function ChatWidget() {
                   <FiArrowUp size={18} strokeWidth={2.5} />
                 </motion.button>
               </form>
-              <p className="mt-2 flex items-center justify-center gap-1 text-center text-[10px] text-muted">
-                <FiAward size={10} /> AI answers can be imperfect · Powered by Groq
-              </p>
+              <p className="mt-2 text-center text-[10px] text-muted">Answers can be imperfect — for anything important, use the contact form.</p>
             </div>
           </motion.div>
         )}

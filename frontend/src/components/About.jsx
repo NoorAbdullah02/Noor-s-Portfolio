@@ -113,19 +113,23 @@ export default function About() {
             {infoRows.map((row) => (
               <div
                 key={row.label}
-                className="group flex items-center gap-3 rounded-xl border border-border bg-bg px-4 py-3 transition-all hover:border-primary/30 hover:shadow-md hover:shadow-primary/8"
+                className="group flex min-w-0 items-center gap-3 overflow-hidden rounded-xl border border-border bg-bg px-4 py-3 transition-all hover:border-primary/30 hover:shadow-md hover:shadow-primary/8"
               >
-                <span className="rounded-lg bg-primary/10 p-2 text-primary group-hover:bg-primary/15 transition-colors">
+                <span className="flex-shrink-0 rounded-lg bg-primary/10 p-2 text-primary group-hover:bg-primary/15 transition-colors">
                   {row.icon}
                 </span>
-                <div>
+                <div className="min-w-0 flex-1">
                   <div className="text-[10px] font-mono uppercase tracking-wider text-muted">{row.label}</div>
                   {row.href ? (
-                    <a href={row.href} className="text-sm font-medium text-text hover:text-primary transition-colors">
+                    <a
+                      href={row.href}
+                      title={row.value}
+                      className={`block font-medium text-text transition-colors [overflow-wrap:anywhere] hover:text-primary ${row.value.length > 24 ? "text-[13px]" : "text-sm"}`}
+                    >
                       {row.value}
                     </a>
                   ) : (
-                    <div className="text-sm font-medium text-text">{row.value}</div>
+                    <div className="text-sm font-medium text-text [overflow-wrap:anywhere]">{row.value}</div>
                   )}
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import { Suspense, lazy } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { FiArrowDown, FiGithub, FiLinkedin } from "react-icons/fi";
+import { FiArrowDown, FiGithub, FiLinkedin, FiDownload } from "react-icons/fi";
 import { profile } from "../data/portfolioData";
 
 const HeroScene = lazy(() => import("./three/HeroScene"));
@@ -101,6 +101,14 @@ export default function Hero() {
               className="rounded-full border-2 border-border px-7 py-3 text-sm font-semibold text-text transition-all hover:border-primary hover:text-primary hover:bg-primary/5"
             >
               View Projects
+            </a>
+            <a
+              href={profile.resumeUrl}
+              download
+              className="inline-flex items-center gap-2 rounded-full border-2 border-primary/30 bg-primary/5 px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/10 hover:border-primary/50 hover:scale-[1.03]"
+            >
+              <FiDownload size={15} />
+              Download CV
             </a>
             <div className="flex items-center gap-2.5">
               {[

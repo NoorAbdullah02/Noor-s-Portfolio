@@ -91,7 +91,30 @@ export const achievements = [
     description:
       "Participated in the International Collegiate Programming Contest (ICPC) Dhaka Regional, competing against top university teams in algorithmic problem solving.",
     image: "/images/ICPC1.jpg",
-    gallery: ["/images/ICPC1.jpg", "/images/ICPC2.jpg", "/images/ICPC3.jpg"],
+  },
+  {
+    title: "3 Conference Papers Accepted",
+    description:
+      "Three research papers accepted at academic conferences, contributing original findings in computer science and engineering to the academic community.",
+    image: null,
+    icon: "paper",
+    color: ["#4f46e5", "#9333ea"],
+  },
+  {
+    title: "RoboSpark Champion 🏆",
+    description:
+      "Won the RoboSpark robotics competition, demonstrating excellence in hardware design, embedded programming and real-time control systems under pressure.",
+    image: null,
+    icon: "robot",
+    color: ["#f59e0b", "#ef4444"],
+  },
+  {
+    title: "Hackathon — Selected Participant",
+    description:
+      "Selected among top participants in a competitive hackathon, recognized for innovative problem-solving and rapid full-stack prototyping skills.",
+    image: null,
+    icon: "code",
+    color: ["#10b981", "#0ea5e9"],
   },
 ];
 

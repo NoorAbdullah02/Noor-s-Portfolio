@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX, FiDownload } from "react-icons/fi";
+import { profile } from "../data/portfolioData";
 import useScrollSpy from "../hooks/useScrollSpy";
 
 const links = [
@@ -74,12 +75,22 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <button
-            onClick={() => handleClick("contact")}
-            className="btn-shine hidden rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-on-accent shadow-md shadow-primary/20 transition-all hover:shadow-primary/35 hover:shadow-lg hover:scale-[1.03] md:inline-flex"
-          >
-            Hire Me
-          </button>
+          <div className="hidden items-center gap-2 md:flex">
+            <a
+              href={profile.resumeUrl}
+              download
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted transition-all hover:border-primary hover:text-primary hover:bg-primary/5"
+              title="Download CV"
+            >
+              <FiDownload size={14} /> CV
+            </a>
+            <button
+              onClick={() => handleClick("contact")}
+              className="btn-shine rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-on-accent shadow-md shadow-primary/20 transition-all hover:shadow-primary/35 hover:shadow-lg hover:scale-[1.03]"
+            >
+              Hire Me
+            </button>
+          </div>
 
           <button
             className="rounded-lg p-1.5 text-text md:hidden hover:bg-surface transition-colors"

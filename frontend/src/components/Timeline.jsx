@@ -76,31 +76,46 @@ export default function Timeline() {
       {achievements.length > 0 && (
         <div className="mt-24">
           <SectionHeading eyebrow="Achievements" title="Milestones" align="left" />
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {achievements.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
-              >
-                <div className="relative overflow-hidden h-48">
-                  <img
-                    src={a.image}
-                    alt={a.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg/80 to-transparent" />
-                  <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-primary to-primary-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <div className="p-5">
-                  <h4 className="font-semibold text-text">{a.title}</h4>
-                  <p className="mt-2 text-sm text-muted leading-relaxed">{a.description}</p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {achievements.map((a, i) => {
+              const [c1, c2] = a.color || ["#4f46e5", "#9333ea"];
+              return (
+                <motion.div
+                  key={a.title}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
+                >
+                  <div className="relative overflow-hidden h-40">
+                    {a.image ? (
+                      <>
+                        <img src={a.image} alt={a.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-bg/80 to-transparent" />
+                      </>
+                    ) : (
+                      <div
+                        className="h-full w-full flex items-center justify-center"
+                        style={{ background: `linear-gradient(135deg, ${c1}22, ${c2}33)` }}
+                      >
+                        <div className="h-16 w-16 rounded-2xl flex items-center justify-center text-3xl"
+                          style={{ background: `linear-gradient(135deg, ${c1}, ${c2})`, boxShadow: `0 8px 24px -8px ${c1}80` }}>
+                          {a.icon === "paper" ? "📄" : a.icon === "robot" ? "🤖" : "💻"}
+                        </div>
+                        <div className="absolute inset-0 bg-dots opacity-30" />
+                      </div>
+                    )}
+                    <div className="absolute top-0 inset-x-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ background: `linear-gradient(90deg, ${c1}, ${c2})` }} />
+                  </div>
+                  <div className="p-5">
+                    <h4 className="font-semibold text-text text-sm">{a.title}</h4>
+                    <p className="mt-2 text-xs text-muted leading-relaxed">{a.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       )}

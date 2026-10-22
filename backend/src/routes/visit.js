@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { sendMail } from "../lib/mailer.js";
 import { addVisit } from "../lib/visitStore.js";
+import { visitNotificationEmail } from "../lib/emailTemplates.js";
 
 const router = Router();
 
@@ -19,10 +20,7 @@ router.post("/", async (req, res) => {
 
   if (notificationsEnabled && !isBot) {
     try {
-      const result = await sendMail({
-        subject: "New visitor on your portfolio",
-        text: `Someone just opened your portfolio.\n\nPage: ${path}\nIP: ${ip}\nReferrer: ${referrer}\nBrowser: ${userAgent}\nTime: ${record.timestamp}`,
-      });
+      const result = await sendMail(visitNotificationEmail(record));
       if (!result.sent) {
         console.log("New visit (SMTP not configured):", record);
       }

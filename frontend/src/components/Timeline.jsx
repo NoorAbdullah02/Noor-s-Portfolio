@@ -33,7 +33,7 @@ function TimelineItem({ item, index }) {
   );
 }
 
-function TimelineColumn({ icon, title, items, color }) {
+function TimelineColumn({ icon, title, items }) {
   return (
     <div>
       <div className="mb-8 flex items-center gap-3">

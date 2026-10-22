@@ -12,6 +12,7 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import useVisitNotifier from "../hooks/useVisitNotifier";
 import ChatWidget from "../components/ChatWidget";
+import CursorGlow from "../components/CursorGlow";
 
 export default function Home() {
   useVisitNotifier();
@@ -33,6 +34,7 @@ export default function Home() {
       </main>
       <Footer />
       <ChatWidget />
+      <CursorGlow />
     </div>
   );
 }

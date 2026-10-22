@@ -52,12 +52,20 @@ const visitLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-const adminLimiter = rateLimit({
+const adminLoginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 40,
+  max: 20,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: "Too many attempts. Please try again later." },
+});
+
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 400,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests. Please slow down." },
 });
 
 const chatLimiter = rateLimit({
@@ -72,6 +80,7 @@ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/github", githubRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes);
 app.use("/api/visit", visitLimiter, visitRoutes);
+app.use("/api/admin/login", adminLoginLimiter);
 app.use("/api/admin", adminLimiter, adminRoutes);
 app.use("/api/chat", chatLimiter, chatRoutes);
 

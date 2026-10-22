@@ -101,7 +101,7 @@ export default function Timeline() {
                       >
                         <div className="h-16 w-16 rounded-2xl flex items-center justify-center text-3xl"
                           style={{ background: `linear-gradient(135deg, ${c1}, ${c2})`, boxShadow: `0 8px 24px -8px ${c1}80` }}>
-                          {a.icon === "paper" ? "📄" : a.icon === "robot" ? "🤖" : "💻"}
+                          {a.icon === "paper" ? "📄" : a.icon === "robot" ? "🤖" : a.icon === "quiz" ? "🏆" : "💻"}
                         </div>
                         <div className="absolute inset-0 bg-dots opacity-30" />
                       </div>

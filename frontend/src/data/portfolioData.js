@@ -124,6 +124,14 @@ export const achievements = [
     icon: "code",
     color: ["#10b981", "#0ea5e9"],
   },
+  {
+    title: "IT Job Quiz — 3rd Place 🥉",
+    description:
+      "Secured 3rd place in IT Job Quiz Competition 1, organized by BAUET ICT Club. Recognized among the top 3 performers for strong technical knowledge and competitive performance in IT topics.",
+    image: null,
+    icon: "quiz",
+    color: ["#cd7f32", "#a0522d"],
+  },
 ];
 
 export const featuredProjects = [

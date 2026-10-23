@@ -25,6 +25,7 @@ function describePortfolio(d) {
     p.email && `Email: ${p.email}${p.altEmail ? ` (alternate: ${p.altEmail})` : ""}`,
     p.phones?.length && `Phone: ${p.phones.join(", ")}`,
     p.social && `Links: ${Object.entries(p.social).map(([k, v]) => `${k}: ${v}`).join(" | ")}`,
+    p.resumeUrl && `CV / résumé (PDF): visitors can download it with the "Résumé" button on this page${process.env.SITE_URL ? ` or at ${process.env.SITE_URL.replace(/\/+$/, "")}${p.resumeUrl}` : ""}`,
     p.summary && `Summary: ${clean(p.summary)}`,
     ...(p.about || []).map((a) => `About: ${clean(a)}`),
     section("Stats", (d.stats || []).map((s) => `- ${s.label}: ${s.value}+`)),

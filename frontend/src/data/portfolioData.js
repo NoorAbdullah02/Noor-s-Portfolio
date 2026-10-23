@@ -29,7 +29,7 @@ export const profile = {
   phones: ["01748269350", "01518750221"],
   avatar: "/images/MainPhoto.jpg",
   aboutImage: "/images/main.jpg",
-  resumeUrl: "/images/MainPhoto.jpg",
+  resumeUrl: "/Sheikh-Noor-Abdullah-CV.pdf",
   social: {
     github: "https://github.com/NoorAbdullah02",
     linkedin: "https://www.linkedin.com/in/sheikhnoorabdullah/",

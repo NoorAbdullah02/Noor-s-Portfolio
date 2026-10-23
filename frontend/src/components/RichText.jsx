@@ -1,6 +1,6 @@
 function renderInline(text, keyPrefix) {
   const parts = [];
-  const pattern = /(\*\*[^*]+\*\*|\*[^*\s][^*]*\*|`[^`]+`|https?:\/\/[^\s)]+|[\w.+-]+@[\w-]+\.[\w.]+)/g;
+  const pattern = /(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|\*\*[^*]+\*\*|\*[^*\s][^*]*\*|`[^`]+`|https?:\/\/[^\s)]+|[\w.+-]+@[\w-]+\.[\w.]+)/g;
   let last = 0;
   let match;
   let i = 0;
@@ -8,7 +8,11 @@ function renderInline(text, keyPrefix) {
     if (match.index > last) parts.push(text.slice(last, match.index));
     const token = match[0];
     const key = `${keyPrefix}-${i++}`;
-    if (token.startsWith("**")) {
+    if (token.startsWith("[")) {
+      const [, label, href] = token.match(/^\[([^\]]+)\]\((.+)\)$/);
+      const text = /^https?:\/\//.test(label) ? label.replace(/^https?:\/\/(www\.)?/, "") : label;
+      parts.push(<a key={key} href={href} target="_blank" rel="noreferrer" className="break-all font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary">{text}</a>);
+    } else if (token.startsWith("**")) {
       parts.push(<strong key={key} className="font-semibold text-text">{token.slice(2, -2)}</strong>);
     } else if (token.startsWith("*")) {
       parts.push(<em key={key}>{token.slice(1, -1)}</em>);

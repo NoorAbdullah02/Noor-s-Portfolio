@@ -136,6 +136,14 @@ export default function Navbar() {
                   </li>
                 ))}
               </ul>
+              <a
+                href={profile.resumeUrl}
+                download
+                onClick={() => setOpen(false)}
+                className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-text transition-colors hover:border-primary hover:text-primary"
+              >
+                <FiDownload size={14} /> Download CV
+              </a>
             </motion.div>
           )}
         </AnimatePresence>

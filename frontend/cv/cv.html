@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sheikh Noor Abdullah — CV</title>
+<style>
+  @page { size: A4; margin: 10mm 12mm 8mm 12mm; }
+  :root {
+    --ink: #0d0e18;
+    --muted: #555a70;
+    --soft: #8a8fa6;
+    --line: #e3e5ef;
+    --accent: #4f46e5;
+    --accent-2: #7c3aed;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 8.95pt;
+    line-height: 1.34;
+    hyphens: auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+  }
+  h1 {
+    margin: 0;
+    font-size: 24pt;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  h1 span { color: var(--accent); }
+  .role {
+    margin-top: 5px;
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+  }
+  .contact {
+    text-align: right;
+    font-size: 8.6pt;
+    line-height: 1.6;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .contact b { color: var(--ink); font-weight: 600; }
+
+  .summary {
+    margin: 11px 0 2px;
+    font-size: 9.8pt;
+    color: #2a2d3d;
+    text-align: justify;
+  }
+
+  section { margin-top: 10px; }
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 7px;
+    font-size: 8.4pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .item { margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid; }
+  .item:last-child { margin-bottom: 0; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .title { font-weight: 650; font-size: 10pt; }
+  .when {
+    flex-shrink: 0;
+    font-size: 8.6pt;
+    color: var(--soft);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .sub { color: var(--muted); font-size: 9pt; }
+  .desc { margin-top: 2px; color: #33364a; text-align: justify; }
+  .authors { margin-top: 1px; font-size: 8.1pt; color: var(--soft); }
+  .authors b { color: var(--ink); font-weight: 600; }
+  .tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 0 6px;
+    border-radius: 3px;
+    background: #eef0ff;
+    color: var(--accent);
+    font-size: 7.6pt;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    vertical-align: 1px;
+  }
+  .link { color: var(--accent); font-size: 8.5pt; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+
+  .skills { display: grid; grid-template-columns: 70px 1fr; gap: 2px 10px; margin: 0; }
+  .skills dt { font-weight: 650; color: var(--ink); }
+  .skills dd { margin: 0; color: #33364a; }
+
+  ul.bullets { margin: 0; padding-left: 14px; }
+  ul.bullets li { margin-bottom: 2px; padding-left: 2px; }
+  ul.bullets li::marker { color: var(--accent); }
+
+  footer {
+    margin-top: 10px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+    font-size: 7.8pt;
+    color: var(--soft);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Sheikh Noor <span>Abdullah</span></h1>
+    <div class="role">Competitive Programmer · ML Researcher · Software Engineer</div>
+  </div>
+  <div class="contact">
+    <b>Natore, Bangladesh</b><br>
+    <a href="tel:+8801748269350">+880 1748-269350</a><br>
+    <a href="mailto:sheikhnoorabdullah02@gmail.com">sheikhnoorabdullah02@gmail.com</a><br>
+    <a href="https://github.com/NoorAbdullah02">github.com/NoorAbdullah02</a><br>
+    <a href="https://www.linkedin.com/in/sheikhnoorabdullah/">linkedin.com/in/sheikhnoorabdullah</a>
+  </div>
+</header>
+
+<p class="summary">
+  Information &amp; Communication Engineering undergraduate at Bangladesh Army University of Engineering and Technology (BAUET),
+  ICPC Dhaka Regional contestant and machine-learning researcher with four accepted conference papers on medical-data classification.
+  Strong in C/C++ and algorithmic problem solving, with hands-on experience in Python, embedded systems and IoT hardware.
+</p>
+
+<section>
+  <h2>Education</h2>
+  <div class="item">
+    <div class="row"><span class="title">B.Sc. in Information and Communication Engineering</span><span class="when">2022 — 2026</span></div>
+    <div class="sub">Bangladesh Army University of Engineering and Technology (BAUET)</div>
+  </div>
+  <div class="grid-2">
+    <div class="item">
+      <div class="row"><span class="title">H.S.C. — Science</span><span class="when">2020 — 2022</span></div>
+      <div class="sub">M.K College, Natore</div>
+    </div>
+    <div class="item">
+      <div class="row"><span class="title">S.S.C. — Science</span><span class="when">2018 — 2020</span></div>
+      <div class="sub">High School, Natore</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Research &amp; Publications</h2>
+  <div class="item">
+    <div class="row"><span class="title">Ensemble Deep Learning with Test-Time Augmentation for Breast Ultrasound Classification on BreastMNIST</span></div>
+    <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
+    <div class="authors"><b>Sheikh Noor Abdullah</b>, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain, Md. Rashed Nizam</div>
+  </div>
+  <div class="item">
+    <div class="row"><span class="title">An Explainable Ensemble Machine-Learning Framework for Predicting ICU Mortality in Critically Ill Patients</span></div>
+    <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
+    <div class="authors">Arnika Tabassum, <b>Sheikh Noor Abdullah</b>, Mst Rabeya Khatun Rikta, Md. Arafat Hossain, A.B.M. Kabir Hossain, Mursheda Nusrat Della</div>
+  </div>
+  <div class="item">
+    <div class="row"><span class="title">Multi-Backbone Ensemble Learning for Robust Breast Cancer Classification on the Mini-DDSM Mammography Dataset</span></div>
+    <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
+    <div class="authors"><b>Sheikh Noor Abdullah</b>, Nafis Shahriar, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain</div>
+  </div>
+  <div class="item">
+    <div class="row"><span class="title">Predicting Gallstone Disease from Clinical and Laboratory Data: A Leakage-Aware Machine Learning Evaluation</span></div>
+    <div class="sub">2nd International Student Research Conference (ISRC 2026), Dhaka University Research Society · Poster Presentation <span class="tag">ACCEPTED</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Experience</h2>
+  <div class="item">
+    <div class="row"><span class="title">IT Support &amp; Development</span><span class="when">2026 — Present</span></div>
+    <div class="sub">Imran IT, Kanaikhali, Natore</div>
+  </div>
+  <div class="grid-2">
+    <div class="item">
+      <div class="row"><span class="title">IT Intern</span><span class="when">2 months</span></div>
+      <div class="sub">ABC IT, Mirpur, Natore</div>
+    </div>
+    <div class="item">
+      <div class="row"><span class="title">Technical Assistant</span><span class="when">1 month</span></div>
+      <div class="sub">Cantonment, Bonpara</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Projects</h2>
+  <div class="item">
+    <div class="row"><span class="title">City Traffic Management System</span><span class="when">Python</span></div>
+    <div class="desc">Graph-based city traffic simulation using Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.</div>
+    <a class="link" href="https://github.com/NoorAbdullah02/TrafficRoutingSystem">github.com/NoorAbdullah02/TrafficRoutingSystem</a>
+  </div>
+  <div class="item">
+    <div class="row"><span class="title">DIY Handheld Gaming Console</span><span class="when">C · Arduino · Embedded</span></div>
+    <div class="desc">Handheld console built around an ATmega328P microcontroller with an I²C OLED display and push buttons on a perfboard; retro side-scroller game logic written in C.</div>
+    <a class="link" href="https://github.com/NoorAbdullah02/DLDProject">github.com/NoorAbdullah02/DLDProject</a>
+  </div>
+  <div class="item">
+    <div class="row"><span class="title">Personal Portfolio Platform</span><span class="when">React · Express · PostgreSQL · Three.js</span></div>
+    <div class="desc">Full-stack portfolio with an interactive 3D interface, an AI assistant that answers questions about my work, visitor analytics and an admin inbox with email replies.</div>
+    <a class="link" href="https://github.com/NoorAbdullah02/Noor-s-Portfolio">github.com/NoorAbdullah02/Noor-s-Portfolio</a>
+  </div>
+  <div class="item">
+    <div class="row"><span class="title">Elegant Calculator <span class="sub" style="font-weight:400">— desktop GUI calculator with percentages, constants, Clear-All and Undo</span></span><span class="when">Python · Tkinter</span></div>
+  </div>
+</section>
+
+<div class="grid-2">
+  <section>
+    <h2>Achievements</h2>
+    <ul class="bullets">
+      <li><b>ICPC Dhaka Regional</b> — contestant</li>
+      <li><b>RoboSpark</b> — Champion</li>
+      <li><b>Robot Making Hackathon 2025</b> — selected (Team Glitch Weavers, Robo Tech Valley)</li>
+      <li><b>IT Job Quiz Competition 1</b> — 3rd place, BAUET ICT Club</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Skills</h2>
+    <dl class="skills">
+      <dt>Languages</dt><dd>C++, C, Python, Java</dd>
+      <dt>Web</dt><dd>React</dd>
+      <dt>Tools</dt><dd>Git &amp; GitHub, Linux</dd>
+      <dt>Fields</dt><dd>Algorithms, machine learning, embedded systems &amp; IoT, networking, cyber security</dd>
+    </dl>
+  </section>
+</div>
+
+</body>
+</html>

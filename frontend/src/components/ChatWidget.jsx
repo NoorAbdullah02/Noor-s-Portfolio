@@ -48,11 +48,13 @@ function Typewriter({ text, onDone, onTick }) {
 
 function BotAvatar({ size = 32, online = false }) {
   return (
-    <span className="relative flex-shrink-0" style={{ width: size, height: size }}>
+    <span className="relative block flex-shrink-0" style={{ width: size, height: size, minWidth: size }}>
       <img
         src={profile.avatar}
         alt=""
-        className="h-full w-full rounded-full object-cover object-top ring-2 ring-white"
+        width={size}
+        height={size}
+        className="block h-full w-full rounded-full object-cover object-top ring-2 ring-white"
         loading="lazy"
         decoding="async"
       />
@@ -278,7 +280,7 @@ export default function ChatWidget() {
                 <motion.span key="chat" className="flex items-center gap-3" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.2 }}>
                   <span className="sm:hidden"><FiMessageCircle size={23} strokeWidth={2.2} /></span>
                   <span className="hidden sm:block"><BotAvatar size={44} online /></span>
-                  <span className="hidden text-left leading-tight sm:block">
+                  <span className="hidden whitespace-nowrap text-left leading-tight sm:block">
                     <span className="block text-sm font-semibold">Ask about me</span>
                     <span className="block text-[11px] text-white/55">Replies instantly</span>
                   </span>

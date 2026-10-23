@@ -4,6 +4,7 @@ import { FiCopy, FiCheck, FiRotateCcw, FiX, FiArrowUp, FiCpu, FiCode, FiBriefcas
 import { sendChatMessage } from "../lib/api";
 import useMediaQuery from "../hooks/useMediaQuery";
 import RichText from "./RichText";
+import { profile } from "../data/portfolioData";
 
 const TIP_KEY = "chat-tip-seen";
 const MAX_LEN = 1000;
@@ -45,14 +46,20 @@ function Typewriter({ text, onDone, onTick }) {
   return <RichText text={text.slice(0, count)} />;
 }
 
-function BotAvatar({ size = 32 }) {
+function BotAvatar({ size = 32, online = false }) {
   return (
-    <div
-      className="flex flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-2 font-mono font-bold text-white ring-2 ring-white"
-      style={{ width: size, height: size, fontSize: size * 0.42 }}
-    >
-      N
-    </div>
+    <span className="relative flex-shrink-0" style={{ width: size, height: size }}>
+      <img
+        src={profile.avatar}
+        alt=""
+        className="h-full w-full rounded-full object-cover object-top ring-2 ring-white"
+        loading="lazy"
+        decoding="async"
+      />
+      {online && (
+        <span className="absolute bottom-0 right-0 h-[28%] w-[28%] rounded-full bg-emerald-400 ring-2 ring-[#11112a]" />
+      )}
+    </span>
   );
 }
 
@@ -62,7 +69,7 @@ function TypingIndicator() {
       <BotAvatar size={28} />
       <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-border bg-white px-4 py-3.5 shadow-sm">
         {[0, 1, 2].map((i) => (
-          <motion.span key={i} className="block h-2 w-2 rounded-full bg-gradient-to-br from-primary to-primary-2"
+          <motion.span key={i} className="block h-2 w-2 rounded-full bg-text/60"
             animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
             transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }} />
         ))}
@@ -93,7 +100,7 @@ function Message({ msg, onTyped, onTick, reducedMotion }) {
     return (
       <motion.div initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.22 }}
         className="flex flex-col items-end">
-        <div className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-gradient-to-br from-primary to-primary-2 px-4 py-2.5 text-[14px] leading-relaxed text-white shadow-lg shadow-primary/20">
+        <div className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-text px-4 py-2.5 text-[14px] leading-relaxed text-white shadow-lg shadow-text/15">
           {msg.content}
         </div>
         <span className="mt-1 pr-1 text-[10px] text-muted">{timeLabel(msg.ts)}</span>
@@ -240,9 +247,10 @@ export default function ChatWidget() {
             initial={{ opacity: 0, x: 12, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 12, scale: 0.9 }}
-            className="fixed bottom-7 right-[5.5rem] z-50 hidden items-center gap-2 rounded-2xl rounded-br-sm border border-border bg-white px-4 py-2.5 text-sm font-medium text-text shadow-xl shadow-primary/10 sm:bottom-9 sm:right-[6.5rem] sm:flex"
+            className="fixed bottom-[5.5rem] right-6 z-50 hidden max-w-[220px] rounded-2xl rounded-br-sm border border-border bg-white px-4 py-3 text-left text-sm text-text shadow-xl shadow-text/10 sm:block"
           >
-            Questions? Ask me about Noor
+            <span className="block font-semibold">Got a question?</span>
+            <span className="text-xs text-muted">Ask about my skills, research or projects.</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -254,29 +262,29 @@ export default function ChatWidget() {
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             onClick={toggleOpen}
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full sm:bottom-6 sm:right-6"
-            style={{
-              background: "linear-gradient(135deg, #4f46e5, #9333ea)",
-              boxShadow: "0 10px 30px -8px rgba(79,70,229,0.6), inset 0 1px 0 rgba(255,255,255,0.3)",
-            }}
-            aria-label={open ? "Close assistant" : "Open assistant"}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className={`fixed bottom-4 right-4 z-50 flex h-14 items-center justify-center gap-3 rounded-full bg-[#0f1020] text-white shadow-[0_18px_40px_-14px_rgba(15,16,32,0.7)] ring-1 ring-white/30 sm:bottom-6 sm:right-6 ${
+              open ? "w-14" : "w-14 sm:w-auto sm:pl-1.5 sm:pr-5"
+            }`}
+            aria-label={open ? "Close assistant" : "Ask about Noor"}
           >
             <AnimatePresence mode="wait" initial={false}>
-              <motion.span key={open ? "x" : "chat"} className="relative"
-                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                transition={{ duration: 0.2 }}>
-                {open ? <FiX size={22} color="white" /> : <FiMessageCircle size={23} color="white" strokeWidth={2.2} />}
-              </motion.span>
+              {open ? (
+                <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <FiX size={22} />
+                </motion.span>
+              ) : (
+                <motion.span key="chat" className="flex items-center gap-3" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.2 }}>
+                  <span className="sm:hidden"><FiMessageCircle size={23} strokeWidth={2.2} /></span>
+                  <span className="hidden sm:block"><BotAvatar size={44} online /></span>
+                  <span className="hidden text-left leading-tight sm:block">
+                    <span className="block text-sm font-semibold">Ask about me</span>
+                    <span className="block text-[11px] text-white/55">Replies instantly</span>
+                  </span>
+                </motion.span>
+              )}
             </AnimatePresence>
-            {!open && (
-              <motion.span className="pointer-events-none absolute inset-0 rounded-full border-2 border-primary"
-                animate={{ scale: [1, 1.6], opacity: [0.5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }} />
-            )}
           </motion.button>
         )}
       </AnimatePresence>
@@ -293,37 +301,28 @@ export default function ChatWidget() {
             style={isMobile ? { height: "100dvh" } : {
               height: "min(620px, calc(100vh - 130px))",
               transformOrigin: "bottom right",
-              boxShadow: "0 40px 100px -20px rgba(79,70,229,0.35), 0 0 0 1px rgba(79,70,229,0.10), 0 10px 30px -10px rgba(0,0,0,0.15)",
+              boxShadow: "0 40px 100px -24px rgba(15,16,32,0.45), 0 0 0 1px rgba(15,16,32,0.08), 0 10px 30px -10px rgba(0,0,0,0.15)",
             }}
           >
             <div className="relative flex-shrink-0 overflow-hidden px-5 pb-5 pt-4" style={{ paddingTop: isMobile ? "max(1rem, env(safe-area-inset-top))" : undefined }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4338ca] via-[#6d28d9] to-[#9333ea]" />
-              <motion.div className="absolute -left-10 -top-16 h-44 w-44 rounded-full bg-[#38bdf8] opacity-40 blur-3xl"
-                animate={{ x: [0, 40, 0], y: [0, 20, 0] }} transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }} />
-              <motion.div className="absolute -bottom-20 right-0 h-44 w-44 rounded-full bg-[#ec4899] opacity-35 blur-3xl"
-                animate={{ x: [0, -40, 0], y: [0, -10, 0] }} transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }} />
-              <div className="absolute inset-0 bg-dots opacity-25" />
+              <div className="absolute inset-0 bg-[#0f1020]" />
+              <div className="absolute -right-16 -top-24 h-56 w-56 rounded-full bg-primary/40 blur-3xl" />
+              <div className="absolute -bottom-24 -left-10 h-48 w-48 rounded-full bg-primary-2/25 blur-3xl" />
 
               <div className="relative flex items-center gap-3">
-                <BotAvatar size={42} />
+                <BotAvatar size={42} online />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[15px] font-bold leading-tight text-white">Ask about Noor</p>
-                  <p className="mt-0.5 flex items-center gap-1.5 text-xs text-white/75">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-300" />
-                    </span>
-                    Online · replies instantly
-                  </p>
+                  <p className="truncate text-[15px] font-semibold leading-tight text-white">Ask about Noor</p>
+                  <p className="mt-0.5 text-xs text-white/55">Assistant trained on my portfolio · replies instantly</p>
                 </div>
                 {started && (
                   <button onClick={reset} title="New chat" aria-label="Start a new chat"
-                    className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white backdrop-blur transition hover:bg-white/25">
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20">
                     <FiRotateCcw size={15} />
                   </button>
                 )}
                 <button onClick={() => setOpen(false)} aria-label="Close"
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-white backdrop-blur transition hover:bg-white/25">
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20">
                   <FiX size={17} />
                 </button>
               </div>
@@ -336,8 +335,8 @@ export default function ChatWidget() {
                   className="flex min-h-full flex-col">
                   <motion.div variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
                     className="mb-5 flex flex-col items-center pt-2 text-center">
-                    <BotAvatar size={56} />
-                    <h3 className="mt-4 text-lg font-bold text-text">Hi there</h3>
+                    <BotAvatar size={64} />
+                    <h3 className="mt-4 text-lg font-semibold tracking-tight text-text">Hi there 👋</h3>
                     <p className="mt-1 max-w-[270px] text-sm leading-relaxed text-muted">{messages[0].content.replace(/^Hi! /, "")}</p>
                   </motion.div>
                   <div className="mt-auto grid grid-cols-2 gap-2.5">
@@ -347,9 +346,9 @@ export default function ChatWidget() {
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => send(s.prompt)}
-                        className="group rounded-2xl border border-border bg-white p-3.5 text-left shadow-sm transition-shadow hover:shadow-lg hover:shadow-primary/10"
+                        className="group rounded-2xl border border-border bg-white p-3.5 text-left shadow-sm transition-[box-shadow,border-color] hover:border-text/20 hover:shadow-lg hover:shadow-text/5"
                       >
-                        <span className="mb-2.5 inline-flex rounded-xl p-2 text-white" style={{ background: `linear-gradient(135deg, ${s.color[0]}, ${s.color[1]})` }}>
+                        <span className="mb-2.5 inline-flex rounded-xl bg-surface p-2 text-text/70 transition-colors group-hover:bg-text group-hover:text-white">
                           <s.icon size={14} />
                         </span>
                         <span className="block text-[13px] font-semibold text-text">{s.title}</span>
@@ -385,7 +384,7 @@ export default function ChatWidget() {
                 />
                 <motion.button type="submit" disabled={!input.trim() || loading}
                   whileTap={{ scale: 0.9 }}
-                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-2 text-white shadow-md shadow-primary/30 transition-opacity disabled:opacity-35 disabled:shadow-none"
+                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-text text-white shadow-md shadow-text/20 transition-opacity disabled:opacity-30 disabled:shadow-none"
                   aria-label="Send">
                   <FiArrowUp size={18} strokeWidth={2.5} />
                 </motion.button>

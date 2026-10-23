@@ -3,264 +3,296 @@
 <head>
 <meta charset="utf-8">
 <title>Sheikh Noor Abdullah — CV</title>
-<style>
-  @page { size: A4; margin: 10mm 12mm 8mm 12mm; }
-  :root {
-    --ink: #0d0e18;
-    --muted: #555a70;
-    --soft: #8a8fa6;
-    --line: #e3e5ef;
-    --accent: #4f46e5;
-    --accent-2: #7c3aed;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: var(--ink);
-    font-size: 8.95pt;
-    line-height: 1.34;
-    hyphens: auto;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  a { color: inherit; text-decoration: none; }
+<style>@page { size: A4; margin: 0; }
+:root {
+  --ink: #0f1020;
+  --muted: #4f5368;
+  --soft: #8a8fa6;
+  --line: #e4e6f0;
+  --accent: #4f46e5;
+  --side-1: #1e1b4b;
+  --side-2: #312e81;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html {
+  background: linear-gradient(to right, var(--side-2) 0 66mm, #fff 66mm);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+body {
+  width: 210mm;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  font-size: 8.7pt;
+  line-height: 1.38;
+  hyphens: auto;
+}
+a { color: inherit; text-decoration: none; }
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 16px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--ink);
-  }
-  h1 {
-    margin: 0;
-    font-size: 24pt;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    font-weight: 700;
-  }
-  h1 span { color: var(--accent); }
-  .role {
-    margin-top: 5px;
-    font-size: 10.5pt;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.01em;
-  }
-  .contact {
-    text-align: right;
-    font-size: 8.6pt;
-    line-height: 1.6;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-  .contact b { color: var(--ink); font-weight: 600; }
+.page { display: grid; grid-template-columns: 66mm 1fr; min-height: 297mm; }
 
-  .summary {
-    margin: 11px 0 2px;
-    font-size: 9.8pt;
-    color: #2a2d3d;
-    text-align: justify;
-  }
+aside {
+  position: relative;
+  padding: 13mm 7.5mm 10mm 8mm;
+  color: #e6e7fb;
+  background: linear-gradient(170deg, var(--side-1) 0%, var(--side-2) 100%);
+  overflow: hidden;
+}
+aside::before {
+  content: "";
+  position: absolute;
+  top: -40mm;
+  right: -40mm;
+  width: 90mm;
+  height: 90mm;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), transparent 65%);
+}
+.photo {
+  position: relative;
+  width: 34mm;
+  height: 34mm;
+  margin: 0 auto 7mm;
+  border-radius: 50%;
+  padding: 1.2mm;
+  background: linear-gradient(135deg, #a5b4fc, #c084fc);
+}
+.photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1mm solid var(--side-1);
+}
+aside h3 {
+  position: relative;
+  margin: 0 0 2.6mm;
+  padding-bottom: 1.4mm;
+  font-size: 7.6pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c7d2fe;
+  border-bottom: 1px solid rgba(199, 210, 254, 0.25);
+}
+aside section { position: relative; margin-bottom: 6mm; }
+.contact-row { display: flex; align-items: flex-start; gap: 2.4mm; margin-bottom: 1.9mm; word-break: break-all; }
+.contact-row svg { flex-shrink: 0; width: 3.4mm; height: 3.4mm; margin-top: 0.4mm; stroke: #a5b4fc; }
+.contact-row span { font-size: 8pt; color: #eef0ff; }
 
-  section { margin-top: 10px; }
-  h2 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 7px;
-    font-size: 8.4pt;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 700;
-  }
-  h2::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--line);
-  }
+.edu { margin-bottom: 3mm; }
+.edu b { display: block; color: #fff; font-size: 8.5pt; line-height: 1.3; }
+.edu span { display: block; color: #c4c8ec; font-size: 7.9pt; }
+.edu i { font-style: normal; color: #a5b4fc; font-size: 7.6pt; font-weight: 600; }
 
-  .item { margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid; }
-  .item:last-child { margin-bottom: 0; }
-  .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-  }
-  .title { font-weight: 650; font-size: 10pt; }
-  .when {
-    flex-shrink: 0;
-    font-size: 8.6pt;
-    color: var(--soft);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-  .sub { color: var(--muted); font-size: 9pt; }
-  .desc { margin-top: 2px; color: #33364a; text-align: justify; }
-  .authors { margin-top: 1px; font-size: 8.1pt; color: var(--soft); }
-  .authors b { color: var(--ink); font-weight: 600; }
-  .tag {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 0 6px;
-    border-radius: 3px;
-    background: #eef0ff;
-    color: var(--accent);
-    font-size: 7.6pt;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    vertical-align: 1px;
-  }
-  .link { color: var(--accent); font-size: 8.5pt; }
+.chips { display: flex; flex-wrap: wrap; gap: 1.4mm; }
+.chip {
+  padding: 0.6mm 2.2mm;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(199, 210, 254, 0.22);
+  color: #eef0ff;
+  font-size: 7.7pt;
+}
+.skill-group { margin-bottom: 2.6mm; }
+.skill-group small { display: block; margin-bottom: 1.2mm; color: #a5b4fc; font-size: 7.3pt; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
 
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+.award { display: flex; gap: 2.2mm; margin-bottom: 2.2mm; }
+.award::before { content: ""; flex-shrink: 0; width: 1.6mm; height: 1.6mm; margin-top: 1.5mm; border-radius: 50%; background: #c084fc; }
+.award b { color: #fff; font-weight: 600; }
+.award span { color: #c4c8ec; }
 
-  .skills { display: grid; grid-template-columns: 70px 1fr; gap: 2px 10px; margin: 0; }
-  .skills dt { font-weight: 650; color: var(--ink); }
-  .skills dd { margin: 0; color: #33364a; }
+main { padding: 13mm 11mm 9mm 10mm; background: #fff; }
+h1 { margin: 0; font-size: 27pt; line-height: 1; letter-spacing: -0.025em; font-weight: 750; }
+h1 span { color: var(--accent); }
+.role { margin-top: 2.2mm; font-size: 10pt; font-weight: 600; color: var(--muted); }
+.summary {
+  margin: 4.5mm 0 0;
+  padding-left: 3mm;
+  border-left: 2.5px solid var(--accent);
+  color: #2c2f42;
+  font-size: 8.9pt;
+  text-align: justify;
+}
 
-  ul.bullets { margin: 0; padding-left: 14px; }
-  ul.bullets li { margin-bottom: 2px; padding-left: 2px; }
-  ul.bullets li::marker { color: var(--accent); }
+main section { margin-top: 5.2mm; }
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 2.5mm;
+  margin: 0 0 2.6mm;
+  font-size: 8pt;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
-  footer {
-    margin-top: 10px;
-    padding-top: 6px;
-    border-top: 1px solid var(--line);
-    font-size: 7.8pt;
-    color: var(--soft);
-    text-align: center;
-  }
+.item { margin-bottom: 2.6mm; break-inside: avoid; }
+.item:last-child { margin-bottom: 0; }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
+.title { font-weight: 650; font-size: 9.1pt; color: var(--ink); }
+.when { flex-shrink: 0; font-size: 7.8pt; color: var(--soft); font-weight: 600; }
+.sub { color: var(--muted); font-size: 8.2pt; }
+.desc { margin-top: 0.4mm; color: #33364a; text-align: justify; }
+.authors { margin-top: 0.3mm; font-size: 7.6pt; color: var(--soft); }
+.authors b { color: var(--ink); font-weight: 600; }
+.tag {
+  display: inline-block;
+  margin-left: 1.5mm;
+  padding: 0 1.6mm;
+  border-radius: 1mm;
+  background: #eef0ff;
+  color: var(--accent);
+  font-size: 6.9pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: 0.3mm;
+}
+.link { color: var(--accent); font-size: 7.8pt; }
+.pub { position: relative; padding-left: 5.5mm; }
+.pub .n {
+  position: absolute;
+  left: 0;
+  top: 0.3mm;
+  width: 4mm;
+  height: 4mm;
+  border-radius: 1mm;
+  background: var(--accent);
+  color: #fff;
+  font-size: 7pt;
+  font-weight: 700;
+  line-height: 4mm;
+  text-align: center;
+}
 </style>
 </head>
 <body>
+<div class="page">
+  <aside>
+    <div class="photo"><img src="cv-photo.jpg" alt="Sheikh Noor Abdullah"></div>
 
-<header>
-  <div>
-    <h1>Sheikh Noor <span>Abdullah</span></h1>
+    <section>
+      <h3>Contact</h3>
+      <div class="contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Natore, Bangladesh</span>
+      </div>
+      <div class="contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span><a href="tel:01748269350">+880 1748-269350</a></span>
+      </div>
+      <div class="contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span><a href="mailto:sheikhnoorabdullah02@gmail.com">sheikhnoorabdullah02@gmail.com</a></span>
+      </div>
+      <div class="contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        <span><a href="https://github.com/NoorAbdullah02">github.com/NoorAbdullah02</a></span>
+      </div>
+      <div class="contact-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        <span><a href="https://www.linkedin.com/in/sheikhnoorabdullah/">in/sheikhnoorabdullah</a></span>
+      </div>
+    </section>
+
+    <section>
+      <h3>Education</h3>
+      <div class="edu"><b>B.Sc. in Information and Communication Engineering</b><span>Bangladesh Army University of Engineering and Technology</span><i>2022 — 2026</i></div>
+      <div class="edu"><b>H.S.C. in Science Group</b><span>M.K College, Natore</span><i>2020 — 2022</i></div>
+      <div class="edu"><b>S.S.C. in Science Group</b><span>High School, Natore</span><i>2018 — 2020</i></div>
+    </section>
+
+    <section>
+      <h3>Skills</h3>
+      <div class="skill-group"><small>Languages</small><div class="chips"><span class="chip">C++</span><span class="chip">C</span><span class="chip">Python</span><span class="chip">Java</span></div></div>
+      <div class="skill-group"><small>Tools &amp; Web</small><div class="chips"><span class="chip">Linux</span><span class="chip">Git &amp; GitHub</span><span class="chip">React</span></div></div>
+      <div class="skill-group"><small>Fields</small><div class="chips"><span class="chip">Algorithms</span><span class="chip">Machine learning</span><span class="chip">Cyber Security</span><span class="chip">Networking</span><span class="chip">Embedded Systems (IoT)</span></div></div>
+    </section>
+
+    <section>
+      <h3>Achievements</h3>
+      <div class="award"><div><b>ICPC Dhaka Regional</b> <span>— contestant</span></div></div>
+      <div class="award"><div><b>RoboSpark</b> <span>— Champion</span></div></div>
+      <div class="award"><div><b>Robot Making Hackathon 2025</b> <span>— selected, Team Glitch Weavers</span></div></div>
+      <div class="award"><div><b>IT Job Quiz Competition 1</b> <span>— 3rd place, BAUET ICT Club</span></div></div>
+    </section>
+  </aside>
+
+  <main>
+    <h1>Sheikh Noor<br><span>Abdullah</span></h1>
     <div class="role">Competitive Programmer · ML Researcher · Software Engineer</div>
-  </div>
-  <div class="contact">
-    <b>Natore, Bangladesh</b><br>
-    <a href="tel:+8801748269350">+880 1748-269350</a><br>
-    <a href="mailto:sheikhnoorabdullah02@gmail.com">sheikhnoorabdullah02@gmail.com</a><br>
-    <a href="https://github.com/NoorAbdullah02">github.com/NoorAbdullah02</a><br>
-    <a href="https://www.linkedin.com/in/sheikhnoorabdullah/">linkedin.com/in/sheikhnoorabdullah</a>
-  </div>
-</header>
+    <p class="summary">ICE undergraduate at BAUET, ICPC Dhaka Regional contestant and machine-learning researcher with four accepted conference papers on medical-data classification. Strong in C/C++ and algorithmic problem solving, with hands-on experience in Python, embedded systems and IoT hardware.</p>
 
-<p class="summary">
-  Information &amp; Communication Engineering undergraduate at Bangladesh Army University of Engineering and Technology (BAUET),
-  ICPC Dhaka Regional contestant and machine-learning researcher with four accepted conference papers on medical-data classification.
-  Strong in C/C++ and algorithmic problem solving, with hands-on experience in Python, embedded systems and IoT hardware.
-</p>
+    <section>
+      <h2>Research &amp; Publications</h2>
+      <div class="item pub">
+        <span class="n">1</span>
+        <div class="title">Ensemble Deep Learning with Test-Time Augmentation for Breast Ultrasound Classification on BreastMNIST</div>
+        <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
+        <div class="authors"><b>Sheikh Noor Abdullah</b>, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain, Md. Rashed Nizam</div>
+      </div>
+      <div class="item pub">
+        <span class="n">2</span>
+        <div class="title">An Explainable Ensemble Machine-Learning Framework for Predicting ICU Mortality in Critically Ill Patients</div>
+        <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
+        <div class="authors">Arnika Tabassum, <b>Sheikh Noor Abdullah</b>, Mst Rabeya Khatun Rikta, Md. Arafat Hossain, A.B.M. Kabir Hossain, Mursheda Nusrat Della</div>
+      </div>
+      <div class="item pub">
+        <span class="n">3</span>
+        <div class="title">Multi-Backbone Ensemble Learning for Robust Breast Cancer Classification on the Mini-DDSM Mammography Dataset</div>
+        <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
+        <div class="authors"><b>Sheikh Noor Abdullah</b>, Nafis Shahriar, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain</div>
+      </div>
+      <div class="item pub">
+        <span class="n">4</span>
+        <div class="title">Predicting Gallstone Disease from Clinical and Laboratory Data: A Leakage-Aware Machine Learning Evaluation</div>
+        <div class="sub">ISRC 2026, Dhaka University Research Society · Poster Presentation <span class="tag">ACCEPTED</span></div>
+        
+      </div>
+    </section>
 
-<section>
-  <h2>Education</h2>
-  <div class="item">
-    <div class="row"><span class="title">B.Sc. in Information and Communication Engineering</span><span class="when">2022 — 2026</span></div>
-    <div class="sub">Bangladesh Army University of Engineering and Technology (BAUET)</div>
-  </div>
-  <div class="grid-2">
-    <div class="item">
-      <div class="row"><span class="title">H.S.C. — Science</span><span class="when">2020 — 2022</span></div>
-      <div class="sub">M.K College, Natore</div>
-    </div>
-    <div class="item">
-      <div class="row"><span class="title">S.S.C. — Science</span><span class="when">2018 — 2020</span></div>
-      <div class="sub">High School, Natore</div>
-    </div>
-  </div>
-</section>
+    <section>
+      <h2>Experience</h2>
+      <div class="item">
+        <div class="row"><span class="title">IT Support &amp; Development</span><span class="when">2026 — Present</span></div>
+        <div class="sub">Imran IT, Kanaikhali, Natore</div>
+      </div>
+      <div class="item">
+        <div class="row"><span class="title">IT Intern</span><span class="when">2 Months</span></div>
+        <div class="sub">ABC IT, Mirpur, Natore</div>
+      </div>
+      <div class="item">
+        <div class="row"><span class="title">Technical Assistant</span><span class="when">1 Month</span></div>
+        <div class="sub">Cantonment, Bonpara</div>
+      </div>
+    </section>
 
-<section>
-  <h2>Research &amp; Publications</h2>
-  <div class="item">
-    <div class="row"><span class="title">Ensemble Deep Learning with Test-Time Augmentation for Breast Ultrasound Classification on BreastMNIST</span></div>
-    <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
-    <div class="authors"><b>Sheikh Noor Abdullah</b>, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain, Md. Rashed Nizam</div>
-  </div>
-  <div class="item">
-    <div class="row"><span class="title">An Explainable Ensemble Machine-Learning Framework for Predicting ICU Mortality in Critically Ill Patients</span></div>
-    <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
-    <div class="authors">Arnika Tabassum, <b>Sheikh Noor Abdullah</b>, Mst Rabeya Khatun Rikta, Md. Arafat Hossain, A.B.M. Kabir Hossain, Mursheda Nusrat Della</div>
-  </div>
-  <div class="item">
-    <div class="row"><span class="title">Multi-Backbone Ensemble Learning for Robust Breast Cancer Classification on the Mini-DDSM Mammography Dataset</span></div>
-    <div class="sub">IEEE CSDE 2026 · Full Research Paper <span class="tag">ACCEPTED</span></div>
-    <div class="authors"><b>Sheikh Noor Abdullah</b>, Nafis Shahriar, Mehejabin Tabassum Lamia, Mysha Ibnat Mourin, Farah Ulfat Urmi, A.B.M. Kabir Hossain</div>
-  </div>
-  <div class="item">
-    <div class="row"><span class="title">Predicting Gallstone Disease from Clinical and Laboratory Data: A Leakage-Aware Machine Learning Evaluation</span></div>
-    <div class="sub">2nd International Student Research Conference (ISRC 2026), Dhaka University Research Society · Poster Presentation <span class="tag">ACCEPTED</span></div>
-  </div>
-</section>
-
-<section>
-  <h2>Experience</h2>
-  <div class="item">
-    <div class="row"><span class="title">IT Support &amp; Development</span><span class="when">2026 — Present</span></div>
-    <div class="sub">Imran IT, Kanaikhali, Natore</div>
-  </div>
-  <div class="grid-2">
-    <div class="item">
-      <div class="row"><span class="title">IT Intern</span><span class="when">2 months</span></div>
-      <div class="sub">ABC IT, Mirpur, Natore</div>
-    </div>
-    <div class="item">
-      <div class="row"><span class="title">Technical Assistant</span><span class="when">1 month</span></div>
-      <div class="sub">Cantonment, Bonpara</div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <h2>Projects</h2>
-  <div class="item">
-    <div class="row"><span class="title">City Traffic Management System</span><span class="when">Python</span></div>
-    <div class="desc">Graph-based city traffic simulation using Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.</div>
-    <a class="link" href="https://github.com/NoorAbdullah02/TrafficRoutingSystem">github.com/NoorAbdullah02/TrafficRoutingSystem</a>
-  </div>
-  <div class="item">
-    <div class="row"><span class="title">DIY Handheld Gaming Console</span><span class="when">C · Arduino · Embedded</span></div>
-    <div class="desc">Handheld console built around an ATmega328P microcontroller with an I²C OLED display and push buttons on a perfboard; retro side-scroller game logic written in C.</div>
-    <a class="link" href="https://github.com/NoorAbdullah02/DLDProject">github.com/NoorAbdullah02/DLDProject</a>
-  </div>
-  <div class="item">
-    <div class="row"><span class="title">Personal Portfolio Platform</span><span class="when">React · Express · PostgreSQL · Three.js</span></div>
-    <div class="desc">Full-stack portfolio with an interactive 3D interface, an AI assistant that answers questions about my work, visitor analytics and an admin inbox with email replies.</div>
-    <a class="link" href="https://github.com/NoorAbdullah02/Noor-s-Portfolio">github.com/NoorAbdullah02/Noor-s-Portfolio</a>
-  </div>
-  <div class="item">
-    <div class="row"><span class="title">Elegant Calculator <span class="sub" style="font-weight:400">— desktop GUI calculator with percentages, constants, Clear-All and Undo</span></span><span class="when">Python · Tkinter</span></div>
-  </div>
-</section>
-
-<div class="grid-2">
-  <section>
-    <h2>Achievements</h2>
-    <ul class="bullets">
-      <li><b>ICPC Dhaka Regional</b> — contestant</li>
-      <li><b>RoboSpark</b> — Champion</li>
-      <li><b>Robot Making Hackathon 2025</b> — selected (Team Glitch Weavers, Robo Tech Valley)</li>
-      <li><b>IT Job Quiz Competition 1</b> — 3rd place, BAUET ICT Club</li>
-    </ul>
-  </section>
-  <section>
-    <h2>Skills</h2>
-    <dl class="skills">
-      <dt>Languages</dt><dd>C++, C, Python, Java</dd>
-      <dt>Web</dt><dd>React</dd>
-      <dt>Tools</dt><dd>Git &amp; GitHub, Linux</dd>
-      <dt>Fields</dt><dd>Algorithms, machine learning, embedded systems &amp; IoT, networking, cyber security</dd>
-    </dl>
-  </section>
+    <section>
+      <h2>Projects</h2>
+      <div class="item">
+        <div class="row"><span class="title">City Traffic Management System</span><span class="when">Python</span></div>
+        <div class="desc">Graph-based city traffic simulation using Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.</div>
+        <a class="link" href="https://github.com/NoorAbdullah02/TrafficRoutingSystem">github.com/NoorAbdullah02/TrafficRoutingSystem</a>
+      </div>
+      <div class="item">
+        <div class="row"><span class="title">DIY Handheld Gaming Console</span><span class="when">C · Arduino</span></div>
+        <div class="desc">ATmega328P-based handheld with an I²C OLED display and push buttons on a perfboard; retro side-scroller game logic written in C.</div>
+        <a class="link" href="https://github.com/NoorAbdullah02/DLDProject">github.com/NoorAbdullah02/DLDProject</a>
+      </div>
+      <div class="item">
+        <div class="row"><span class="title">Personal Portfolio Platform</span><span class="when">React · Express · PostgreSQL</span></div>
+        <div class="desc">Full-stack portfolio with an interactive 3D interface, an AI assistant that answers questions about my work, visitor analytics and an admin inbox with email replies.</div>
+        <a class="link" href="https://github.com/NoorAbdullah02/Noor-s-Portfolio">github.com/NoorAbdullah02/Noor-s-Portfolio</a>
+      </div>
+      <div class="item">
+        <div class="row"><span class="title">Elegant Calculator</span><span class="when">Python · Tkinter</span></div>
+        <div class="desc">Desktop GUI calculator with percentages, constants such as π, Clear-All and Undo.</div>
+        
+      </div>
+    </section>
+  </main>
 </div>
-
 </body>
 </html>

@@ -1,123 +1,125 @@
 import { motion } from "framer-motion";
-import { FiBookOpen, FiBriefcase, FiCalendar } from "react-icons/fi";
+import { FiBookOpen, FiBriefcase, FiCpu, FiCode, FiAward, FiFileText } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { education, experience, achievements } from "../data/portfolioData";
 import { trackSpotlight } from "../lib/spotlight";
 
-function TimelineItem({ item, index }) {
+const EASE = [0.22, 1, 0.36, 1];
+const ACHIEVEMENT_ICONS = { paper: FiFileText, robot: FiCpu, code: FiCode, quiz: FiAward };
+
+function TimelineList({ icon: Icon, title, items, delay = 0 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.5, delay: index * 0.12 }}
-      className="relative pl-6"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.65, delay, ease: EASE }}
+      className="rounded-3xl border border-border bg-white/80 p-6 shadow-sm sm:p-8"
     >
-      {/* Glowing dot */}
-      <div className="absolute -left-[7px] top-2.5 flex h-3.5 w-3.5 items-center justify-center">
-        <div className="absolute h-3.5 w-3.5 rounded-full bg-gradient-to-r from-primary to-primary-2 glow-sm" />
-        <div className="absolute h-5 w-5 rounded-full bg-primary/20 animate-ping [animation-duration:2s]"
-          style={{ animationDelay: `${index * 0.3}s` }} />
+      <div className="mb-6 flex items-center gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-text text-white">
+          <Icon size={17} />
+        </span>
+        <h3 className="text-lg font-semibold text-text">{title}</h3>
       </div>
 
-      <div className="group rounded-xl border border-border bg-bg p-4 transition-all hover:border-primary/25 hover:shadow-lg hover:shadow-primary/8 hover:-translate-y-0.5">
-        <div className="flex items-start justify-between gap-2">
-          <h4 className="font-semibold text-text text-sm leading-snug">{item.title}</h4>
-        </div>
-        <p className="mt-1 text-xs text-muted">{item.place}</p>
-        <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5">
-          <FiCalendar size={10} className="text-primary" />
-          <span className="font-mono text-[10px] text-primary">{item.time}</span>
-        </div>
-      </div>
+      <ol className="relative">
+        {items.map((item, i) => (
+          <motion.li
+            key={item.title}
+            initial={{ opacity: 0, x: 12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: delay + 0.1 + i * 0.08, ease: EASE }}
+            className="group relative grid grid-cols-[18px_1fr] gap-4 pb-6 last:pb-0"
+          >
+            {i < items.length - 1 && <span className="absolute left-[8px] top-5 bottom-0 w-px bg-border" />}
+            <span className="relative mt-1.5 flex h-[18px] w-[18px] items-center justify-center rounded-full border-2 border-primary/30 bg-white transition-colors group-hover:border-primary">
+              <span className={`h-2 w-2 rounded-full ${i === 0 ? "bg-gradient-to-br from-primary to-primary-2" : "bg-primary/40"}`} />
+            </span>
+            <div className="min-w-0">
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">{item.time}</span>
+              <h4 className="mt-0.5 font-semibold leading-snug text-text">{item.title}</h4>
+              <p className="mt-0.5 text-sm text-muted">{item.place}</p>
+            </div>
+          </motion.li>
+        ))}
+      </ol>
     </motion.div>
   );
 }
 
-function TimelineColumn({ icon, title, items }) {
+function FeaturedAchievement({ a }) {
   return (
-    <div>
-      <div className="mb-8 flex items-center gap-3">
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: `linear-gradient(135deg, var(--color-primary)/15, var(--color-primary-2)/15)` }}
-        >
-          <span className="text-primary">{icon}</span>
-        </div>
-        <h3 className="text-lg font-bold text-text">{title}</h3>
+    <motion.article
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.7, ease: EASE }}
+      className="group relative min-h-[320px] overflow-hidden rounded-3xl bg-text sm:col-span-2 lg:row-span-2"
+    >
+      <img
+        src={a.image}
+        alt={a.title}
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b1a] via-[#0b0b1a]/50 to-transparent" />
+      <div className="relative flex h-full flex-col justify-end p-7 sm:p-8">
+        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white backdrop-blur">
+          <FiAward size={11} /> Featured
+        </span>
+        <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">{a.title}</h3>
+        <p className="mt-2 max-w-lg text-left text-sm leading-relaxed text-white/75">{a.description}</p>
       </div>
-      <div className="relative space-y-5 border-l-2 border-border/70 pl-2"
-        style={{ borderImage: "linear-gradient(to bottom, var(--color-primary), var(--color-primary-2)) 1" }}>
-        {items.map((item, i) => (
-          <TimelineItem key={item.title} item={item} index={i} />
-        ))}
-      </div>
-    </div>
+    </motion.article>
+  );
+}
+
+function AchievementCard({ a, index }) {
+  const Icon = ACHIEVEMENT_ICONS[a.icon] || FiAward;
+  const [c1, c2] = a.color || ["#4f46e5", "#9333ea"];
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.6, delay: index * 0.07, ease: EASE }}
+      onPointerMove={trackSpotlight}
+      className="spotlight group flex flex-col rounded-3xl border border-border bg-white/80 p-6 shadow-sm transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10"
+    >
+      <span
+        className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl text-white"
+        style={{ background: `linear-gradient(135deg, ${c1}, ${c2})`, boxShadow: `0 10px 24px -10px ${c1}` }}
+      >
+        <Icon size={19} />
+      </span>
+      <h3 className="font-semibold leading-snug text-text">{a.title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted">{a.description}</p>
+    </motion.article>
   );
 }
 
 export default function Timeline() {
+  const featured = achievements.find((a) => a.image);
+  const rest = achievements.filter((a) => a !== featured);
+
   return (
-    <Section id="qualification" className="bg-surface/20">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/4 top-0 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
-      </div>
+    <Section id="qualification">
+      <SectionHeading eyebrow="Qualification" title="Education & Experience" subtitle="The path that shaped my skills" />
 
-      <SectionHeading
-        eyebrow="Qualification"
-        title="Education & Experience"
-        subtitle="The path that shaped my skills"
-      />
-
-      <div className="grid grid-cols-1 gap-14 md:grid-cols-2">
-        <TimelineColumn icon={<FiBookOpen size={18} />} title="Education" items={education} />
-        <TimelineColumn icon={<FiBriefcase size={18} />} title="Experience" items={experience} />
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <TimelineList icon={FiBookOpen} title="Education" items={education} />
+        <TimelineList icon={FiBriefcase} title="Experience" items={experience} delay={0.1} />
       </div>
 
       {achievements.length > 0 && (
-        <div className="mt-24">
-          <SectionHeading eyebrow="Achievements" title="Milestones" align="left" />
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {achievements.map((a, i) => {
-              const [c1, c2] = a.color || ["#4f46e5", "#9333ea"];
-              return (
-                <motion.div
-                  key={a.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  onPointerMove={trackSpotlight}
-                  className="spotlight group overflow-hidden rounded-2xl border border-border bg-bg transition-[box-shadow,transform,border-color] duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
-                >
-                  <div className="relative overflow-hidden h-40">
-                    {a.image ? (
-                      <>
-                        <img src={a.image} alt={a.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-bg/80 to-transparent" />
-                      </>
-                    ) : (
-                      <div
-                        className="h-full w-full flex items-center justify-center"
-                        style={{ background: `linear-gradient(135deg, ${c1}22, ${c2}33)` }}
-                      >
-                        <div className="h-16 w-16 rounded-2xl flex items-center justify-center text-3xl"
-                          style={{ background: `linear-gradient(135deg, ${c1}, ${c2})`, boxShadow: `0 8px 24px -8px ${c1}80` }}>
-                          {a.icon === "paper" ? "📄" : a.icon === "robot" ? "🤖" : a.icon === "quiz" ? "🏆" : "💻"}
-                        </div>
-                        <div className="absolute inset-0 bg-dots opacity-30" />
-                      </div>
-                    )}
-                    <div className="absolute top-0 inset-x-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ background: `linear-gradient(90deg, ${c1}, ${c2})` }} />
-                  </div>
-                  <div className="p-5">
-                    <h4 className="font-semibold text-text text-sm">{a.title}</h4>
-                    <p className="mt-2 text-xs text-muted leading-relaxed">{a.description}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
+        <div className="mt-28">
+          <SectionHeading eyebrow="Achievements" title="Milestones" subtitle="Competitions, research and recognition" />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featured && <FeaturedAchievement a={featured} />}
+            {rest.map((a, i) => <AchievementCard key={a.title} a={a} index={i} />)}
           </div>
         </div>
       )}

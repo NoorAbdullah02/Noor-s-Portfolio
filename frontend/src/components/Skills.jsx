@@ -1,100 +1,109 @@
 import { motion } from "framer-motion";
+import { FiCode, FiSmartphone, FiShield, FiCpu, FiTerminal, FiTool, FiLayers, FiArrowUpRight } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
-import TiltCard from "./TiltCard";
 import { skills, services } from "../data/portfolioData";
-import { FiCode, FiSmartphone, FiShield, FiCpu } from "react-icons/fi";
+import { trackSpotlight } from "../lib/spotlight";
 
-const icons = { code: FiCode, app: FiSmartphone, shield: FiShield, cpu: FiCpu };
+const EASE = [0.22, 1, 0.36, 1];
+const serviceIcons = { code: FiCode, app: FiSmartphone, shield: FiShield, cpu: FiCpu };
+const TOOLS = new Set(["React", "Linux", "Git & GitHub"]);
 
-const CATEGORY_COLORS = {
-  language: { bg: "bg-primary/10", text: "text-primary", label: "Language" },
-  tool: { bg: "bg-primary-2/10", text: "text-primary-2", label: "Tool" },
-  field: { bg: "bg-accent/10", text: "text-accent", label: "Field" },
-};
+const GROUPS = [
+  { id: "language", title: "Languages", icon: FiTerminal, match: (s) => s.category === "language" && !TOOLS.has(s.name) },
+  { id: "tool", title: "Tools & Frameworks", icon: FiTool, match: (s) => s.category === "tool" || TOOLS.has(s.name) },
+  { id: "field", title: "Fields", icon: FiLayers, match: (s) => s.category === "field" },
+];
 
-function SkillBar({ name, level, category, index }) {
-  const cat = CATEGORY_COLORS[category] || CATEGORY_COLORS.language;
+function levelOf(value) {
+  if (value >= 85) return "Expert";
+  if (value >= 65) return "Advanced";
+  if (value >= 45) return "Proficient";
+  if (value >= 30) return "Intermediate";
+  return "Familiar";
+}
+
+function Dots({ value }) {
+  const filled = Math.max(1, Math.round(value / 20));
+  return (
+    <span className="flex gap-1" aria-hidden>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span
+          key={i}
+          className={`h-1.5 w-4 rounded-full ${i < filled ? "bg-gradient-to-r from-primary to-primary-2" : "bg-border"}`}
+        />
+      ))}
+    </span>
+  );
+}
+
+function SkillGroup({ group, index }) {
+  const items = skills.filter(group.match).sort((a, b) => b.level - a.level);
+  const Icon = group.icon;
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.5, delay: index * 0.06 }}
-      className="group"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
+      onPointerMove={trackSpotlight}
+      className="spotlight flex flex-col rounded-3xl border border-border bg-white/80 p-6 shadow-sm sm:p-7"
     >
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-text text-sm">{name}</span>
-          <span className={`rounded-full px-2 py-0.5 text-[10px] font-mono font-medium ${cat.bg} ${cat.text}`}>
-            {cat.label}
-          </span>
+      <div className="mb-6 flex items-center gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-text text-white">
+          <Icon size={17} />
+        </span>
+        <div>
+          <h3 className="font-semibold text-text">{group.title}</h3>
+          <p className="text-xs text-muted">{items.length} skills</p>
         </div>
-        <span className="font-mono text-xs font-medium text-primary tabular-nums">{level}%</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-surface border border-border/50">
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${level}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: index * 0.06 }}
-          className="shine-bar relative h-full overflow-hidden rounded-full bg-gradient-to-r from-primary to-primary-2"
-          style={{
-            boxShadow: "0 0 10px -2px color-mix(in srgb, var(--color-primary) 70%, transparent)",
-          }}
-        />
-      </div>
+      <ul className="space-y-4">
+        {items.map((s) => (
+          <li key={s.name} className="flex items-center justify-between gap-3">
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-medium text-text">{s.name}</span>
+              <span className="text-[11px] text-muted">{levelOf(s.level)}</span>
+            </span>
+            <Dots value={s.level} />
+          </li>
+        ))}
+      </ul>
     </motion.div>
   );
 }
 
 export default function Skills() {
   return (
-    <Section id="skills" className="bg-surface/20">
-      {/* Subtle background gradient */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute right-0 top-1/4 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute left-0 bottom-1/4 h-72 w-72 rounded-full bg-primary-2/5 blur-3xl" />
+    <Section id="skills" className="bg-surface/30">
+      <SectionHeading eyebrow="Skills" title="My Expertise Area" subtitle="Languages, tools and fields I work with" />
+
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        {GROUPS.map((g, i) => <SkillGroup key={g.id} group={g} index={i} />)}
       </div>
 
-      <SectionHeading
-        eyebrow="Skills"
-        title="My Expertise Area"
-        subtitle="Languages, tools and fields I work with"
-      />
-
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {skills.map((s, i) => (
-          <SkillBar key={s.name} {...s} index={i} />
-        ))}
-      </div>
-
-      <div className="mt-24">
+      <div className="mt-28">
         <SectionHeading eyebrow="Services" title="What I Offer" />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, i) => {
-            const Icon = icons[service.icon] ?? FiCode;
+            const Icon = serviceIcons[service.icon] ?? FiCode;
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+                className="group relative flex flex-col bg-bg p-7 transition-colors hover:bg-white"
               >
-                <TiltCard className="group relative overflow-hidden rounded-2xl border border-border bg-bg p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10">
-                  {/* Top gradient line */}
-                  <div className="absolute top-0 inset-x-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-primary to-primary-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {/* Large faded icon background */}
-                  <div className="absolute -right-4 -top-4 opacity-[0.04] group-hover:opacity-[0.07] transition-opacity">
-                    <Icon size={80} />
-                  </div>
-
-                  <div className="mb-4 inline-flex rounded-2xl bg-gradient-to-br from-primary/15 to-primary-2/15 p-3.5 text-primary group-hover:from-primary/25 group-hover:to-primary-2/25 transition-all">
-                    <Icon size={22} />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-text">{service.title}</h3>
-                  <p className="text-sm text-muted leading-relaxed">{service.description}</p>
-                </TiltCard>
+                <div className="mb-10 flex items-start justify-between">
+                  <span className="font-mono text-xs font-semibold text-muted">{String(i + 1).padStart(2, "0")}</span>
+                  <FiArrowUpRight className="text-muted opacity-0 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary group-hover:opacity-100" />
+                </div>
+                <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-primary-2/10 text-primary transition-colors group-hover:from-primary group-hover:to-primary-2 group-hover:text-white">
+                  <Icon size={19} />
+                </span>
+                <h3 className="text-base font-semibold text-text">{service.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{service.description}</p>
               </motion.div>
             );
           })}

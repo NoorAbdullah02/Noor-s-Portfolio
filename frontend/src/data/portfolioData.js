@@ -101,6 +101,7 @@ export const achievements = [
     description:
       "Participated in the International Collegiate Programming Contest (ICPC) Dhaka Regional, competing against top university teams in algorithmic problem solving.",
     image: "/images/ICPC1.jpg",
+    cv: "ICPC Dhaka Regional — contestant",
   },
   {
     title: "3 Papers — IEEE CSDE 2026",
@@ -119,12 +120,13 @@ export const achievements = [
     color: ["#4f46e5", "#9333ea"],
   },
   {
-    title: "RoboSpark Champion 🏆",
+    title: "RoboSpark Champion",
     description:
       "Won the RoboSpark robotics competition, demonstrating excellence in hardware design, embedded programming and real-time control systems under pressure.",
     image: null,
     icon: "robot",
     color: ["#f59e0b", "#ef4444"],
+    cv: "RoboSpark — Champion",
   },
   {
     title: "Robot Making Hackathon 2025",
@@ -133,14 +135,16 @@ export const achievements = [
     image: null,
     icon: "code",
     color: ["#10b981", "#0ea5e9"],
+    cv: "Robot Making Hackathon 2025 — selected, Team Glitch Weavers",
   },
   {
-    title: "IT Job Quiz — 3rd Place 🥉",
+    title: "IT Job Quiz — 3rd Place",
     description:
       "Secured 3rd place in IT Job Quiz Competition 1, organized by BAUET ICT Club. Recognized among the top 3 performers for strong technical knowledge and competitive performance in IT topics.",
     image: null,
     icon: "quiz",
     color: ["#cd7f32", "#a0522d"],
+    cv: "IT Job Quiz Competition 1 — 3rd place, BAUET ICT Club",
   },
 ];
 
@@ -172,6 +176,8 @@ export const research = [
     type: "Poster Presentation — Track 1: Computer Science, AI & Data Science",
     status: "Accepted",
     authors: "Sheikh Noor Abdullah et al.",
+    cvVenue: "ISRC 2026, Dhaka University Research Society",
+    cvType: "Poster Presentation",
   },
 ];
 
@@ -184,6 +190,7 @@ export const featuredProjects = [
     image: "/images/CalaulatorProject/cal.jpg",
     github: "https://github.com/NoorAbdullah02/1st-project/tree/main/Calculato_Project",
     demo: null,
+    cv: { title: "Elegant Calculator", tech: "Python · Tkinter", summary: "Desktop GUI calculator with percentages, constants such as π, Clear-All and Undo.", order: 4 },
   },
   {
     title: "City Traffic Management System 🚦",
@@ -193,6 +200,7 @@ export const featuredProjects = [
     image: "/images/traffic3.png",
     github: "https://github.com/NoorAbdullah02/TrafficRoutingSystem",
     demo: null,
+    cv: { title: "City Traffic Management System", tech: "Python", summary: "Graph-based city traffic simulation using Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.", order: 1 },
   },
   {
     title: "DIY Handheld Gaming Console",
@@ -202,6 +210,7 @@ export const featuredProjects = [
     image: "/images/DLD1.jpg",
     github: "https://github.com/NoorAbdullah02/DLDProject",
     demo: null,
+    cv: { title: "DIY Handheld Gaming Console", tech: "C · Arduino", summary: "ATmega328P-based handheld with an I²C OLED display and push buttons on a perfboard; retro side-scroller game logic written in C.", order: 2 },
   },
 ];
 
@@ -231,3 +240,19 @@ export const services = [
       "Designing microcontroller-based hardware projects — sensors, displays and interactive devices built from the ground up.",
   },
 ];
+
+export const cv = {
+  role: "Competitive Programmer · ML Researcher · Software Engineer",
+  summary:
+    "ICE undergraduate at BAUET, ICPC Dhaka Regional contestant and machine-learning researcher with four accepted conference papers on medical-data classification. Strong in C/C++ and algorithmic problem solving, with hands-on experience in Python, embedded systems and IoT hardware.",
+  extraFields: ["Algorithms", "Machine learning"],
+  extraProjects: [
+    {
+      title: "Personal Portfolio Platform",
+      tech: "React · Express · PostgreSQL",
+      summary: "Full-stack portfolio with an interactive 3D interface, an AI assistant that answers questions about my work, visitor analytics and an admin inbox with email replies.",
+      github: "https://github.com/NoorAbdullah02/Noor-s-Portfolio",
+      order: 3,
+    },
+  ],
+};

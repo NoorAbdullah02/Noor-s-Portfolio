@@ -5,7 +5,6 @@ import Section, { SectionHeading } from "./Section";
 import Safe3D from "./three/Safe3D";
 import { profile } from "../data/portfolioData";
 import { sendContactMessage } from "../lib/api";
-import { trackSpotlight } from "../lib/spotlight";
 
 const ContactGlobe = lazy(() => import("./three/ContactGlobe"));
 
@@ -70,14 +69,9 @@ function GlobeCard() {
 
 const initialForm = { name: "", email: "", phone: "", message: "" };
 
-const INFO_ICONS = {
-  Location: { bg: "from-blue-500/15 to-cyan-500/15", text: "text-blue-500" },
-  Phone: { bg: "from-green-500/15 to-emerald-500/15", text: "text-green-500" },
-  Email: { bg: "from-primary/15 to-primary-2/15", text: "text-primary" },
-};
-
 const inputClass =
-  "w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-base text-text outline-none transition-all placeholder:text-muted/60 focus:border-primary focus:bg-bg focus:ring-4 focus:ring-primary/10 sm:text-sm";
+  "mt-1.5 w-full rounded-xl border border-border bg-white px-4 py-3 text-base text-text outline-none transition-all placeholder:text-muted/50 focus:border-primary focus:ring-4 focus:ring-primary/10 sm:text-sm";
+const labelClass = "text-[11px] font-semibold uppercase tracking-[0.12em] text-text/70";
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
@@ -101,9 +95,9 @@ export default function Contact() {
   };
 
   const infoItems = [
-    { icon: <FiMapPin size={18} />, label: "Location", value: profile.location },
-    { icon: <FiPhone size={18} />, label: "Phone", value: profile.phones.join(" / ") },
-    { icon: <FiMail size={18} />, label: "Email", value: profile.email, href: `mailto:${profile.email}` },
+    { icon: <FiMail size={17} />, label: "Email", value: profile.email, href: `mailto:${profile.email}` },
+    { icon: <FiPhone size={17} />, label: "Phone", value: profile.phones.join(" / "), href: `tel:${profile.phones[0]}` },
+    { icon: <FiMapPin size={17} />, label: "Location", value: profile.location },
   ];
 
   return (
@@ -127,34 +121,34 @@ export default function Contact() {
           className="min-w-0 space-y-4 md:col-span-2"
         >
           <GlobeCard />
-          <p className="text-sm text-muted leading-relaxed mb-6">
+          <p className="mb-2 text-sm leading-relaxed text-muted">
             Whether you have a question, a project idea, or want to collaborate — don't hesitate to reach out. I reply within 24 hours.
           </p>
 
-          {infoItems.map((item) => {
-            const style = INFO_ICONS[item.label];
-            return (
-              <div
-                key={item.label}
-                onPointerMove={trackSpotlight}
-                className="spotlight group flex items-center gap-4 rounded-2xl border border-border bg-bg p-5 transition-[box-shadow,border-color] duration-300 hover:border-primary/25 hover:shadow-lg hover:shadow-primary/8"
-              >
-                <span className={`rounded-2xl bg-gradient-to-br ${style.bg} p-3.5 ${style.text} transition-transform group-hover:scale-110`}>
-                  {item.icon}
-                </span>
-                <div className="min-w-0">
-                  <div className="text-[10px] font-mono uppercase tracking-widest text-muted">{item.label}</div>
-                  {item.href ? (
-                    <a href={item.href} className="break-all font-medium text-text hover:text-primary transition-colors">
-                      {item.value}
-                    </a>
+          <ul className="overflow-hidden rounded-3xl border border-border bg-white/80 shadow-sm">
+            {infoItems.map((item) => (
+              <li key={item.label} className="border-b border-border/70 last:border-0">
+                {(() => {
+                  const inner = (
+                    <>
+                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-surface text-text/70 transition-colors group-hover:bg-text group-hover:text-white">
+                        {item.icon}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">{item.label}</span>
+                        <span className="block font-medium text-text [overflow-wrap:anywhere]">{item.value}</span>
+                      </span>
+                    </>
+                  );
+                  return item.href ? (
+                    <a href={item.href} className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-primary/[0.03]">{inner}</a>
                   ) : (
-                    <div className="font-medium text-text">{item.value}</div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+                    <div className="group flex items-center gap-4 px-5 py-4">{inner}</div>
+                  );
+                })()}
+              </li>
+            ))}
+          </ul>
         </motion.div>
 
         <motion.form
@@ -163,28 +157,43 @@ export default function Contact() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="relative min-w-0 overflow-hidden rounded-2xl border border-border bg-bg p-5 space-y-4 sm:p-8 md:col-span-3 md:self-start"
+          className="relative min-w-0 space-y-5 rounded-3xl border border-border bg-white/80 p-5 shadow-sm sm:p-8 md:col-span-3 md:self-start"
         >
-          <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-primary to-primary-2" />
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <input name="name" value={form.name} onChange={onChange} required placeholder="Your Name" className={inputClass} />
-            <input type="email" name="email" value={form.email} onChange={onChange} required placeholder="Your Email" className={inputClass} />
+          <div>
+            <h3 className="text-xl font-semibold tracking-tight text-text">Send a message</h3>
+            <p className="mt-1 text-left text-sm text-muted">It goes straight to my inbox — I usually reply within a day.</p>
           </div>
-          <input name="phone" value={form.phone} onChange={onChange} placeholder="Phone Number (optional)" className={inputClass} />
-          <textarea
-            name="message" value={form.message} onChange={onChange} required rows={5}
-            placeholder="Your Message"
-            className={`${inputClass} resize-none`}
-          />
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <label className="block">
+              <span className={labelClass}>Name</span>
+              <input name="name" value={form.name} onChange={onChange} required autoComplete="name" placeholder="Your full name" className={inputClass} />
+            </label>
+            <label className="block">
+              <span className={labelClass}>Email</span>
+              <input type="email" name="email" value={form.email} onChange={onChange} required autoComplete="email" placeholder="you@example.com" className={inputClass} />
+            </label>
+          </div>
+          <label className="block">
+            <span className={labelClass}>Phone <span className="font-normal normal-case tracking-normal text-muted/70">(optional)</span></span>
+            <input name="phone" value={form.phone} onChange={onChange} autoComplete="tel" placeholder="+880 …" className={inputClass} />
+          </label>
+          <label className="block">
+            <span className={labelClass}>Message</span>
+            <textarea
+              name="message" value={form.message} onChange={onChange} required rows={5}
+              placeholder="Tell me about your project, idea or question…"
+              className={`${inputClass} resize-none`}
+            />
+          </label>
 
           <button
             type="submit"
             disabled={status === "sending"}
-            className="btn-shine inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-2 px-6 py-3.5 text-sm font-semibold text-on-accent shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:shadow-xl hover:scale-[1.02] disabled:opacity-60 sm:w-auto"
+            className="btn-shine group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-text px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-text/15 transition-shadow hover:shadow-primary/30 disabled:opacity-60 sm:w-auto"
           >
-            <FiSend size={15} />
-            {status === "sending" ? "Sending…" : "Send Message"}
+            {status === "sending" ? "Sending…" : "Send message"}
+            <FiSend size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
 
           {status === "success" && (

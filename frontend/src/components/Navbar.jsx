@@ -64,9 +64,8 @@ export default function Navbar() {
                   {activeId === link.id && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary to-primary-2"
+                      className="absolute inset-0 -z-10 rounded-full bg-text"
                       transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                      style={{ boxShadow: "0 2px 12px -4px color-mix(in srgb, var(--color-primary) 60%, transparent)" }}
                     />
                   )}
                   {link.label}
@@ -86,7 +85,7 @@ export default function Navbar() {
             </a>
             <button
               onClick={() => handleClick("contact")}
-              className="btn-shine rounded-full bg-gradient-to-r from-primary to-primary-2 px-5 py-2 text-sm font-semibold text-on-accent shadow-md shadow-primary/20 transition-all hover:shadow-primary/35 hover:shadow-lg hover:scale-[1.03]"
+              className="btn-shine rounded-full bg-text px-5 py-2 text-sm font-semibold text-white shadow-md shadow-text/15 transition-shadow hover:shadow-primary/30"
             >
               Hire Me
             </button>
@@ -127,7 +126,7 @@ export default function Navbar() {
                       onClick={() => handleClick(link.id)}
                       className={`w-full rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-all ${
                         activeId === link.id
-                          ? "bg-gradient-to-r from-primary to-primary-2 text-on-accent shadow-md shadow-primary/20"
+                          ? "bg-text text-white"
                           : "text-muted hover:text-text hover:bg-surface"
                       }`}
                     >

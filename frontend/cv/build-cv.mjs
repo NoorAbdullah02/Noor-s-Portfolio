@@ -154,6 +154,20 @@ execFileSync(browser, [
   pathToFileURL(htmlFile).href,
 ], { stdio: "ignore" });
 
+const pngFile = path.join(here, "../public/Sheikh-Noor-Abdullah-CV.png");
+execFileSync(browser, [
+  "--headless=new",
+  "--disable-gpu",
+  "--hide-scrollbars",
+  "--allow-file-access-from-files",
+  `--user-data-dir=${profileDir}`,
+  "--window-size=794,1123",
+  "--force-device-scale-factor=1.6",
+  `--screenshot=${pngFile}`,
+  pathToFileURL(htmlFile).href,
+], { stdio: "ignore" });
+console.log(`Wrote ${path.relative(process.cwd(), pngFile)} — ${Math.round(readFileSync(pngFile).length / 1024)} KB preview`);
+
 const pdf = readFileSync(pdfFile, "latin1");
 const pages = (pdf.match(/\/Type\s*\/Page(?!s)/g) || []).length;
 console.log(`Wrote ${path.relative(process.cwd(), pdfFile)} — ${pages} page${pages === 1 ? "" : "s"}, ${Math.round(pdf.length / 1024)} KB`);

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiMenu, FiX, FiDownload } from "react-icons/fi";
+import { FiMenu, FiX, FiDownload, FiFileText } from "react-icons/fi";
 import { profile } from "../data/portfolioData";
+import { openCvPreview } from "../lib/cvPreview";
 import useScrollSpy from "../hooks/useScrollSpy";
 
 const links = [
@@ -75,14 +76,14 @@ export default function Navbar() {
           </ul>
 
           <div className="hidden items-center gap-2 md:flex">
-            <a
-              href={profile.resumeUrl}
-              download
+            <button
+              type="button"
+              onClick={openCvPreview}
               className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted transition-all hover:border-primary hover:text-primary hover:bg-primary/5"
-              title="Download CV"
+              title="Preview CV"
             >
-              <FiDownload size={14} /> CV
-            </a>
+              <FiFileText size={14} /> CV
+            </button>
             <button
               onClick={() => handleClick("contact")}
               className="btn-shine rounded-full bg-text px-5 py-2 text-sm font-semibold text-white shadow-md shadow-text/15 transition-shadow hover:shadow-primary/30"
@@ -135,14 +136,23 @@ export default function Navbar() {
                   </li>
                 ))}
               </ul>
-              <a
-                href={profile.resumeUrl}
-                download
-                onClick={() => setOpen(false)}
-                className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-text transition-colors hover:border-primary hover:text-primary"
-              >
-                <FiDownload size={14} /> Download CV
-              </a>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setOpen(false); openCvPreview(); }}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-text px-4 py-2.5 text-sm font-medium text-white"
+                >
+                  <FiFileText size={14} /> View CV
+                </button>
+                <a
+                  href={profile.resumeUrl}
+                  download
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-text transition-colors hover:border-primary hover:text-primary"
+                >
+                  <FiDownload size={14} /> Download
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

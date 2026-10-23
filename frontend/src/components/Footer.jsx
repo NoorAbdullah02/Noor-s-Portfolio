@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { FiGithub, FiLinkedin, FiFacebook, FiTwitter, FiArrowUp, FiArrowRight, FiMail, FiDownload } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiFacebook, FiTwitter, FiArrowUp, FiArrowRight, FiMail, FiFileText } from "react-icons/fi";
 import { profile } from "../data/portfolioData";
+import { openCvPreview } from "../lib/cvPreview";
 
 const socials = [
   { icon: FiGithub, href: profile.social.github, label: "GitHub" },
@@ -51,13 +52,13 @@ export default function Footer() {
               Start a conversation
               <FiArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
             </button>
-            <a
-              href={profile.resumeUrl}
-              download
+            <button
+              type="button"
+              onClick={openCvPreview}
               className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/50"
             >
-              <FiDownload size={14} /> Download CV
-            </a>
+              <FiFileText size={14} /> View CV
+            </button>
           </div>
         </motion.div>
 

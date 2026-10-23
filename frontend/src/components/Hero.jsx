@@ -1,7 +1,8 @@
 import { lazy, useRef } from "react";
 import { motion, useInView, useMotionValue, useTransform } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { FiArrowRight, FiArrowUpRight, FiGithub, FiLinkedin, FiDownload, FiBookOpen, FiAward, FiMapPin } from "react-icons/fi";
+import { FiArrowRight, FiArrowUpRight, FiGithub, FiLinkedin, FiFileText, FiBookOpen, FiAward, FiMapPin } from "react-icons/fi";
+import { openCvPreview } from "../lib/cvPreview";
 import { profile } from "../data/portfolioData";
 import Safe3D from "./three/Safe3D";
 import Magnetic from "./Magnetic";
@@ -167,13 +168,13 @@ export default function Hero() {
               View my work
               <FiArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
-            <a
-              href={profile.resumeUrl}
-              download
+            <button
+              type="button"
+              onClick={openCvPreview}
               className="inline-flex items-center gap-1.5 px-3 py-3.5 text-sm font-medium text-muted underline-offset-4 transition-colors hover:text-primary hover:underline"
             >
-              <FiDownload size={14} /> Résumé
-            </a>
+              <FiFileText size={14} /> View CV
+            </button>
           </motion.div>
 
           <motion.div

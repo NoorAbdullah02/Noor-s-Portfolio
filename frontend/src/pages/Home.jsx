@@ -13,6 +13,7 @@ import Footer from "../components/Footer";
 import useVisitNotifier from "../hooks/useVisitNotifier";
 import ChatWidget from "../components/ChatWidget";
 import CursorGlow from "../components/CursorGlow";
+import CvPreview from "../components/CvPreview";
 
 export default function Home() {
   useVisitNotifier();
@@ -34,6 +35,7 @@ export default function Home() {
       </main>
       <Footer />
       <ChatWidget />
+      <CvPreview />
       <CursorGlow />
     </div>
   );

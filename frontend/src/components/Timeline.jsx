@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { FiBookOpen, FiBriefcase, FiCpu, FiCode, FiAward, FiFileText } from "react-icons/fi";
+import { FiBookOpen, FiBriefcase, FiCpu, FiCode, FiAward, FiFileText, FiCompass } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { education, experience, achievements } from "../data/portfolioData";
 import { trackSpotlight } from "../lib/spotlight";
 
 const EASE = [0.22, 1, 0.36, 1];
-const ACHIEVEMENT_ICONS = { paper: FiFileText, robot: FiCpu, code: FiCode, quiz: FiAward };
+const ACHIEVEMENT_ICONS = { paper: FiFileText, robot: FiCpu, code: FiCode, quiz: FiAward, leader: FiCompass };
 
 function TimelineList({ icon: Icon, title, items, delay = 0 }) {
   return (

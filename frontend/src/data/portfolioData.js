@@ -138,6 +138,15 @@ export const achievements = [
     cv: "Robot Making Hackathon 2025 — selected, Team Glitch Weavers",
   },
   {
+    title: "Aspire Leaders Program — Cohort 4",
+    description:
+      "Selected for the Aspire Leaders Program (Cohort 4, 2026) by Aspire Institute, a global leadership development program for emerging student leaders.",
+    image: null,
+    icon: "leader",
+    color: ["#0ea5e9", "#6366f1"],
+    cv: "Aspire Leaders Program — selected, Cohort 4, 2026",
+  },
+  {
     title: "IT Job Quiz — 3rd Place",
     description:
       "Secured 3rd place in IT Job Quiz Competition 1, organized by BAUET ICT Club. Recognized among the top 3 performers for strong technical knowledge and competitive performance in IT topics.",

@@ -1,0 +1,56 @@
+# Render Blueprint — one service that builds the frontend and serves it from the
+# same Express backend. No secrets live in this file (see the comments below);
+# Render asks for each `sync: false` value once, in its dashboard.
+services:
+  - type: web
+    name: noor-portfolio
+    runtime: node
+    plan: free
+    region: singapore
+    branch: master
+    autoDeploy: true
+    buildCommand: npm run install:all && npm run build --prefix frontend
+    startCommand: npm start --prefix backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # Public URL of this service once deployed, e.g. https://noor-portfolio.onrender.com
+      # (or your custom domain). Used in email buttons and shared with the AI assistant.
+      - key: SITE_URL
+        sync: false
+
+      # Neon/Postgres connection string. Without it the server falls back to local
+      # JSON files, which Render will NOT persist across deploys — set this.
+      - key: DATABASE_URL
+        sync: false
+
+      - key: GROQ_API_KEY
+        sync: false
+
+      # Password for /admin — pick something you don't use anywhere else.
+      - key: ADMIN_PASSWORD
+        sync: false
+
+      # Email — Brevo (recommended)
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false
+      - key: BREVO_SENDER_NAME
+        value: Noor's Portfolio
+      - key: CONTACT_TO_EMAIL
+        sync: false
+
+      # Optional: raises GitHub API rate limits for the live repo list
+      - key: GITHUB_TOKEN
+        sync: false
+
+      - key: ENABLE_VISIT_NOTIFICATIONS
+        value: "true"
+      - key: TRACK_LOCALHOST
+        value: "false"
+      - key: BRIEFING_HOUR
+        value: "21"
+      - key: ENABLE_DAILY_BRIEFING
+        value: "true"

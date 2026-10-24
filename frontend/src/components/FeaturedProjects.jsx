@@ -1,8 +1,41 @@
 import { motion } from "framer-motion";
-import { FiGithub, FiExternalLink, FiArrowUpRight } from "react-icons/fi";
+import { FiGithub, FiExternalLink, FiArrowUpRight, FiActivity, FiBarChart2, FiShield } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { featuredProjects, profile } from "../data/portfolioData";
 import { trackSpotlight } from "../lib/spotlight";
+
+const PROJECT_ICONS = { activity: FiActivity, chart: FiBarChart2, shield: FiShield };
+
+function ProjectCover({ project }) {
+  if (project.image) {
+    return (
+      <>
+        <img
+          src={project.image}
+          alt={project.title}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary-2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </>
+    );
+  }
+  const Icon = PROJECT_ICONS[project.icon] || FiActivity;
+  const [c1, c2] = project.color || ["#4f46e5", "#9333ea"];
+  return (
+    <div className="relative flex h-full w-full items-center justify-center" style={{ background: `linear-gradient(135deg, ${c1}22, ${c2}33)` }}>
+      <div className="absolute inset-0 bg-dots opacity-40" />
+      <div
+        className="relative flex h-16 w-16 items-center justify-center rounded-2xl text-white transition-transform duration-500 group-hover:scale-110"
+        style={{ background: `linear-gradient(135deg, ${c1}, ${c2})`, boxShadow: `0 12px 28px -10px ${c1}99` }}
+      >
+        <Icon size={26} />
+      </div>
+    </div>
+  );
+}
 
 export default function FeaturedProjects() {
   return (
@@ -31,15 +64,7 @@ export default function FeaturedProjects() {
             </div>
 
             <div className="relative h-48 overflow-hidden">
-              <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary-2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <ProjectCover project={project} />
             </div>
 
             <div className="flex flex-1 flex-col p-6">

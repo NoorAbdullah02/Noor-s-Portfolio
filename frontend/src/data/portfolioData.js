@@ -181,14 +181,55 @@ export const research = [
 
 export const featuredProjects = [
   {
-    title: "Elegant Calculator (Python + Tkinter)",
+    title: "XAI-MedCrossNet++ (Breast Cancer Classification)",
     description:
-      "My first Python application, built with the Tkinter GUI library. Supports arithmetic operations, squares, percentages, constants like π, plus Clear-All and Undo utilities — wrapped in a sleek, modern interface.",
-    tags: ["Python", "Tkinter", "GUI"],
-    image: "/images/CalaulatorProject/cal.jpg",
-    github: "https://github.com/NoorAbdullah02/1st-project/tree/main/Calculato_Project",
+      "Tri-modal deep learning framework for breast cancer screening on the VinDr-Mammo dataset — fuses 512×512 mammography images, 107 PyRadiomics features and clinical metadata via a multi-head cross-attention mechanism, with Grad-CAM++ heatmaps and SHAP for explainability.",
+    tags: ["PyTorch", "Deep Learning", "Medical Imaging", "XAI"],
+    image: null,
+    icon: "activity",
+    color: ["#ef4444", "#ec4899"],
+    github: "https://github.com/NoorAbdullah02/cancer",
     demo: null,
-    cv: { title: "Elegant Calculator", tech: "Python · Tkinter", summary: "Desktop GUI calculator with percentages, constants such as π, Clear-All and Undo.", order: 4 },
+    cv: {
+      title: "XAI-MedCrossNet++",
+      tech: "PyTorch · Deep Learning",
+      summary: "Tri-modal breast cancer classifier on VinDr-Mammo — fuses mammography images, radiomics and clinical data via cross-attention, with Grad-CAM++ and SHAP explainability.",
+      order: 1,
+    },
+  },
+  {
+    title: "Plant Disease Recognition Across Three Datasets",
+    description:
+      "Cross-domain generalization study: a ConvNeXt-Small trained jointly on three leaf-disease datasets (43 classes) and evaluated on laboratory, orchard and coffee-farm images — 99.33% Macro-F1 in-domain and 91.55% on an unseen coffee dataset, across 230 documented training runs.",
+    tags: ["PyTorch", "Computer Vision", "ConvNeXt", "Research"],
+    image: null,
+    icon: "chart",
+    color: ["#10b981", "#0ea5e9"],
+    github: "https://github.com/NoorAbdullah02/plant-disease-three-datasets",
+    demo: null,
+    cv: {
+      title: "Plant Disease Recognition (3 Datasets)",
+      tech: "PyTorch · Computer Vision",
+      summary: "Cross-domain leaf-disease classifier (ConvNeXt-Small, 43 classes) evaluated on lab, orchard and coffee-farm images — 99.33% Macro-F1 in-domain, 91.55% on an unseen coffee dataset.",
+      order: 2,
+    },
+  },
+  {
+    title: "AI Cyber Attack Prediction Engine",
+    description:
+      "End-to-end machine-learning pipeline and security dashboard for network-traffic threat analysis. An XGBoost model scores risk and classifies traffic flows as high- or low-risk, served through a FastAPI backend with a React monitoring dashboard.",
+    tags: ["Python", "XGBoost", "FastAPI", "Cyber Security"],
+    image: null,
+    icon: "shield",
+    color: ["#f59e0b", "#ef4444"],
+    github: "https://github.com/NoorAbdullah02/AI-Cyber-Attack-Prediction",
+    demo: null,
+    cv: {
+      title: "AI Cyber Attack Prediction Engine",
+      tech: "Python · XGBoost · FastAPI",
+      summary: "ML pipeline and dashboard for network-traffic threat analysis — an XGBoost model scores risk and classifies flows as high- or low-risk.",
+      order: 3,
+    },
   },
   {
     title: "City Traffic Management System 🚦",
@@ -198,7 +239,7 @@ export const featuredProjects = [
     image: "/images/traffic3.png",
     github: "https://github.com/NoorAbdullah02/TrafficRoutingSystem",
     demo: null,
-    cv: { title: "City Traffic Management System", tech: "Python", summary: "Graph-based city traffic simulation using Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.", order: 1 },
+    cv: { title: "City Traffic Management System", tech: "Python", summary: "Graph-based city traffic simulation using Dijkstra's algorithm and BFS for shortest-path routing, real-time congestion analysis and dynamic incident handling.", order: 4 },
   },
   {
     title: "DIY Handheld Gaming Console",
@@ -208,7 +249,15 @@ export const featuredProjects = [
     image: "/images/DLD1.jpg",
     github: "https://github.com/NoorAbdullah02/DLDProject",
     demo: null,
-    cv: { title: "DIY Handheld Gaming Console", tech: "C · Arduino", summary: "ATmega328P-based handheld with an I²C OLED display and push buttons on a perfboard; retro side-scroller game logic written in C.", order: 2 },
+  },
+  {
+    title: "Elegant Calculator (Python + Tkinter)",
+    description:
+      "My first Python application, built with the Tkinter GUI library. Supports arithmetic operations, squares, percentages, constants like π, plus Clear-All and Undo utilities — wrapped in a sleek, modern interface.",
+    tags: ["Python", "Tkinter", "GUI"],
+    image: "/images/CalaulatorProject/cal.jpg",
+    github: "https://github.com/NoorAbdullah02/1st-project/tree/main/Calculato_Project",
+    demo: null,
   },
 ];
 
@@ -250,7 +299,7 @@ export const cv = {
       tech: "React · Express · PostgreSQL",
       summary: "Full-stack portfolio with an interactive 3D interface, an AI assistant that answers questions about my work, visitor analytics and an admin inbox with email replies.",
       github: "https://github.com/NoorAbdullah02/Noor-s-Portfolio",
-      order: 3,
+      order: 5,
     },
   ],
 };

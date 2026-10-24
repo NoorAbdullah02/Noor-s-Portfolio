@@ -104,14 +104,19 @@ function AchievementCard({ a, index }) {
 export default function Timeline() {
   const featured = achievements.find((a) => a.image);
   const rest = achievements.filter((a) => a !== featured);
+  const hasExperience = experience.length > 0;
 
   return (
     <Section id="qualification">
-      <SectionHeading eyebrow="Qualification" title="Education & Experience" subtitle="The path that shaped my skills" />
+      <SectionHeading
+        eyebrow="Qualification"
+        title={hasExperience ? "Education & Experience" : "Education"}
+        subtitle="The path that shaped my skills"
+      />
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div className={`grid grid-cols-1 gap-5 ${hasExperience ? "md:grid-cols-2" : "mx-auto max-w-xl"}`}>
         <TimelineList icon={FiBookOpen} title="Education" items={education} />
-        <TimelineList icon={FiBriefcase} title="Experience" items={experience} delay={0.1} />
+        {hasExperience && <TimelineList icon={FiBriefcase} title="Experience" items={experience} delay={0.1} />}
       </div>
 
       {achievements.length > 0 && (

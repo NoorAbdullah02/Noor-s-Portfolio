@@ -103,13 +103,13 @@ const html = `<!doctype html>
       </div>`).join("")}
     </section>
 
-    <section>
+    ${experience.length ? `<section>
       <h2>Experience</h2>${experience.map((e) => `
       <div class="item">
         <div class="row"><span class="title">${esc(e.title)}</span><span class="when">${esc(e.time.replace(/ Experience$/i, ""))}</span></div>
         <div class="sub">${esc(e.place)}</div>
       </div>`).join("")}
-    </section>
+    </section>` : ""}
 
     <section>
       <h2>Projects</h2>${projects.map((p) => `

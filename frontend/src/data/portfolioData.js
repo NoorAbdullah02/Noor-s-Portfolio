@@ -77,23 +77,12 @@ export const education = [
   },
 ];
 
-export const experience = [
-  {
-    title: "IT Support & Development",
-    place: "Imran IT, Kanaikhali, Natore",
-    time: "2026 — Present",
-  },
-  {
-    title: "IT Intern",
-    place: "ABC IT, Mirpur, Natore",
-    time: "2 Months Experience",
-  },
-  {
-    title: "Technical Assistant",
-    place: "Cantonment, Bonpara",
-    time: "1 Month Experience",
-  },
-];
+// No real work experience yet — hidden from the site and CV until there is some.
+// Paste these back into the array below when ready:
+// { title: "IT Support & Development", place: "Imran IT, Kanaikhali, Natore", time: "2026 — Present" },
+// { title: "IT Intern", place: "ABC IT, Mirpur, Natore", time: "2 Months Experience" },
+// { title: "Technical Assistant", place: "Cantonment, Bonpara", time: "1 Month Experience" },
+export const experience = [];
 
 export const achievements = [
   {

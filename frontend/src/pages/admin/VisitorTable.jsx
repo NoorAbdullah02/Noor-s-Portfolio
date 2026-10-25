@@ -40,7 +40,18 @@ export default function VisitorTable({ visits, stats, onOpen }) {
 
       <div className="hidden overflow-hidden rounded-3xl border border-border bg-white/80 backdrop-blur md:block">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="w-full table-fixed text-left text-sm">
+            <colgroup>
+              <col className="w-[220px]" />
+              <col className="w-[90px]" />
+              <col className="w-[180px]" />
+              <col className="w-[170px]" />
+              <col className="w-[110px]" />
+              <col className="w-[110px]" />
+              <col className="w-[150px]" />
+              <col className="w-[120px]" />
+              <col className="w-8" />
+            </colgroup>
             <thead className="border-b border-border bg-surface/50 text-[11px] uppercase tracking-wider text-muted">
               <tr>
                 <th className="px-5 py-3.5 font-semibold">Visitor</th>
@@ -51,7 +62,7 @@ export default function VisitorTable({ visits, stats, onOpen }) {
                 <th className="px-5 py-3.5 font-semibold">Source</th>
                 <th className="px-5 py-3.5 font-semibold">Device</th>
                 <th className="px-5 py-3.5 font-semibold">IP</th>
-                <th className="w-8 px-3 py-3.5" />
+                <th className="px-3 py-3.5" />
               </tr>
             </thead>
             <tbody>
@@ -60,16 +71,16 @@ export default function VisitorTable({ visits, stats, onOpen }) {
                 return (
                   <tr key={v.id} onClick={() => onOpen(v)}
                     className={`group cursor-pointer border-b border-border/60 transition-colors last:border-0 hover:bg-primary/[0.04] ${v.visitor ? "bg-primary/[0.02]" : ""}`}>
-                    <td className="max-w-[240px] px-5 py-3"><VisitorBadge v={v} /></td>
-                    <td className="whitespace-nowrap px-5 py-3 text-muted" title={fullDate(v.timestamp)}>{timeAgo(v.timestamp)}</td>
-                    <td className="max-w-[200px] px-5 py-3 text-text/80"><Location v={v} /></td>
-                    <td className="px-5 py-3"><Engagement v={v} /></td>
-                    <td className="px-5 py-3"><VisitTag count={v.visitCount} /></td>
-                    <td className="max-w-[160px] truncate px-5 py-3 text-muted" title={v.referrer}>{describeSource(v.referrer)}</td>
-                    <td className="whitespace-nowrap px-5 py-3 text-muted">
+                    <td className="overflow-hidden px-5 py-3"><VisitorBadge v={v} /></td>
+                    <td className="overflow-hidden whitespace-nowrap px-5 py-3 text-muted" title={fullDate(v.timestamp)}>{timeAgo(v.timestamp)}</td>
+                    <td className="overflow-hidden px-5 py-3 text-text/80"><Location v={v} /></td>
+                    <td className="overflow-hidden px-5 py-3"><Engagement v={v} /></td>
+                    <td className="overflow-hidden px-5 py-3"><VisitTag count={v.visitCount} /></td>
+                    <td className="overflow-hidden truncate px-5 py-3 text-muted" title={v.referrer}>{describeSource(v.referrer)}</td>
+                    <td className="overflow-hidden whitespace-nowrap px-5 py-3 text-muted">
                       <span className="inline-flex items-center gap-1.5"><DeviceIcon mobile={agent.mobile} />{agent.label}</span>
                     </td>
-                    <td className="px-5 py-3 font-mono text-xs text-muted">{displayIp(v.ip)}</td>
+                    <td className="overflow-hidden truncate px-5 py-3 font-mono text-xs text-muted">{displayIp(v.ip)}</td>
                     <td className="px-3 py-3 text-muted opacity-0 transition group-hover:opacity-100"><FiChevronRight /></td>
                   </tr>
                 );

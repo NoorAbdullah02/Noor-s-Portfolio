@@ -20,7 +20,7 @@ export function Avatar({ name, size = 40 }) {
 export function Location({ v }) {
   if (v.geo) {
     return (
-      <span className="inline-flex min-w-0 items-center gap-1.5" title={v.geo.isp || ""}>
+      <span className="flex w-full min-w-0 items-center gap-1.5" title={v.geo.isp || ""}>
         <span className="text-base leading-none">{flagEmoji(v.geo.countryCode)}</span>
         <span className="truncate">{formatGeo(v.geo)}</span>
       </span>

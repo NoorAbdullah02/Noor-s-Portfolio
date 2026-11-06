@@ -41,9 +41,9 @@ export const profile = {
 
 export const stats = [
   { label: "Programming Languages", value: 4 },
-  { label: "Projects Built", value: 4 },
+  { label: "Projects Built", value: 6 },
   { label: "ICPC Contests", value: 1 },
-  { label: "Years of Learning", value: 3 },
+  { label: "Years of Learning", value: 4 },
 ];
 
 export const skills = [

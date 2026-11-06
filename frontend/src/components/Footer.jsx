@@ -22,8 +22,9 @@ const navLinks = [
 
 const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
+const year = new Date().getFullYear();
+
 export default function Footer() {
-  const year = new Date().getFullYear();
 
   return (
     <footer className="relative overflow-hidden bg-[#0b0b1a] text-white">

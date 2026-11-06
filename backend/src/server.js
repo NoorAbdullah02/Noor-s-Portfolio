@@ -30,6 +30,23 @@ const clientDist = path.join(__dirname, "../../frontend/dist");
 // serve the latest frontend automatically.
 const hasClientBuild = existsSync(path.join(clientDist, "index.html"));
 
+// Baseline security headers (kept dependency-free; no CSP because the site loads
+// Google Fonts and inline styles from Tailwind/Framer Motion).
+app.disable("x-powered-by");
+app.use((req, res, next) => {
+  res.set({
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+  });
+  if (req.secure) res.set("Strict-Transport-Security", "max-age=15552000; includeSubDomains");
+  if (req.path === "/admin" || req.path.startsWith("/admin/") || req.path.startsWith("/api/")) {
+    res.set("X-Robots-Tag", "noindex, nofollow");
+  }
+  next();
+});
+
 app.use(compression());
 app.use(express.json({ limit: "100kb" }));
 
@@ -93,9 +110,25 @@ app.use("/api", (err, req, res, next) => {
 });
 
 if (hasClientBuild) {
-  app.use(express.static(clientDist));
+  // Vite fingerprints everything in /assets, so it can be cached for a year;
+  // other files (images, CV) get a shorter cache and index.html is never cached.
+  app.use(
+    express.static(clientDist, {
+      index: false,
+      setHeaders(res, filePath) {
+        if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+          res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+        } else if (filePath.endsWith(".html")) {
+          res.setHeader("Cache-Control", "no-cache");
+        } else {
+          res.setHeader("Cache-Control", "public, max-age=86400");
+        }
+      },
+    })
+  );
   app.get(/^(?!\/api).*/, (req, res) => {
-    res.sendFile(path.join(clientDist, "index.html"));
+    res.set("Cache-Control", "no-cache");
+    res.sendFile("index.html", { root: clientDist });
   });
 }
 

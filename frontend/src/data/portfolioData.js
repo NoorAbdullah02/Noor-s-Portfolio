@@ -20,8 +20,8 @@ export const profile = {
   summary:
     "I am a competitive programmer with a knack for problem-solving and coding. I have experience with multiple programming languages, including C, C++, Java, Python, and others. Currently, I am a BSc student at the Bangladesh Army University of Engineering and Technology. Last year, I had the opportunity to participate in the ICPC Dhaka Regional Contest, which was an incredible experience that allowed me to gain a wealth of knowledge and sharpen my skills.",
   about: [
-    "I am Sheikh Noor Abdullah, a passionate BSc Engineering student with a keen interest in innovation and technology. My journey is marked by dedication to my studies and a relentless pursuit of excellence. I thrive on challenges and am always looking for ways to apply my knowledge to real-world problems, constantly aiming to make a positive impact in my field and beyond.",
-    "My academic journey is driven by a passion for innovation and a dedication to excellence. I have consistently sought to expand my knowledge and skills, tackling challenges with determination and creativity, applying my engineering expertise to make a meaningful impact in my field and contribute positively to society.",
+    "I'm a final-year ICE student at BAUET who splits his time between competitive programming and machine-learning research. I've competed at the ICPC Dhaka Regional, and my medical-imaging and clinical-data work has produced four accepted papers (three at IEEE CSDE 2026, one at ISRC 2026).",
+    "I also like building things you can hold: I won RoboSpark with an embedded-systems build, and I've made microcontroller projects like a handheld console on an ATmega328P. Day to day I work in C++, Python and React, and I care about models that are explainable and results that are evaluated honestly.",
   ],
   location: "Natore, Bangladesh",
   email: "sheikhnoorabdullah02@gmail.com",

@@ -1,6 +1,6 @@
 import { lazy, useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle, FiAlertCircle, FiClock } from "react-icons/fi";
+import { FiMail, FiMapPin, FiSend, FiCheckCircle, FiAlertCircle, FiClock } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import Safe3D from "./three/Safe3D";
 import { profile } from "../data/portfolioData";
@@ -96,7 +96,6 @@ export default function Contact() {
 
   const infoItems = [
     { icon: <FiMail size={17} />, label: "Email", value: profile.email, href: `mailto:${profile.email}` },
-    { icon: <FiPhone size={17} />, label: "Phone", value: profile.phones.join(" / "), href: `tel:${profile.phones[0]}` },
     { icon: <FiMapPin size={17} />, label: "Location", value: profile.location },
   ];
 

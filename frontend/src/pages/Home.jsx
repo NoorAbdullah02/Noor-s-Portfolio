@@ -1,19 +1,20 @@
+import { Suspense, lazy } from "react";
 import Navbar from "../components/Navbar";
 import Preloader from "../components/Preloader";
 import ScrollProgress from "../components/ScrollProgress";
 import Hero from "../components/Hero";
 import TechMarquee from "../components/TechMarquee";
 import About from "../components/About";
-import Skills from "../components/Skills";
-import Timeline from "../components/Timeline";
-import FeaturedProjects from "../components/FeaturedProjects";
-import GithubProjects from "../components/GithubProjects";
-import Contact from "../components/Contact";
-import Footer from "../components/Footer";
+const Skills = lazy(() => import("../components/Skills"));
+const Timeline = lazy(() => import("../components/Timeline"));
+const FeaturedProjects = lazy(() => import("../components/FeaturedProjects"));
+const GithubProjects = lazy(() => import("../components/GithubProjects"));
+const Contact = lazy(() => import("../components/Contact"));
+const Footer = lazy(() => import("../components/Footer"));
 import useVisitNotifier from "../hooks/useVisitNotifier";
-import ChatWidget from "../components/ChatWidget";
-import CursorGlow from "../components/CursorGlow";
-import CvPreview from "../components/CvPreview";
+const ChatWidget = lazy(() => import("../components/ChatWidget"));
+const CursorGlow = lazy(() => import("../components/CursorGlow"));
+const CvPreview = lazy(() => import("../components/CvPreview"));
 
 export default function Home() {
   useVisitNotifier();
@@ -27,16 +28,20 @@ export default function Home() {
         <Hero />
         <TechMarquee />
         <About />
+      <Suspense fallback={null}>
         <Skills />
         <Timeline />
         <FeaturedProjects />
         <GithubProjects />
         <Contact />
+      </Suspense>
       </main>
-      <Footer />
-      <ChatWidget />
-      <CvPreview />
-      <CursorGlow />
+      <Suspense fallback={null}>
+        <Footer />
+        <ChatWidget />
+        <CvPreview />
+        <CursorGlow />
+      </Suspense>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FiUser, FiMail, FiPhone, FiMapPin, FiBookOpen, FiArrowUpRight } from "react-icons/fi";
+import { FiUser, FiMail, FiMapPin, FiBookOpen, FiArrowUpRight } from "react-icons/fi";
 import Section, { SectionHeading } from "./Section";
 import { profile, stats, education } from "../data/portfolioData";
 import useCountUp from "../hooks/useCountUp";
@@ -91,7 +91,6 @@ export default function About() {
   const infoRows = [
     { icon: FiUser, label: "Name", value: profile.name },
     { icon: FiMapPin, label: "Location", value: profile.location },
-    { icon: FiPhone, label: "Phone", value: profile.phones[0], href: `tel:${profile.phones[0]}` },
     { icon: FiMail, label: "Email", value: profile.email, href: `mailto:${profile.email}` },
   ];
 
